@@ -16,4 +16,9 @@ Syntax highlighted code block
 
 **Bold** and _Italic_ and `Code` text
 
+```
+def hola_mundo():
+  print('Hola Mundo')
+```
+
 [Link](url) and ![Image](src)
