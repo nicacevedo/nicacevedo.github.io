@@ -22,3 +22,5 @@ def hola_mundo():
 ```
 
 [Link](url) and ![Image](src)
+
+<button type="button">Click Me!</button>
