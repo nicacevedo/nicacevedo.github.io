@@ -16,7 +16,7 @@ Syntax highlighted code block
 
 **Bold** and _Italic_ and `Code` text
 
-```
+```python
 def hola_mundo():
   print('Hola Mundo')
 ```
