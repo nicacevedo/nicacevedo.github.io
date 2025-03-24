@@ -1,14 +1,14 @@
 ---
-title: "Paper Title Number 1"
-collection: publications
+title: "On the Outlier Detection for Standardized Tests"
+collection: conference-talk
 category: manuscripts
-permalink: /publication/2009-10-01-paper-title-number-1
+permalink: /publication/2022-03-07-paper-title-number-1
 excerpt: 'This paper is about the number 1. The number 2 is left for future work.'
-date: 2009-10-01
-venue: 'Journal 1'
-slidesurl: 'http://academicpages.github.io/files/slides1.pdf'
-paperurl: 'http://academicpages.github.io/files/paper1.pdf'
-citation: 'Your Name, You. (2009). &quot;Paper Title Number 1.&quot; <i>Journal 1</i>. 1(1).'
+date: 2022-03-07
+venue: 'XIV Chilean conference on Operations Research'
+slidesurl: 'http://academicpages.github.io/files/PSU_Outliers.pdf'
+# paperurl: 'http://academicpages.github.io/files/paper1.pdf'
+citation: 'Acevedo, N., Thraves, C., Varas (2022). &quot;Paper Title Number 1.&quot; <i>XIV Chilean conference on Operations Research</i>. 1(1).'
 ---
 
-The contents above will be part of a list of publications, if the user clicks the link for the publication than the contents of section will be rendered as a full page, allowing you to provide more information about the paper for the reader. When publications are displayed as a single page, the contents of the above "citation" field will automatically be included below this section in a smaller font.
+Outlier detection methods on standardized college admission tests. We use four methods---Mahalanobis Distance, Isolation Forest, and variations of these---to detect outliers in multivariate data. Applying PCA, the outlier metrics are combined in a single scoring for each student. Students with the highest scores are clustered with k-means to get interpretable groups of outliers. The methodology is performed with real data of Chilean admission test results PDT
