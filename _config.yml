@@ -21,8 +21,8 @@ repository               : "nicacevedo/nicacevedo.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.heic"
-  name             : "Nicolás Acevedo Villena"
+  avatar           : "profile_new.jpg"
+  # name             : "Nicolás Acevedo Villena"
   pronouns         : # example: "she/her"  
   bio              : "Chilean, music, rock climbing, nature, and sports."
   location         : "Cambridge, MA"
