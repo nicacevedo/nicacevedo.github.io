@@ -13,6 +13,6 @@ Beyond academia, I have several passions that are very important to me, includin
 
 # Education 
 
-- Ph.D. in Operations Research, Massachusetts Institute of Technology, 2029 (Expected)
-- M.S. in Operation Management, Universidad de Chile, 2023
-- B.Eng. in Industrial Engineering, Universidad de Chile, 2021
+- _Ph.D. in Operations Research_, Massachusetts Institute of Technology, 2029 (Expected).
+- _M.S. in Operation Management_, Universidad de Chile, 2023.
+- _B.Eng. in Industrial Engineering_, Universidad de Chile, 2021.
