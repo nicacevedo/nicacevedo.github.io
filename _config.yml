@@ -26,7 +26,7 @@ author:
   pronouns         : "he/him"  
   bio              : "Chilean, music, rock climbing, nature, and sports."
   location         : "Cambridge, MA"
-  employer         : "Massachusetts Institute of Technology"
+  employer         : "MIT"
   uri              : # URL
   email            : "nacevedo@mit.edu" 
 
@@ -118,7 +118,7 @@ staticman:
         format           : "iso8601" # "iso8601" (default), "timestamp-seconds", "timestamp-milliseconds"
 atom_feed:
   hide                   : true     # change to true to hide the RSS feed in the footer
-  path                   : # blank (default) uses feed.xml
+  path                   : #blank #(default) uses feed.xml
 
 
 # SEO Related
