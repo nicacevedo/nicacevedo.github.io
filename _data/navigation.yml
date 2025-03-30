@@ -21,7 +21,7 @@ main:
   #   url: /year-archive/
     
   - title: "CV"
-    url: /cv/ #https://github.com/nicacevedo/nicacevedo.github.io/blob/master/files/CV.pdf
+    url: /files/CV.pdf/ #https://github.com/nicacevedo/nicacevedo.github.io/blob/master/files/CV.pdf
     
   # - title: "Guide"
   #   url: /markdown/
