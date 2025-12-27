@@ -3,7 +3,7 @@ layout: profiles
 permalink: /people/
 title: people
 description: members of the lab or group
-nav: true
+nav: false # set to true to include this page in the navigation bar
 nav_order: 7
 
 profiles:
