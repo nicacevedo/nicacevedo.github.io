@@ -6,12 +6,12 @@ subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: profile_trekking.jpg
   image_circular: false # crops the image to make it circular
   more_info: >
-    <p>555 your office number</p>
-    <p>123 your address street</p>
-    <p>Your City, State 12345</p>
+    <p>77 Massachusetts Avenue</p>
+    <p>Building E40-107</p>
+    <p>Cambridge MA, 02139</p> 
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
@@ -27,7 +27,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-I am a first-year PhD student at MIT's [Operations Research Center](https://orc.mit.edu/people/students/), advised by Professor [Haihao (Sean) Lu](https://mitmgmtfaculty.mit.edu/hlu/). I got my undergraduate and masters degrees from the University of Chile, where I was fortunate to be advised in different projects by Professors [Fernando Ordonez](https://www.dii.uchile.cl/~fordon/), [Charles Thraves](https://cthraves.com/), [Ricardo Montoya](https://economiayadministracion.uc.cl/docentes/ricardo-montoya/), and [Renaud Chicoisne](https://sites.google.com/view/renaud-chicoisne). My research focuses on mathematical programming, machine learning, and their theoretical and algorithmic intersections. I am also exploring applications of operations research-based techniques in unconventional or innovative fields that may benefit from them.
+I am a first-year PhD student at MIT's [Operations Research Center](https://orc.mit.edu/people/students/), advised by Professor [Haihao (Sean) Lu](https://mitmgmtfaculty.mit.edu/hlu/). I got my undergraduate and masters degrees from the University of Chile, where I was fortunate to be advised (in different projects) by Professors [Fernando Ordonez](https://www.dii.uchile.cl/~fordon/), [Charles Thraves](https://cthraves.com/) (Masters's Thesis), [Ricardo Montoya](https://economiayadministracion.uc.cl/docentes/ricardo-montoya/), and [Renaud Chicoisne](https://sites.google.com/view/renaud-chicoisne). My research focuses on mathematical programming, machine learning, and their theoretical and algorithmic intersections. I am also exploring applications of operations research-based techniques in unconventional or innovative fields that may benefit from them.
 
 Beyond academia, I am passionate about making music, playing instruments, singing, outdoors/indoors rock climbing, traveling, and watching anime and films. However, I am still in the process of figuring out what I genuinely enjoy and what I want to become. As such, this website may not fully reflect my current self.
 
