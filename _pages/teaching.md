@@ -11,18 +11,15 @@ For now, this page is assumed to be a static description of your courses. You ca
 
 Organize your courses by years, topics, or universities, however you like!
 
-# Teaching Assistant
+## Teaching Assistant - Universidad de Chile
 
-## Universidad de Chile
+#### Undergraduate Courses
 
-### Undergraduate Courses
+**Modeling and Optimization (2019, 2020 & 2023)**
 
-- **Modeling and Optimization (2019, 2020 & 2023)**
-\begin{itemize}
-\item Recitation Videos: [Modeling and Geometry](https://youtu.be/NSQVuL3BdaA?si=8SPLRt5Un8SZN7Wj&t=1), [Modeling Graphs (Part 1)](https://youtu.be/FdZ3-Efxkg0?si=ExCNHy2mniSIp4PF), [Modeling Graphs (Part 2)](https://youtu.be/CiN7s2SzKyY?si=DNq9_Yh0tTVO4PT3), [Simplex and Tableau](https://youtu.be/Z8Usp_uTmVs?si=3jMAGsyt1Kd5f73s), [Nonlinear Optimization](https://youtu.be/WHmQgi5OUEc?si=URAZMLlsG-eiPmUp), [TSP Variation](https://youtu.be/KgDhu_S-LaI?si=psc6rLmTUp9Cszls).
-\end{itemize}
+- Recitation Videos: [Modeling and Geometry](https://youtu.be/NSQVuL3BdaA?si=8SPLRt5Un8SZN7Wj&t=1), [Modeling Graphs (Part 1)](https://youtu.be/FdZ3-Efxkg0?si=ExCNHy2mniSIp4PF), [Modeling Graphs (Part 2)](https://youtu.be/CiN7s2SzKyY?si=DNq9_Yh0tTVO4PT3), [Simplex and Tableau](https://youtu.be/Z8Usp_uTmVs?si=3jMAGsyt1Kd5f73s), [Nonlinear Optimization](https://youtu.be/WHmQgi5OUEc?si=URAZMLlsG-eiPmUp), [TSP Variation](https://youtu.be/KgDhu_S-LaI?si=psc6rLmTUp9Cszls).
 
-- **Operations Management (2020)**
-\begin{itemize}
-\item Recitation Videos: [Analysis of Processes (Part 1)](https://youtu.be/vFJzcE0TRdU?si=8h3VOWBRUODe6Vex), [Analysis of Processes (Part 2)](https://youtu.be/CBLMWhVquJ4?si=4ORsI_TUVTAsE21F), [Aggregate planning](https://youtu.be/AYjG8XEgszw?si=b7hHHhTHaYdhrbze), [Transport Logistics and VRP](https://youtu.be/Xl2c66D-C98?si=hQGuFT8H00eCt1tw).
-\end{itemize}
+
+**Operations Management (2020)**
+
+- Recitation Videos: [Analysis of Processes (Part 1)](https://youtu.be/vFJzcE0TRdU?si=8h3VOWBRUODe6Vex), [Analysis of Processes (Part 2)](https://youtu.be/CBLMWhVquJ4?si=4ORsI_TUVTAsE21F), [Aggregate planning](https://youtu.be/AYjG8XEgszw?si=b7hHHhTHaYdhrbze), [Transport Logistics and VRP](https://youtu.be/Xl2c66D-C98?si=hQGuFT8H00eCt1tw).
