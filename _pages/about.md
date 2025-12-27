@@ -11,7 +11,7 @@ profile:
   more_info: >
     <p>77 Massachusetts Avenue</p>
     <p>Building E40-107</p>
-    <p>Cambridge MA, 02139</p> 
+    <p>Cambridge MA, 02139</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
