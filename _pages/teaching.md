@@ -7,6 +7,11 @@ nav: true
 nav_order: 1
 ---
 
+## Teaching Assistant - Massachusetts Institute of Technology
+
+**The Anlaytics Edge (2026) [Upcoming]**
+- Recitation Videos: None available.
+
 ## Teaching Assistant - Universidad de Chile
 
 #### Graduate Courses
