@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Started my PhD journey at MIT's ORC today!
+Started my PhD journey at MIT today!
