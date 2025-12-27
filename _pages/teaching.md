@@ -22,10 +22,10 @@ nav_order: 6
 **Probability (2021 & 2022)**
 - Recitation Videos: [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 1)](https://youtu.be/w3wlE5WAL88?si=J1_rpK0KYhYYiLYW), [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 2)](https://youtu.be/AjRQYZY_jic?si=bnsChJVeAPV5D-OW), [Combinatorics](https://youtu.be/XrN9NFiktbc?si=JEIRt2QRpONop5iN), [Discrete Random Variables](https://youtu.be/DNiMZhKB1kc?si=3zClHhHAalyxI1Y1&t=2), [Continuous Random Variables](https://youtu.be/rJ7OxZoKogY?si=--IWGbS9PCDzui4X), [Joint Distributions](https://youtu.be/gKtPMnwvC4M?si=EXPV3hKWSZKOBIb4), [Conditional Expectation and Variance](https://youtu.be/ZJ-GARTZ1mM?si=ViawrpGSsArXQ53M).
 
-- **Quantitative Marketing (2022)**
+**Quantitative Marketing (2022)**
 - Recitation Videos: None available.
 
-- **Organizational Economics (2022)**
+**Organizational Economics (2022)**
 - Recitation Videos: None available.
 
 **Decisions Under Uncertainty (2021)**
