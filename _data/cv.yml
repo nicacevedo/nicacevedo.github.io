@@ -2,18 +2,16 @@
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
+      value: Nicolas Acevedo Villena
     - name: Languages
-      value: English, German
+      value: English, Spanish
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: PhD (Student)
+      institution: Massachusetts Institute of Technology, Cambridge, MA
+      year: 2029 (Expected)
       description:
         - Description 1.
         - Description 2.
@@ -21,9 +19,15 @@
           contents:
             - Sub-description 1.
             - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+    - title: Master in Operations Management
+      institution: University of Chile, Santiago, Chile
+      year: 2023
+      description:
+        - Description 1.
+        - Description 2.
+    - title: B.Eng. in Industrial Engineering 
+      institution: University of Chile, Santiago, Chile
+      year: 2021
       description:
         - Description 1.
         - Description 2.
