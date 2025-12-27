@@ -12,7 +12,11 @@ nav_order: 2
 #### Graduate Courses
 
 **Optimization Models and Algorithms (2023 & 2024)**
-- Recitation Videos: [Lagrangian Duality and the Langrangian Dual Problem](https://youtu.be/r4_VXfXfxRc?si=yFHMQPDnX1vjoCqH), [Convexity, Semidefinite Optimization, Separating Hyperplanes, and KKT System](https://www.youtube.com/watch?v=fYanUed6ZYw&list=PL0LFWVQ3MROuW3xvMNP8O2G_I1ilMXPyK), [Conic Alternating Systems, Lagrangian Duality, and KKT System](https://youtu.be/AzFTh3fcG0E?si=mZbqOY8viGXsjQpg), 
+- Recitation Videos: [Lagrangian Duality and the Langrangian Dual Problem](https://youtu.be/r4_VXfXfxRc?si=yFHMQPDnX1vjoCqH), [Convexity, Semidefinite Optimization, Separating Hyperplanes, and KKT System](https://www.youtube.com/watch?v=fYanUed6ZYw&list=PL0LFWVQ3MROuW3xvMNP8O2G_I1ilMXPyK), [Conic Alternating Systems, Lagrangian Duality, and KKT System](https://youtu.be/AzFTh3fcG0E?si=mZbqOY8viGXsjQpg).
+
+**Quantitative Marketing (2022)**
+- Recitation Videos: None available.
+
 
 #### Undergraduate Courses
 
@@ -21,9 +25,6 @@ nav_order: 2
 
 **Probability (2021 & 2022)**
 - Recitation Videos: [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 1)](https://youtu.be/w3wlE5WAL88?si=J1_rpK0KYhYYiLYW), [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 2)](https://youtu.be/AjRQYZY_jic?si=bnsChJVeAPV5D-OW), [Combinatorics](https://youtu.be/XrN9NFiktbc?si=JEIRt2QRpONop5iN), [Discrete Random Variables](https://youtu.be/DNiMZhKB1kc?si=3zClHhHAalyxI1Y1&t=2), [Continuous Random Variables](https://youtu.be/rJ7OxZoKogY?si=--IWGbS9PCDzui4X), [Joint Distributions](https://youtu.be/gKtPMnwvC4M?si=EXPV3hKWSZKOBIb4), [Conditional Expectation and Variance](https://youtu.be/ZJ-GARTZ1mM?si=ViawrpGSsArXQ53M).
-
-**Quantitative Marketing (2022)**
-- Recitation Videos: None available.
 
 **Organizational Economics (2022)**
 - Recitation Videos: None available.
