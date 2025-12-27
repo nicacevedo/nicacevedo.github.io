@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: "(If you read it again, you will note that my last name is not 🥑)"
+subtitle: "(If you read it again, you will note that my last name is <u>not</u> 🥑)"
 
 profile:
   align: right
