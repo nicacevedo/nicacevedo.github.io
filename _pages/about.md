@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'></a>. (If you read it again, you will note that my last name is not 🥑)
+subtitle: <a href='#'></a>(If you read it again you will note that my last name is not 🥑)
 
 profile:
   align: right
