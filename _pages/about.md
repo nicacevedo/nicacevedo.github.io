@@ -8,7 +8,7 @@ profile:
   align: right
   image: prof_trek.jpg
   image_circular: false # crops the image to make it circular
-  more_info: >
+  more_info:
     <p>77 Massachusetts Avenue</p>
     <p>Building E40-107</p>
     <p>Cambridge MA, 02139</p>
