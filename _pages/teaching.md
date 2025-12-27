@@ -17,6 +17,8 @@ nav_order: 2
 **Quantitative Marketing (2022)**
 - Recitation Videos: None available.
 
+**Organizational Economics (2022)**
+- Recitation Videos: None available.
 
 #### Undergraduate Courses
 
@@ -25,9 +27,6 @@ nav_order: 2
 
 **Probability (2021 & 2022)**
 - Recitation Videos: [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 1)](https://youtu.be/w3wlE5WAL88?si=J1_rpK0KYhYYiLYW), [Law of Total Probability, Bayes' Theorem, and Conditional Independence (Part 2)](https://youtu.be/AjRQYZY_jic?si=bnsChJVeAPV5D-OW), [Combinatorics](https://youtu.be/XrN9NFiktbc?si=JEIRt2QRpONop5iN), [Discrete Random Variables](https://youtu.be/DNiMZhKB1kc?si=3zClHhHAalyxI1Y1&t=2), [Continuous Random Variables](https://youtu.be/rJ7OxZoKogY?si=--IWGbS9PCDzui4X), [Joint Distributions](https://youtu.be/gKtPMnwvC4M?si=EXPV3hKWSZKOBIb4), [Conditional Expectation and Variance](https://youtu.be/ZJ-GARTZ1mM?si=ViawrpGSsArXQ53M).
-
-**Organizational Economics (2022)**
-- Recitation Videos: None available.
 
 **Decisions Under Uncertainty (2021)**
 - Recitation Videos: [Dynamic Programming](https://youtu.be/mt2mOV7mAZY?si=oKuezRqfU-H8qUY3), [Discrete Markov Chains (Part 1)](https://youtu.be/xXxUQ8bX9QI?si=OLyxptRgbJhcjAte), [Discrete Markov Chains (Part 2)](https://youtu.be/3l60gVlLjdY?si=HCK8Kxuh0AbbWvpH), [Poisson Processes](https://youtu.be/MRi6Q3TaTPQ?si=7WeycYBRxnSdeMYY). 
