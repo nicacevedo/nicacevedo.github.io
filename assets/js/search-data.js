@@ -75,7 +75,7 @@ ninja.data = [{
         title: 'CV',
         section: 'Socials',
         handler: () => {
-          window.open("/assets/pdf/Academic_CV_Template_2026.pdf", "_blank");
+          window.open("/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf", "_blank");
         },
       },{
         id: 'social-github',
