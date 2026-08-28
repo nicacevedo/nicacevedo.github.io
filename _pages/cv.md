@@ -1,11 +1,10 @@
 ---
-layout: cv
+layout: page
 permalink: /cv/
-title: cv
+title: CV
 nav: true
-nav_order: 3
-cv_pdf: Academic_CV_Template_2026.pdf # you can also use external links here
-description: This is a description of the page. You can modify it in '_pages/cv.md'. You can also change or remove the top pdf download button.
-toc:
-  sidebar: left
+nav_order: 4
+description: Academic CV of Nicolás Acevedo Villena.
 ---
+
+The current CV is available as a [PDF (view or download)](/assets/pdf/Academic_CV_Template_2026.pdf).

@@ -11,6 +11,9 @@
           <div class="card-body">
             <h3 class="card-title">{{ project.title }}</h3>
             <p class="card-text">{{ project.description }}</p>
+            {% if project.status or project.period %}
+              <p class="card-text text-muted mb-0"><small>{{ project.status }}{% if project.status and project.period %} · {% endif %}{{ project.period }}</small></p>
+            {% endif %}
             <div class="row ml-1 mr-1 p-0">
               {% if project.github %}
                 <div class="github-icon">
