@@ -105,6 +105,8 @@
           {% capture link %}mailto:{{ social[1] | encode_email }}{% endcapture %}
           {% assign sameaslinks = sameaslinks | push: link %}
         {% endcomment %}
+      {% when 'cv_pdf' %}
+        {% comment %} CV files are not sameAs identity profiles. {% endcomment %}
       {% when 'facebook_id' %}
         {% capture link %}https://facebook.com/{{ social[1] }}{% endcapture %}
         {% assign sameaslinks = sameaslinks | push: link %}
