@@ -40,4 +40,3 @@ Ongoing research at the MIT Operations Research Center. Public materials describ
 
 - [Code / project repository](https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal)
 - [Related exploratory repository](https://github.com/nicacevedo/fairness-for-regressivity-taxation)
-

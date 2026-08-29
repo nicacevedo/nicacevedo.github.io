@@ -23,7 +23,9 @@
       {% if project.status or project.period %}
         <p class="card-text text-muted mb-0">
           <small>
-            {% if project.status %}<strong>{{ project.status }}</strong>{% endif %}
+            {% if project.status -%}
+              <strong>{{ project.status }}</strong>
+            {%- endif %}
             {% if project.status and project.period %} · {% endif %}
             {{ project.period }}
           </small>
@@ -33,7 +35,9 @@
         <p class="card-text mt-2 mb-0">
           <small>
             <i class="fa-brands fa-github" aria-hidden="true"></i>
-            <a href="{{ project.github }}" target="_blank" rel="noopener">Code / project repository<span class="sr-only"> (opens in a new tab)</span></a>
+            <a href="{{ project.github }}" target="_blank" rel="noopener"
+              >Code / project repository<span class="sr-only"> (opens in a new tab)</span></a
+            >
           </small>
         </p>
       {% endif %}

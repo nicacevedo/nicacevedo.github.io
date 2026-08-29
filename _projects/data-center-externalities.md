@@ -35,4 +35,3 @@ Ongoing public-data modeling. The current public repository documents the baseli
 ## Outputs
 
 - [Code / project repository](https://github.com/nicacevedo/data-center-externalities-modeling)
-
