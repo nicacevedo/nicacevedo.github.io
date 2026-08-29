@@ -36,6 +36,10 @@ TODO(USER): Add verified collaborators if appropriate.
 
 Ongoing research at the MIT Operations Research Center. Public materials describe the modeling and validation pipeline; no preliminary empirical findings are reported here.
 
+## Research to practice
+
+In July 2026, the Cook County Assessor's Office incorporated support for the covariance-penalized LightGBM objective developed through this research into its public residential assessment-model pipeline as the `mse_cov` objective. [CCAO PR #475](https://github.com/ccao-data/model-res-avm/pull/475)
+
 ## Outputs
 
 - [Code / project repository](https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal)

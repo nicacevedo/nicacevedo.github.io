@@ -9,6 +9,12 @@ nav_order: 3
 
 ## Massachusetts Institute of Technology
 
+- **Teaching Assistant — 15.C571[J] Optimization Methods**<br>
+  MIT Sloan School of Management · Fall 2026
+- **Teaching Assistant — 15.087 Engineering Statistics and Data Science**<br>
+  MIT Sloan School of Management / Leaders for Global Operations · Summer 2026
+- **Teaching Assistant — 15.086 Engineering Probability**<br>
+  MIT Sloan School of Management / Leaders for Global Operations · Summer 2026
 - **Teaching Assistant — The Analytics Edge**<br>
   MIT Sloan School of Management · Spring 2026
 

@@ -26,6 +26,8 @@ latest_posts:
 
 I study how optimization and data-driven methods can support consequential operational and policy decisions. My current research spans equitable predictive modeling for property assessment, public-data modeling of data-center infrastructure and resource systems, and reliable large-scale first-order optimization on GPUs. Across these settings, I use optimization and data-driven modeling to make trade-offs explicit and evaluate methods under realistic operational conditions.
 
+I have been fortunate to receive research guidance from Haihao (Sean) Lu, Saurabh Amin, and Deepjyoti (Deep) Deka during my PhD. I am currently advised by Saurabh and Deep.
+
 {% comment %}
 TODO(USER): Confirm an exact public date and wording before adding an update about the Spring 2026 Analytics Edge teaching appointment.
 {% endcomment %}
