@@ -5,5 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Published a public-data modeling repository for data-center resource systems and externalities, beginning with a transparent Prineville case study.
-
+Made a public-data modeling repository for data-center infrastructure and resource systems available on GitHub, beginning with a transparent Prineville case study.

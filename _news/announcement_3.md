@@ -5,5 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Published a public pipeline for evaluating soft vertical-equity constraints in mass appraisal with time-split validation and assessor-facing equity measures.
-
+Made a public pipeline for evaluating soft vertical-equity constraints in mass appraisal available on GitHub, with time-split validation and assessor-facing equity measures.

@@ -2,6 +2,7 @@
 layout: page
 title: Fairness in machine learning with robust constraints
 description: Redirect to the property-assessment research program that incorporates this methodological work.
+selected: false
 redirect: /projects/equitable-property-assessment/
 sitemap: false
 ---
