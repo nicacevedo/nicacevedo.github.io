@@ -44,4 +44,35 @@ TODO(USER): Confirm an exact public date and wording before adding an update abo
   </div>
 </div>
 
+## Background
+
+<div class="row">
+  <div class="col-md-6 mb-3 mb-md-0">
+    <h3>Education</h3>
+    <p class="mb-3">
+      <strong>PhD in Operations Research</strong><br>
+      Massachusetts Institute of Technology (MIT) · Sept. 2024–Present
+    </p>
+    <p class="mb-3">
+      <strong>Master in Operations Management</strong><br>
+      Universidad de Chile · 2022–2023
+    </p>
+    <p class="mb-0">
+      <strong>Bachelor of Engineering Science in Industrial Engineering</strong><br>
+      Universidad de Chile · 2017–2021
+    </p>
+  </div>
+  <div class="col-md-6">
+    <h3>Experience</h3>
+    <p class="mb-3">
+      <strong>Researcher</strong><br>
+      Web Intelligence Centre (WIC) / ACHS · Dec. 2023–Apr. 2024
+    </p>
+    <p class="mb-0">
+      <strong>Research Engineer</strong><br>
+      Nezasa AG / TripYeah · June 2022–April 2023
+    </p>
+  </div>
+</div>
+
 Outside research, I enjoy music, climbing, and time outdoors.
