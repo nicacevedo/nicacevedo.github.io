@@ -12,6 +12,7 @@ My research develops optimization and data-driven methods for consequential deci
 ## Current research
 
 {% assign current_projects = site.projects | where: "section", "current" | sort: "importance" %}
+
 <div class="container px-0">
   <div class="row row-cols-1 row-cols-md-2">
     {% for project in current_projects %}
@@ -23,6 +24,7 @@ My research develops optimization and data-driven methods for consequential deci
 ## Previous research
 
 {% assign previous_projects = site.projects | where: "section", "previous" | sort: "importance" %}
+
 <div class="container px-0">
   <div class="row row-cols-1 row-cols-md-2">
     {% for project in previous_projects %}

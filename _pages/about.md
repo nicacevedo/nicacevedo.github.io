@@ -29,6 +29,7 @@ I study how optimization and data-driven methods can support consequential opera
 ## Selected research
 
 {% assign selected_projects = site.projects | where: "selected", true | sort: "importance" %}
+
 <div class="container px-0">
   <div class="row row-cols-1 row-cols-md-2">
     {% for project in selected_projects %}
