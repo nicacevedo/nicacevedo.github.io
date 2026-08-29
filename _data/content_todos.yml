@@ -1,0 +1,24 @@
+- id: robust-constraints-scope
+  page: "_projects/equitable-property-assessment.md"
+  item: "Confirm whether robust/soft fairness constraints should remain a standalone research project or be treated as the methodological contribution within this property-assessment project."
+  importance: high
+- id: property-assessment-collaborators
+  page: "_projects/equitable-property-assessment.md"
+  item: "Add verified collaborators if appropriate."
+  importance: high
+- id: data-center-collaborators
+  page: "_projects/data-center-externalities.md"
+  item: "Add verified collaborators if appropriate."
+  importance: high
+- id: gpu-optimization-collaborators
+  page: "_projects/gpu-first-order-solvers.md"
+  item: "Add verified collaborators if appropriate."
+  importance: high
+- id: analytics-edge-update
+  page: "_pages/about.md"
+  item: "Confirm an exact public date and wording before adding an update about the Spring 2026 Analytics Edge teaching appointment."
+  importance: medium
+- id: google-scholar
+  page: "_data/socials.yml"
+  item: "Add verified Google Scholar profile ID."
+  importance: medium

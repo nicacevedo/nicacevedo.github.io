@@ -8,9 +8,7 @@ nav: true
 nav_order: 2
 ---
 
-This list includes a master's thesis and an unpublished conference presentation; each entry is labeled by its actual output type.
-
-{% include bib_search.liquid %}
+Research outputs including theses, papers, and conference work.
 
 <div class="publications">
 {% bibliography %}

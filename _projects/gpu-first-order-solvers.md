@@ -1,22 +1,35 @@
 ---
 layout: page
-title: Numerical stability in GPU first-order solvers
-description: Ongoing work on numerical reliability in GPU-based first-order methods for large-scale optimization.
-status: Ongoing
-period: September 2024–present
-importance: 2
+title: Reliable and scalable first-order optimization on GPUs
+description: Ongoing research on numerical reliability in GPU-based first-order methods for large-scale optimization.
+status: Ongoing research
+period: 2024–present
+importance: 3
 selected: true
 section: current
+github: https://github.com/nicacevedo/cuPDLP.jl
 ---
 
 ## Research question
 
-How can first-order optimization methods remain numerically reliable when implemented at scale on GPU hardware?
+How can first-order optimization methods remain reliable when large-scale solvers are implemented on GPU hardware?
 
-## Project overview
+## Motivation
 
-This ongoing research examines the numerical stability of first-order-method solvers for large-scale optimization problems in GPU settings. It focuses on the interaction between algorithmic design, large-scale computation, and reliable numerical behavior.
+First-order methods can make large optimization problems more tractable, but GPU implementations introduce practical numerical questions that affect feasibility, residuals, and termination behavior. Reliable solver behavior is essential when large-scale computations are used to support optimization decisions.
 
-## Context and status
+## Approach
 
-This research is underway at the MIT Operations Research Center. Public materials will be added when they are ready for release.
+This research examines first-order-method solvers for large-scale optimization in GPU settings, with particular attention to numerical stability and reliability diagnostics. The public experimental code focuses on linear programming and records quantities such as primal and dual residuals and relative optimality gaps.
+
+{% comment %}
+TODO(USER): Add verified collaborators if appropriate.
+{% endcomment %}
+
+## Status
+
+Ongoing research at the MIT Operations Research Center. This page describes the research direction without presenting unpublished results.
+
+## Outputs
+
+- [Experimental GPU solver code](https://github.com/nicacevedo/cuPDLP.jl)

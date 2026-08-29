@@ -24,7 +24,11 @@ latest_posts:
   enabled: false
 ---
 
-I study how optimization and data-driven methods can support consequential operational and policy decisions. My current work examines fairness in machine learning and numerical reliability in large-scale GPU optimization; earlier work includes scalable feature selection and outlier detection for standardized tests.
+I study how optimization and data-driven methods can support consequential operational and policy decisions. My current research examines equitable predictive modeling for property assessment, transparent models of data-center infrastructure and externalities, and reliable large-scale optimization on GPUs. Across these settings, I use optimization and data-driven modeling to make trade-offs explicit and evaluate methods under realistic operational conditions.
+
+{% comment %}
+TODO(USER): Confirm an exact public date and wording before adding an update about the Spring 2026 Analytics Edge teaching appointment.
+{% endcomment %}
 
 ## Selected research
 
