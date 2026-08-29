@@ -43,9 +43,25 @@ ninja.data = [{
           section: "News",},{id: "news-my-master-s-thesis-received-a-thesis-distinction-from-the-universidad-de-chile-s-school-of-graduate-studies",
           title: 'My master’s thesis received a thesis distinction from the Universidad de Chile’s School...',
           description: "",
-          section: "News",},{id: "projects-fairness-in-machine-learning-with-robust-constraints",
+          section: "News",},{id: "news-published-a-public-pipeline-for-evaluating-soft-vertical-equity-constraints-in-mass-appraisal-with-time-split-validation-and-assessor-facing-equity-measures",
+          title: 'Published a public pipeline for evaluating soft vertical-equity constraints in mass appraisal with...',
+          description: "",
+          section: "News",},{id: "news-published-a-public-data-modeling-repository-for-data-center-resource-systems-and-externalities-beginning-with-a-transparent-prineville-case-study",
+          title: 'Published a public-data modeling repository for data-center resource systems and externalities, beginning with...',
+          description: "",
+          section: "News",},{id: "projects-data-center-infrastructure-and-externalities",
+          title: 'Data-center infrastructure and externalities',
+          description: "Public-data modeling of data-center resource systems, beginning with a transparent case-study reconstruction.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/data-center-externalities/";
+            },},{id: "projects-fair-and-equitable-predictive-modeling-for-property-assessment",
+          title: 'Fair and equitable predictive modeling for property assessment',
+          description: "Optimization-based predictive modeling for mass appraisal that balances predictive quality and vertical equity.",
+          section: "Projects",handler: () => {
+              window.location.href = "/projects/equitable-property-assessment/";
+            },},{id: "projects-fairness-in-machine-learning-with-robust-constraints",
           title: 'Fairness in machine learning with robust constraints',
-          description: "Ongoing research on robust and robust soft constraints for fair predictive modeling.",
+          description: "Redirect to the property-assessment research program that incorporates this methodological work.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/fairness-robust-constraints/";
             },},{id: "projects-large-scale-feature-selection-via-column-generation-decomposition",
@@ -53,9 +69,9 @@ ninja.data = [{
           description: "Master&#39;s research on a scalable decomposition approach for feature selection.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/feature-selection/";
-            },},{id: "projects-numerical-stability-in-gpu-first-order-solvers",
-          title: 'Numerical stability in GPU first-order solvers',
-          description: "Ongoing work on numerical reliability in GPU-based first-order methods for large-scale optimization.",
+            },},{id: "projects-reliable-and-scalable-first-order-optimization-on-gpus",
+          title: 'Reliable and scalable first-order optimization on GPUs',
+          description: "Ongoing research on numerical reliability in GPU-based first-order methods for large-scale optimization.",
           section: "Projects",handler: () => {
               window.location.href = "/projects/gpu-first-order-solvers/";
             },},{id: "projects-outlier-detection-for-standardized-tests",
