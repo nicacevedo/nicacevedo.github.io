@@ -1,0 +1,411 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import ProjectFigure from '@components/research/ProjectFigure.astro';
+import SectionHead from '@components/ui/SectionHead.astro';
+import { themeById } from '@data/themes';
+import { profile } from '@data/profile';
+import { getPublications, formatAuthors } from '@utils/publications';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('research');
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry, projects },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<'research'>;
+  projects: CollectionEntry<'research'>[];
+}
+
+const { entry, projects } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const theme = themeById[data.primaryTheme];
+const secondary = data.secondaryThemes.map((id) => themeById[id]);
+const related = projects
+  .filter(
+    (p) =>
+      p.id !== entry.id &&
+      (p.data.primaryTheme === data.primaryTheme ||
+        p.data.secondaryThemes.includes(data.primaryTheme)),
+  )
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const publications = getPublications().filter((p) => p.projectSlug === entry.id);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: data.title,
+  description: data.description,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  about: theme.name,
+  author: { '@type': 'Person', name: profile.name, url: `${profile.siteUrl}/` },
+  isPartOf: {
+    '@type': 'WebSite',
+    name: profile.name,
+    url: `${profile.siteUrl}/`,
+  },
+};
+---
+
+<Base title={data.title} description={data.description} ogImage={entry.id} schema={schema}>
+  <article class="project">
+    <header class="project__head">
+      <div class="shell project__masthead">
+        <div class="project__lede">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <ol class="list-reset">
+              <li>
+                <a href="/research/">Research</a>
+              </li>
+              <li aria-hidden="true">/</li>
+              <li>{theme.name}</li>
+            </ol>
+          </nav>
+
+          <h1 class="project__title">{data.title}</h1>
+          <p class="project__thesis serif">{data.thesis}</p>
+        </div>
+
+        <figure class="project__figure">
+          <div class="project__figure-frame">
+            <ProjectFigure visual={data.visual} labels width={440} height={340} />
+          </div>
+          <figcaption class="project__figure-caption">{data.visualCaption}</figcaption>
+        </figure>
+      </div>
+
+      <div class="shell">
+        <dl class="project__facts">
+          <div class="project__fact">
+            <dt class="label">Status</dt>
+            <dd>{data.status}</dd>
+          </div>
+          <div class="project__fact">
+            <dt class="label">Period</dt>
+            <dd>{data.period}</dd>
+          </div>
+          <div class="project__fact">
+            <dt class="label">Themes</dt>
+            <dd>{[theme, ...secondary].map((t) => t.name).join(' \u00b7 ')}</dd>
+          </div>
+        </dl>
+
+        {data.outputs.length > 0 && (
+          <div class="project__outputs">
+            <h2 class="label project__outputs-title">Public outputs</h2>
+            <div class="chip-row">
+              {data.outputs.map((output) => {
+                const external = output.href.startsWith('http');
+                return (
+                  <a
+                    class="chip"
+                    href={output.href}
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener' : undefined}
+                  >
+                    {output.label}
+                    {external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="shell project__grid">
+      <div class="project__aside">
+        <div class="project__question">
+          <h2 class="label">Research question</h2>
+          <p>{data.researchQuestion}</p>
+        </div>
+      </div>
+
+      <div class="project__prose prose">
+        <Content />
+      </div>
+    </div>
+
+    {publications.length > 0 && (
+      <section class="band" aria-labelledby="project-pubs">
+        <div class="shell">
+          <SectionHead index="01" title="Formal outputs" id="project-pubs" class="band__head" />
+          <ol class="list-reset pub-list">
+            {publications.map((publication) => (
+              <li class="pub">
+                <p class="pub__kind label">
+                  {publication.kindLabel} · {publication.year}
+                </p>
+                <h3 class="pub__title">{publication.title}</h3>
+                <p class="pub__meta">
+                  {formatAuthors(publication.authors)}
+                  {publication.venue && ` · ${publication.venue}`}
+                </p>
+                <p class="band__more">
+                  <a class="arrow-link" href="/publications/">
+                    See it on Publications
+                  </a>
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )}
+
+    {related.length > 0 && (
+      <section class="band" aria-labelledby="project-related">
+        <div class="shell">
+          <SectionHead
+            index="02"
+            title="Related research"
+            id="project-related"
+            class="band__head"
+          />
+          <ul class="list-reset related">
+            {related.map((item) => (
+              <li class="related__item">
+                <p class="label">{themeById[item.data.primaryTheme].name}</p>
+                <h3 class="related__title">
+                  <a class="link link--title" href={`/projects/${item.id}/`}>
+                    {item.data.title}
+                  </a>
+                </h3>
+                <p class="related__desc">{item.data.description}</p>
+              </li>
+            ))}
+          </ul>
+          <p class="band__more">
+            <a class="arrow-link" href="/research/">
+              All research
+            </a>
+          </p>
+        </div>
+      </section>
+    )}
+  </article>
+</Base>
+
+<style>
+  .project__head {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) var(--space-12);
+  }
+
+  .project__masthead {
+    display: grid;
+    gap: var(--space-10, var(--space-8)) var(--gutter);
+    align-items: start;
+    margin-bottom: clamp(var(--space-8), 5vw, var(--space-16));
+  }
+
+  .crumbs ol {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--step--2);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    margin-bottom: var(--space-8);
+  }
+
+  .crumbs a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--signal);
+  }
+
+  .project__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 18ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .project__thesis {
+    font-size: var(--step-2);
+    line-height: 1.35;
+    max-width: 38ch;
+    color: var(--ink);
+  }
+
+  .project__facts {
+    display: grid;
+    gap: var(--space-4) var(--gutter);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ink);
+    margin-bottom: var(--space-8);
+  }
+
+  .project__fact dt {
+    margin-bottom: var(--space-2);
+  }
+
+  .project__fact dd {
+    margin: 0;
+    font-size: var(--step--1);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .project__outputs-title {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .project__grid {
+    display: grid;
+    gap: var(--space-12) var(--gutter);
+  }
+
+  .project__question {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--ink);
+  }
+
+  .project__question h2 {
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+
+  .project__question p {
+    font-size: var(--step-1);
+    line-height: 1.45;
+    max-width: 32ch;
+  }
+
+  .project__figure {
+    margin: 0;
+  }
+
+  .project__figure-frame {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+  }
+
+  .project__figure-caption {
+    margin-top: var(--space-3);
+    font-size: var(--step--2);
+    line-height: 1.5;
+    color: var(--ink-faint);
+    max-width: 44ch;
+  }
+
+  .project__prose :global(h2) {
+    font-size: var(--step-2);
+  }
+
+  .project__prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .project__facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .project__masthead {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .project__lede {
+      grid-column: 1 / 8;
+    }
+
+    .project__figure {
+      grid-column: 8 / 13;
+    }
+
+    .project__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .project__aside {
+      grid-column: 1 / 5;
+      position: sticky;
+      top: 6rem;
+    }
+
+    .project__prose {
+      grid-column: 6 / 12;
+    }
+  }
+
+  .band {
+    padding-block: clamp(var(--space-12), 7vw, var(--space-24)) 0;
+  }
+
+  .band__head {
+    margin-bottom: var(--space-8);
+  }
+
+  .band__more {
+    margin-top: var(--space-4);
+  }
+
+  .pub {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .pub__kind {
+    margin-bottom: var(--space-2);
+  }
+
+  .pub__title {
+    font-size: var(--step-1);
+    max-width: 46ch;
+    margin-bottom: var(--space-2);
+  }
+
+  .pub__meta {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 60ch;
+  }
+
+  .related {
+    display: grid;
+    gap: var(--space-8) var(--gutter);
+  }
+
+  .related__item {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .related__title {
+    font-size: var(--step-1);
+    margin-block: var(--space-2) var(--space-3);
+    max-width: 28ch;
+  }
+
+  .related__desc {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 46ch;
+  }
+
+  @media (min-width: 48rem) {
+    .related {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

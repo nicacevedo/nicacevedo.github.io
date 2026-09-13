@@ -1,0 +1,74 @@
+/* Shared drawing conventions for every figure on the site. */
+.fig {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: hidden;
+}
+
+.fig [stroke] {
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fig .f-field {
+  stroke: var(--graph-field);
+  fill: none;
+  stroke-width: 1;
+}
+
+.fig .f-line {
+  stroke: var(--graph-line);
+  fill: none;
+  stroke-width: 1;
+}
+
+.fig .f-ink {
+  stroke: var(--graph-ink);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.fig .f-signal {
+  stroke: var(--graph-signal);
+  fill: none;
+  stroke-width: 2;
+}
+
+.fig .f-alt {
+  stroke: var(--graph-alt);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.fig .f-dot {
+  fill: var(--graph-signal);
+  stroke: none;
+}
+
+.fig .f-dot-ink {
+  fill: var(--graph-ink);
+  stroke: none;
+}
+
+.fig .f-dot-hollow {
+  fill: var(--graph-surface);
+  stroke: var(--graph-line);
+  stroke-width: 1.2;
+}
+
+.fig .f-axis {
+  stroke: var(--graph-line);
+  fill: none;
+  stroke-width: 1;
+}
+
+.fig .f-tick {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  stroke: none;
+}

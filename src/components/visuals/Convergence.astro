@@ -1,0 +1,95 @@
+---
+/**
+ * Residual decay across iterations, flattening onto a floor: the shape of a
+ * first-order method that stops improving once arithmetic precision, not the
+ * algorithm, becomes the binding constraint.
+ *
+ * Schematic. The curve is generated, not measured, so no axis is numbered.
+ */
+import { seeded, gaussian, toPath, toSmoothPath, type Point } from '@utils/field';
+import '@components/visuals/figure.css';
+
+interface Props {
+  width?: number;
+  height?: number;
+  labels?: [string, string] | false;
+  title?: string;
+  class?: string;
+}
+
+const { width = 440, height = 340, labels = false, title, class: className } = Astro.props;
+
+const pad = { l: 34, r: 16, t: 18, b: 34 };
+const iw = width - pad.l - pad.r;
+const ih = height - pad.t - pad.b;
+const toPx = ([x, y]: Point): Point => [pad.l + x * iw, pad.t + (1 - y) * ih];
+
+const rand = seeded(1120231);
+const floorLevel = 0.16;
+
+/** Linear convergence in a log-like vertical coordinate, then a noise floor. */
+const series: Point[] = Array.from({ length: 54 }, (_, i) => {
+  const t = i / 53;
+  const clean = Math.exp(-4.3 * t);
+  const noise = Math.abs(gaussian(rand)) * 0.055;
+  const y = floorLevel + clean * 0.8 + (clean < 0.06 ? noise : noise * 0.25);
+  return [0.02 + t * 0.96, Math.min(0.99, y)];
+});
+
+const line = toSmoothPath(series.map(toPx), false, 0.55);
+const floorY = toPx([0, floorLevel])[1];
+const marks = series.filter((_, i) => i % 9 === 0).map(toPx);
+const bandTop = toPx([0, floorLevel + 0.07])[1];
+---
+
+<svg
+  class:list={['fig', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  focusable="false"
+>
+  <rect
+    x={pad.l}
+    y={bandTop}
+    width={iw}
+    height={Math.max(0, pad.t + ih - bandTop)}
+    class="conv__band"
+  />
+  <path
+    d={toPath([toPx([0, floorLevel]), toPx([1, floorLevel])])}
+    class="f-line"
+    stroke-dasharray="4 4"
+  />
+  <path
+    d={`M${pad.l} ${pad.t} L${pad.l} ${pad.t + ih} L${pad.l + iw} ${pad.t + ih}`}
+    class="f-axis"
+  />
+  <path d={line} class="f-signal" />
+  {marks.map(([x, y]) => (
+    <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="2.6" class="f-dot" />
+  ))}
+
+  {labels && (
+    <>
+      <text class="f-tick" x={pad.l + iw} y={pad.t + ih + 20} text-anchor="end">
+        {labels[0]}
+      </text>
+      <text class="f-tick" x={-pad.t} y={pad.l - 20} transform="rotate(-90)" text-anchor="end">
+        {labels[1]}
+      </text>
+      <text class="f-tick" x={pad.l + 8} y={floorY - 8}>
+        precision floor
+      </text>
+    </>
+  )}
+</svg>
+
+<style>
+  .conv__band {
+    fill: var(--graph-signal);
+    opacity: 0.06;
+  }
+</style>

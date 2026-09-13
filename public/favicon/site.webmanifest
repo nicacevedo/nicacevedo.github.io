@@ -1,0 +1,20 @@
+{
+  "name": "Nicolás Acevedo Villena",
+  "short_name": "N. Acevedo",
+  "icons": [
+    {
+      "src": "/favicon/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#f7f6f2",
+  "background_color": "#f7f6f2",
+  "display": "minimal-ui",
+  "start_url": "/"
+}

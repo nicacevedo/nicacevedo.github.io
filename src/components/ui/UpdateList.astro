@@ -1,0 +1,80 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  entries: CollectionEntry<'updates'>[];
+  /** h2 when the list is the page's own section, h3 when it sits under one. */
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { entries, headingLevel: Heading = 'h3' } = Astro.props;
+
+const rendered = await Promise.all(
+  entries.map(async (entry) => ({ entry, Content: (await render(entry)).Content })),
+);
+
+const dateFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<ol class="updates list-reset">
+  {rendered.map(({ entry, Content }) => (
+    <li class="update">
+      <time class="update__date label" datetime={entry.data.date.toISOString().slice(0, 10)}>
+        {dateFormat.format(entry.data.date)}
+      </time>
+      <div class="update__body">
+        <Heading class="update__title">{entry.data.title}</Heading>
+        <div class="update__text">
+          <Content />
+        </div>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .update {
+    display: grid;
+    gap: var(--space-2) var(--gutter);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .update:first-child {
+    border-top-color: var(--ink);
+  }
+
+  .update__date {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.2em;
+  }
+
+  .update__title {
+    font-size: var(--step-1);
+    margin-bottom: var(--space-2);
+    max-width: 40ch;
+  }
+
+  .update__text {
+    color: var(--ink-muted);
+    max-width: 62ch;
+    font-size: var(--step--1);
+    line-height: 1.6;
+  }
+
+  .update__text :global(p) {
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .update {
+      grid-template-columns: 9rem minmax(0, 1fr);
+    }
+  }
+</style>

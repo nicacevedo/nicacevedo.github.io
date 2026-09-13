@@ -1,0 +1,190 @@
+---
+import Mark from '@components/ui/Mark.astro';
+import ThemeToggle from '@components/layout/ThemeToggle.astro';
+import { profile } from '@data/profile';
+
+const nav = [
+  { label: 'Research', href: '/research/' },
+  { label: 'Publications', href: '/publications/' },
+  { label: 'About', href: '/about/' },
+] as const;
+
+const path = Astro.url.pathname;
+const isCurrent = (href: string) =>
+  href === '/' ? path === '/' : path === href || path.startsWith(href);
+---
+
+<header class="site-header" id="site-header">
+  <div class="site-header__inner shell">
+    <a class="brand" href="/" aria-label={`${profile.name} — home`}>
+      <Mark size={24} />
+      <span class="brand__name">{profile.name}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list list-reset">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={['site-nav__link', isCurrent(item.href) && 'is-current']}
+              aria-current={isCurrent(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li>
+          <a
+            class="site-nav__link site-nav__link--cv"
+            href="/cv/"
+            aria-current={path === '/cv/' ? 'page' : undefined}
+          >
+            CV
+            <span class="site-nav__ext" aria-hidden="true">
+              ↗
+            </span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <ThemeToggle />
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+    let ticking = false;
+    const update = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 24);
+      ticking = false;
+    };
+    update();
+    addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+  })();
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--canvas);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  .site-header.is-scrolled {
+    border-bottom-color: var(--line);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 4.25rem;
+    transition: min-height var(--dur) var(--ease);
+  }
+
+  .is-scrolled .site-header__inner {
+    min-height: 3.5rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-right: auto;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 550;
+    letter-spacing: -0.008em;
+    min-height: 2.75rem;
+  }
+
+  .brand__name {
+    display: none;
+  }
+
+  .brand:hover .brand__name {
+    color: var(--signal);
+  }
+
+  .site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 2.2vw, 1.75rem);
+  }
+
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--ink-muted);
+    text-decoration: none;
+    font-size: var(--step--1);
+    font-weight: 500;
+    position: relative;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .site-nav__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.7rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .site-nav__link:hover {
+    color: var(--ink);
+  }
+
+  .site-nav__link:hover::after,
+  .site-nav__link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* Current page is marked by weight and a persistent rule, not color alone. */
+  .site-nav__link.is-current {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .site-nav__link.is-current::after {
+    transform: scaleX(1);
+    background: var(--signal);
+  }
+
+  .site-nav__ext {
+    margin-left: 0.3em;
+    font-size: 0.85em;
+    line-height: 1;
+  }
+
+  @media (min-width: 40rem) {
+    .brand__name {
+      display: inline;
+    }
+  }
+</style>

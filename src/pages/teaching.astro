@@ -1,0 +1,174 @@
+---
+import Base from '@layouts/Base.astro';
+import SectionHead from '@components/ui/SectionHead.astro';
+import { teaching } from '@data/teaching';
+
+const groups = [
+  { id: 'mit', index: '01', title: 'Massachusetts Institute of Technology', courses: teaching.mit },
+  {
+    id: 'uchile-graduate',
+    index: '02',
+    title: 'Universidad de Chile — graduate',
+    courses: teaching.uchileGraduate,
+  },
+  {
+    id: 'uchile-undergraduate',
+    index: '03',
+    title: 'Universidad de Chile — undergraduate',
+    courses: teaching.uchileUndergraduate,
+  },
+] as const;
+---
+
+<Base
+  title="Teaching"
+  description="Teaching assistantships at MIT Sloan and the Universidad de Chile, with public recitation videos."
+  ogImage="teaching"
+>
+  <section class="head">
+    <div class="shell">
+      <p class="label head__eyebrow">Teaching</p>
+      <h1 class="head__title">Courses and recitations</h1>
+      <p class="lead">
+        Teaching assistantships in optimization, probability, statistics and operations management.
+        Several recitations recorded at the Universidad de Chile are public.
+      </p>
+    </div>
+  </section>
+
+  {groups.map((group) => (
+    <section class="band" aria-labelledby={`t-${group.id}`}>
+      <div class="shell">
+        <SectionHead
+          index={group.index}
+          title={group.title}
+          id={`t-${group.id}`}
+          class="band__head"
+        />
+        <ol class="courses list-reset">
+          {group.courses.map((course) => (
+            <li class="course">
+              <span class="course__terms label">{course.terms}</span>
+              <div>
+                <h3 class="course__title">{course.title}</h3>
+                <p class="course__org">
+                  Teaching assistant ·{' '}
+                  {'unit' in course && course.unit ? course.unit : course.institution}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  ))}
+
+  <section class="band" aria-labelledby="recitations">
+    <div class="shell">
+      <SectionHead index="04" title="Recitation videos" id="recitations" class="band__head" />
+      <div class="recitations">
+        {teaching.recitations.map((set) => (
+          <section class="recitation">
+            <h3 class="recitation__course">{set.course}</h3>
+            <ul class="recitation__list list-reset">
+              {set.videos.map((video) => (
+                <li>
+                  <a class="link" href={video.href} target="_blank" rel="noopener">
+                    {video.label}
+                    <span class="visually-hidden"> (opens in a new tab)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) var(--space-8);
+  }
+
+  .head__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .head__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 14ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .band {
+    padding-block: clamp(var(--space-12), 6vw, var(--space-16)) 0;
+  }
+
+  .band__head {
+    margin-bottom: var(--space-6);
+  }
+
+  .course {
+    display: grid;
+    gap: var(--space-1) var(--gutter);
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .course__terms {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.25em;
+  }
+
+  .course__title {
+    font-size: var(--step-0);
+    font-weight: 550;
+    line-height: 1.35;
+    margin-bottom: var(--space-1);
+    max-width: 44ch;
+  }
+
+  .course__org {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  .recitations {
+    display: grid;
+    gap: var(--space-8) var(--gutter);
+  }
+
+  .recitation {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .recitation__course {
+    font-size: var(--step-0);
+    font-weight: 550;
+    margin-bottom: var(--space-3);
+  }
+
+  .recitation__list {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 46ch;
+  }
+
+  @media (min-width: 48rem) {
+    .course {
+      grid-template-columns: 12rem minmax(0, 1fr);
+    }
+
+    .recitations {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

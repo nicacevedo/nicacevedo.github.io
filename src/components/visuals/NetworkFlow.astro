@@ -1,0 +1,128 @@
+---
+/**
+ * A facility drawn as a system: supply enters, work and heat leave, and a
+ * dashed boundary marks how far public records reach.
+ *
+ * Schematic. Edge weights encode nothing measured. Geometry is defined on a
+ * 440 x 340 frame and scaled to whatever viewBox the caller asks for, so the
+ * drawing never spills outside its box.
+ */
+import '@components/visuals/figure.css';
+
+interface Props {
+  width?: number;
+  height?: number;
+  labels?: boolean;
+  title?: string;
+  class?: string;
+}
+
+const { width = 440, height = 340, labels = false, title, class: className } = Astro.props;
+
+const sx = width / 440;
+const sy = height / 340;
+const node = (x: number, y: number) => ({ x: x * sx, y: y * sy });
+
+const grid = node(58, 92);
+const site = node(214, 168);
+const compute = node(322, 96);
+const cooling = node(322, 176);
+const water = node(58, 244);
+const ground = node(214, 288);
+const air = node(322, 256);
+
+const r = 6 * Math.min(sx, sy);
+
+const edge = (a: { x: number; y: number }, b: { x: number; y: number }, bow = 26) => {
+  const mx = (a.x + b.x) / 2;
+  const my = (a.y + b.y) / 2 - bow * sy;
+  return `M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
+};
+---
+
+<svg
+  class:list={['fig', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  focusable="false"
+>
+  <rect
+    x={128 * sx}
+    y={40 * sy}
+    width={176 * sx}
+    height={262 * sy}
+    rx={10 * Math.min(sx, sy)}
+    class="flow__boundary"
+  />
+
+  <path d={edge(grid, site, 18)} class="f-signal" stroke-width="2.4" />
+  <path d={edge(water, site, -16)} class="f-alt" stroke-width="2" />
+  <path d={edge(site, compute, 20)} class="f-signal" stroke-width="1.8" />
+  <path d={edge(site, cooling, 6)} class="f-alt" stroke-width="1.6" />
+  <path d={edge(site, ground, -14)} class="f-line" stroke-width="1.4" stroke-dasharray="3 4" />
+  <path d={edge(site, air, -20)} class="f-line" stroke-width="1.4" stroke-dasharray="3 4" />
+
+  <rect
+    x={site.x - 30 * sx}
+    y={site.y - 22 * sy}
+    width={60 * sx}
+    height={44 * sy}
+    rx="4"
+    class="flow__site"
+  />
+
+  {[grid, compute, cooling, air, ground].map((n) => (
+    <circle cx={n.x.toFixed(1)} cy={n.y.toFixed(1)} r={r.toFixed(1)} class="f-dot-hollow" />
+  ))}
+  <circle cx={water.x.toFixed(1)} cy={water.y.toFixed(1)} r={r.toFixed(1)} class="flow__node-alt" />
+
+  {labels && (
+    <>
+      <text class="f-tick" x={grid.x - 8 * sx} y={grid.y - 15 * sy}>
+        electricity
+      </text>
+      <text class="f-tick" x={water.x - 8 * sx} y={water.y + 25 * sy}>
+        water
+      </text>
+      <text class="f-tick" x={compute.x + 13 * sx} y={compute.y + 4 * sy}>
+        computing
+      </text>
+      <text class="f-tick" x={cooling.x + 13 * sx} y={cooling.y + 4 * sy}>
+        cooling
+      </text>
+      <text class="f-tick" x={air.x + 13 * sx} y={air.y + 4 * sy}>
+        emissions
+      </text>
+      <text class="f-tick" x={ground.x} y={ground.y + 26 * sy} text-anchor="middle">
+        groundwater
+      </text>
+      <text class="f-tick" x={216 * sx} y={30 * sy} text-anchor="middle">
+        reported boundary
+      </text>
+    </>
+  )}
+</svg>
+
+<style>
+  .flow__boundary {
+    fill: none;
+    stroke: var(--graph-line);
+    stroke-width: 1;
+    stroke-dasharray: 2 5;
+  }
+
+  .flow__site {
+    fill: var(--graph-surface);
+    stroke: var(--graph-ink);
+    stroke-width: 1.5;
+  }
+
+  .flow__node-alt {
+    fill: var(--graph-surface);
+    stroke: var(--graph-alt);
+    stroke-width: 1.5;
+  }
+</style>

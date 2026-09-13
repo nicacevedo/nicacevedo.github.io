@@ -1,0 +1,86 @@
+---
+/**
+ * Small motifs for the three research themes. Each is a reduction of the
+ * full-size figure used by the projects inside that theme, drawn on the same
+ * 72 x 48 frame so the three read as one set.
+ */
+import '@components/visuals/figure.css';
+
+interface Props {
+  kind: 'frontier' | 'network' | 'convergence';
+  class?: string;
+}
+
+const { kind, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['fig', 'mark', className]}
+  viewBox="0 0 72 48"
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M6 4 L6 42 L68 42" class="f-axis" />
+
+  {kind === 'frontier' && (
+    <>
+      <circle cx="26" cy="16" r="2.4" class="mark__hollow" />
+      <circle cx="40" cy="12" r="2.4" class="mark__hollow" />
+      <circle cx="52" cy="22" r="2.4" class="mark__hollow" />
+      <circle cx="31" cy="27" r="2.4" class="mark__hollow" />
+      <path d="M11 9 C24 33 34 36 66 37" class="f-ink" />
+      <circle cx="30" cy="29.5" r="3.1" class="f-dot" />
+    </>
+  )}
+
+  {kind === 'network' && (
+    <>
+      <path d="M10 14 Q24 9 34 22" class="f-signal" stroke-width="1.8" />
+      <path d="M10 36 Q24 38 34 26" class="f-alt" stroke-width="1.6" />
+      <path d="M46 22 Q56 12 64 12" class="f-signal" stroke-width="1.6" />
+      <path d="M46 27 Q56 34 64 34" class="f-line" stroke-width="1.4" stroke-dasharray="3 3" />
+      <rect x="34" y="18" width="12" height="12" rx="2" class="mark__site" />
+      <circle cx="10" cy="14" r="2.6" class="mark__hollow" />
+      <circle cx="10" cy="36" r="2.6" class="mark__alt" />
+      <circle cx="64" cy="12" r="2.6" class="mark__hollow" />
+      <circle cx="64" cy="34" r="2.6" class="mark__hollow" />
+    </>
+  )}
+
+  {kind === 'convergence' && (
+    <>
+      <path d="M6 34 L68 34" class="f-line" stroke-dasharray="3 3" />
+      <path d="M10 8 C22 12 26 28 34 30 C44 33 52 31 66 31.5" class="f-signal" />
+      <circle cx="10" cy="8" r="2.2" class="f-dot" />
+      <circle cx="30" cy="28.4" r="2.2" class="f-dot" />
+      <circle cx="50" cy="31.4" r="2.2" class="f-dot" />
+      <circle cx="66" cy="31.5" r="2.2" class="f-dot" />
+    </>
+  )}
+</svg>
+
+<style>
+  .mark {
+    width: 72px;
+    max-width: 100%;
+  }
+
+  .mark__hollow {
+    fill: var(--graph-surface);
+    stroke: var(--graph-line);
+    stroke-width: 1.2;
+  }
+
+  .mark__alt {
+    fill: var(--graph-surface);
+    stroke: var(--graph-alt);
+    stroke-width: 1.2;
+  }
+
+  .mark__site {
+    fill: var(--graph-surface);
+    stroke: var(--graph-ink);
+    stroke-width: 1.3;
+  }
+</style>

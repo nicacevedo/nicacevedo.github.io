@@ -1,0 +1,113 @@
+---
+/**
+ * A coefficient vector over many candidate features. Almost every entry is
+ * exactly zero; the few that are not were introduced one at a time, and the
+ * three marked in signal are the columns a generation step brought in.
+ *
+ * Schematic. The pattern is a fixed seeded draw, and the axis carries no scale.
+ */
+import { seeded, toPath, type Point } from '@utils/field';
+import '@components/visuals/figure.css';
+
+interface Props {
+  width?: number;
+  height?: number;
+  labels?: boolean;
+  title?: string;
+  class?: string;
+}
+
+const { width = 440, height = 340, labels = false, title, class: className } = Astro.props;
+
+const pad = { l: 26, r: 18, t: 30, b: 34 };
+const iw = width - pad.l - pad.r;
+const ih = height - pad.t - pad.b;
+const baseline = pad.t + ih / 2;
+
+const columns = 46;
+const step = iw / (columns - 1);
+const x = (i: number) => pad.l + i * step;
+
+const rand = seeded(2023121);
+/** Indices carrying a non-zero coefficient; three of them were generated. */
+const active = [4, 9, 17, 23, 31, 38, 42];
+const signs = [1, -1, 1, -1, -1, 1, -1];
+const generated = new Set([17, 31, 42]);
+
+const stems = active.map((i, k) => {
+  const magnitude = 0.42 + rand() * 0.55;
+  return {
+    i,
+    y: baseline - signs[k]! * magnitude * (ih / 2 - 10),
+    gen: generated.has(i),
+  };
+});
+
+const zeros = Array.from({ length: columns }, (_, i) => i).filter((i) => !active.includes(i));
+const toPt = (a: number, b: number): Point => [a, b];
+---
+
+<svg
+  class:list={['fig', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  focusable="false"
+>
+  <path d={toPath([toPt(pad.l, baseline), toPt(pad.l + iw, baseline)])} class="f-axis" />
+
+  {zeros.map((i) => (
+    <path
+      d={toPath([toPt(x(i), baseline - 2.5), toPt(x(i), baseline + 2.5)])}
+      class="sparse__zero"
+    />
+  ))}
+
+  {stems.map(({ i, y, gen }) => (
+    <>
+      <path
+        d={toPath([toPt(x(i), baseline), toPt(x(i), y)])}
+        class={gen ? 'f-signal' : 'f-ink'}
+        stroke-width={gen ? 2 : 1.6}
+      />
+      <circle
+        cx={x(i).toFixed(1)}
+        cy={y.toFixed(1)}
+        r={gen ? 4 : 3.2}
+        class={gen ? 'f-dot' : 'f-dot-ink'}
+      />
+      {gen && (
+        <path
+          d={`M${(x(i) - 4).toFixed(1)} ${(baseline + 9).toFixed(1)} L${(x(i) + 4).toFixed(1)} ${(baseline + 9).toFixed(1)} L${x(i).toFixed(1)} ${(baseline + 2).toFixed(1)}Z`}
+          class="sparse__generated"
+        />
+      )}
+    </>
+  ))}
+
+  {labels && (
+    <>
+      <text class="f-tick" x={pad.l} y={pad.t + ih + 24}>
+        ▲ generated columns
+      </text>
+      <text class="f-tick" x={pad.l + iw} y={pad.t - 10} text-anchor="end">
+        candidate features
+      </text>
+    </>
+  )}
+</svg>
+
+<style>
+  .sparse__zero {
+    stroke: var(--graph-field);
+    stroke-width: 1.2;
+    fill: none;
+  }
+
+  .sparse__generated {
+    fill: var(--graph-signal);
+    stroke: none;
+  }
+</style>

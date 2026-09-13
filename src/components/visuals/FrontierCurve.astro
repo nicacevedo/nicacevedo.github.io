@@ -1,0 +1,95 @@
+---
+/**
+ * Two objectives in tension: a set of attainable models, the non-dominated
+ * frontier through them, and one selected point on that frontier.
+ *
+ * Schematic. The points are a seeded draw, not measurements, so the axes carry
+ * names but never numbers.
+ */
+import { seeded, gaussian, toSmoothPath, type Point } from '@utils/field';
+import '@components/visuals/figure.css';
+
+interface Props {
+  width?: number;
+  height?: number;
+  labels?: [string, string] | false;
+  title?: string;
+  class?: string;
+}
+
+const { width = 440, height = 340, labels = false, title, class: className } = Astro.props;
+
+const pad = { l: 34, r: 14, t: 16, b: 34 };
+const iw = width - pad.l - pad.r;
+const ih = height - pad.t - pad.b;
+
+/** Frontier: a convex decreasing curve across the unit square. */
+const frontierAt = (t: number) => {
+  const x = 0.06 + 0.88 * t;
+  const y = 0.09 + 0.82 * (1 - t) ** 2.1;
+  return [x, y] as Point;
+};
+
+const toPx = ([x, y]: Point): Point => [pad.l + x * iw, pad.t + (1 - y) * ih];
+
+const frontier = Array.from({ length: 40 }, (_, i) => frontierAt(i / 39)).map(toPx);
+
+// Attainable-but-dominated models, held strictly above the frontier.
+const rand = seeded(20240903);
+const dominated: Point[] = [];
+while (dominated.length < 26) {
+  const t = rand();
+  const [fx, fy] = frontierAt(t);
+  const lift = 0.05 + Math.abs(gaussian(rand)) * 0.19;
+  const jitter = gaussian(rand) * 0.05;
+  const x = fx + jitter;
+  const y = fy + lift;
+  if (x > 0.04 && x < 0.97 && y < 0.98) dominated.push(toPx([x, y]));
+}
+
+const selected = toPx(frontierAt(0.46));
+const knee = toSmoothPath(frontier);
+---
+
+<svg
+  class:list={['fig', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  focusable="false"
+>
+  <path
+    d={`M${pad.l} ${pad.t} L${pad.l} ${pad.t + ih} L${pad.l + iw} ${pad.t + ih}`}
+    class="f-axis"
+  />
+
+  {dominated.map(([x, y]) => (
+    <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" class="f-dot-hollow" />
+  ))}
+
+  <path d={knee} class="f-ink" />
+  <circle cx={selected[0]} cy={selected[1]} r="7" class="frontier__halo" />
+  <circle cx={selected[0]} cy={selected[1]} r="4" class="f-dot" />
+
+  {labels && (
+    <>
+      <text class="f-tick" x={pad.l + iw} y={pad.t + ih + 20} text-anchor="end">
+        {labels[0]}
+      </text>
+      <text class="f-tick" x={-pad.t} y={pad.l - 20} transform="rotate(-90)" text-anchor="end">
+        {labels[1]}
+      </text>
+    </>
+  )}
+</svg>
+
+<style>
+  .frontier__halo {
+    fill: none;
+    stroke: var(--graph-signal);
+    stroke-width: 1.2;
+    opacity: 0.5;
+  }
+</style>

@@ -1,0 +1,167 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import ThemeGrid from '@components/research/ThemeGrid.astro';
+import ProjectRow from '@components/research/ProjectRow.astro';
+import SectionHead from '@components/ui/SectionHead.astro';
+import DecisionLandscape from '@components/visuals/DecisionLandscape.astro';
+
+const projects = (await getCollection('research')).sort((a, b) => a.data.order - b.data.order);
+const current = projects.filter((p) => p.data.stage === 'current');
+const earlier = projects.filter((p) => p.data.stage === 'earlier');
+---
+
+<Base
+  title="Research"
+  description="Optimization and data-driven methods for equitable prediction, infrastructure systems, and reliable large-scale computation — current and earlier research."
+  ogImage="research"
+>
+  <section class="intro">
+    <div class="shell intro__grid">
+      <div class="intro__text">
+        <p class="label intro__eyebrow">Research</p>
+        <h1 class="intro__title">Where a model is wrong matters as much as how often.</h1>
+        <div class="intro__prose">
+          <p>
+            My work sits between optimization and applied modeling, on problems where a decision
+            follows from a computation: what a property is assessed at, what a facility draws from
+            the systems around it, what a solver certifies as optimal. In each of these the
+            interesting question is not only accuracy but structure — which errors are acceptable,
+            which are systematic, and what the method can honestly claim.
+          </p>
+          <p>
+            Three themes organize the work. They share a method: state the trade-off explicitly, put
+            it inside the optimization problem rather than around it, and evaluate under conditions
+            the application will actually meet.
+          </p>
+        </div>
+      </div>
+
+      <div class="intro__figure">
+        <DecisionLandscape width={420} height={380} density="quiet" />
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="themes-title">
+    <div class="shell">
+      <SectionHead index="01" title="Themes" id="themes-title" class="band__head" />
+      <ThemeGrid />
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="current-title">
+    <div class="shell">
+      <SectionHead
+        index="02"
+        title="Active research"
+        id="current-title"
+        note="Work I am doing now at the MIT Operations Research Center."
+        class="band__head"
+      />
+      {current.map((entry) => (
+        <ProjectRow entry={entry} />
+      ))}
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="earlier-title">
+    <div class="shell">
+      <SectionHead
+        index="03"
+        title="Earlier research"
+        id="earlier-title"
+        note="Completed work that shaped the methods above."
+        class="band__head"
+      />
+      {earlier.map((entry) => (
+        <ProjectRow entry={entry} compact />
+      ))}
+      <p class="band__more">
+        <a class="arrow-link" href="/publications/">
+          Formal outputs are listed on Publications
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) 0;
+  }
+
+  .intro__grid {
+    display: grid;
+    gap: var(--space-12) var(--gutter);
+  }
+
+  .intro__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .intro__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    margin-bottom: var(--space-8);
+  }
+
+  .intro__prose {
+    max-width: 60ch;
+    color: var(--ink-muted);
+  }
+
+  .intro__prose p + p {
+    margin-top: var(--space-4);
+  }
+
+  .intro__figure {
+    max-width: 24rem;
+  }
+
+  @media (min-width: 48rem) {
+    .intro__grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .intro__text {
+      grid-column: 1 / 5;
+    }
+
+    .intro__figure {
+      grid-column: 5 / 7;
+      max-width: none;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .intro__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .intro__text {
+      grid-column: 1 / 8;
+    }
+
+    .intro__figure {
+      grid-column: 9 / 13;
+      max-width: none;
+    }
+  }
+
+  .band {
+    padding-block: clamp(var(--space-12), 7vw, var(--space-24)) 0;
+  }
+
+  .band__head {
+    margin-bottom: var(--space-12);
+  }
+
+  .band__more {
+    margin-top: var(--space-8);
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '@layouts/Base.astro';
+import UpdateList from '@components/ui/UpdateList.astro';
+
+const updates = (await getCollection('updates')).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<Base
+  title="Updates"
+  description="Research and professional updates from Nicolás Acevedo Villena, most recent first."
+  ogImage="updates"
+>
+  <section class="head">
+    <div class="shell">
+      <p class="label head__eyebrow">Updates</p>
+      <h1 class="head__title">What has changed, and when</h1>
+      <p class="lead">A short record of research and professional milestones. Most recent first.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell">
+      <UpdateList entries={updates} headingLevel="h2" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) var(--space-12);
+  }
+
+  .head__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .head__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    margin-bottom: var(--space-6);
+  }
+</style>

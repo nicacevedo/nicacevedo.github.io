@@ -1,0 +1,98 @@
+---
+/**
+ * A field of observations, a fitted trend, and the handful of points a
+ * screening rule would rank as anomalous.
+ *
+ * Schematic. Points are a seeded draw, not results.
+ */
+import { seeded, gaussian, toPath, type Point } from '@utils/field';
+import '@components/visuals/figure.css';
+
+interface Props {
+  width?: number;
+  height?: number;
+  labels?: [string, string] | false;
+  title?: string;
+  class?: string;
+}
+
+const { width = 440, height = 340, labels = false, title, class: className } = Astro.props;
+
+const pad = { l: 32, r: 16, t: 18, b: 32 };
+const iw = width - pad.l - pad.r;
+const ih = height - pad.t - pad.b;
+const toPx = ([x, y]: Point): Point => [pad.l + x * iw, pad.t + (1 - y) * ih];
+
+const rand = seeded(3062022);
+const slope = 0.62;
+const intercept = 0.2;
+
+const points: { p: Point; resid: number; flagged: boolean }[] = [];
+for (let i = 0; i < 78; i++) {
+  const x = 0.04 + rand() * 0.92;
+  const base = intercept + slope * x;
+  const flagged = i % 23 === 7;
+  const resid = flagged ? (rand() < 0.5 ? -1 : 1) * (0.24 + rand() * 0.12) : gaussian(rand) * 0.065;
+  const y = Math.max(0.03, Math.min(0.97, base + resid));
+  points.push({ p: [x, y], resid, flagged });
+}
+
+const fit = toPath([
+  toPx([0.02, intercept + slope * 0.02]),
+  toPx([0.98, intercept + slope * 0.98]),
+]);
+---
+
+<svg
+  class:list={['fig', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  role={title ? 'img' : undefined}
+  aria-hidden={title ? undefined : 'true'}
+  aria-label={title}
+  focusable="false"
+>
+  <path
+    d={`M${pad.l} ${pad.t} L${pad.l} ${pad.t + ih} L${pad.l + iw} ${pad.t + ih}`}
+    class="f-axis"
+  />
+  <path d={fit} class="f-line" stroke-width="1.3" />
+
+  {points.map(({ p, flagged }) => {
+    const [x, y] = toPx(p);
+    const onLine = toPx([p[0], intercept + slope * p[0]]);
+    return flagged ? (
+      <>
+        <path d={toPath([[x, y], onLine])} class="f-signal" stroke-width="1.2" opacity="0.55" />
+        <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="6.5" class="obs__ring" />
+        <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="3" class="f-dot" />
+      </>
+    ) : (
+      <circle cx={x.toFixed(1)} cy={y.toFixed(1)} r="2.6" class="obs__point" />
+    );
+  })}
+
+  {labels && (
+    <>
+      <text class="f-tick" x={pad.l + iw} y={pad.t + ih + 20} text-anchor="end">
+        {labels[0]}
+      </text>
+      <text class="f-tick" x={-pad.t} y={pad.l - 20} transform="rotate(-90)" text-anchor="end">
+        {labels[1]}
+      </text>
+    </>
+  )}
+</svg>
+
+<style>
+  .obs__point {
+    fill: var(--graph-line);
+  }
+
+  .obs__ring {
+    fill: none;
+    stroke: var(--graph-signal);
+    stroke-width: 1.2;
+    opacity: 0.6;
+  }
+</style>

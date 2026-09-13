@@ -1,0 +1,82 @@
+---
+import ThemeMark from '@components/visuals/ThemeMark.astro';
+import { themes } from '@data/themes';
+
+interface Props {
+  /** Links each theme to its section on the research page. */
+  linked?: boolean;
+  headingLevel?: 'h3' | 'h2';
+}
+
+const { linked = false, headingLevel: Heading = 'h3' } = Astro.props;
+---
+
+<ol class="themes list-reset">
+  {themes.map((theme) => (
+    <li class="theme" id={linked ? undefined : `theme-${theme.id}`}>
+      <div class="theme__head">
+        <span class="theme__index label">{theme.index}</span>
+        <ThemeMark kind={theme.mark} class="theme__mark" />
+      </div>
+      <Heading class="theme__name">
+        {linked ? (
+          <a class="link link--title" href={`/research/#theme-${theme.id}`}>
+            {theme.name}
+          </a>
+        ) : (
+          theme.name
+        )}
+      </Heading>
+      <p class="theme__summary">{theme.summary}</p>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .themes {
+    display: grid;
+    gap: var(--space-12) var(--gutter);
+  }
+
+  .theme {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-4);
+  }
+
+  .theme__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .theme__index {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .theme__mark {
+    width: 72px;
+    opacity: 0.95;
+  }
+
+  .theme__name {
+    font-size: var(--step-1);
+    letter-spacing: -0.012em;
+    margin-bottom: var(--space-3);
+  }
+
+  .theme__summary {
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    max-width: 42ch;
+  }
+
+  @media (min-width: 48rem) {
+    .themes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-8) var(--gutter);
+    }
+  }
+</style>

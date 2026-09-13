@@ -1,0 +1,42 @@
+---
+/**
+ * The personal mark: an N whose diagonal is a descent, terminating at the
+ * optimum. Same geometry as the favicon.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 26, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['mark-n', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 32 32"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d="M8 26.5V6M8 6l16 20.5M24 26.5V6" class="mark-n__stroke" />
+  <circle cx="24" cy="26.5" r="3.1" class="mark-n__optimum" />
+</svg>
+
+<style>
+  .mark-n {
+    flex: none;
+    overflow: visible;
+  }
+
+  .mark-n__stroke {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .mark-n__optimum {
+    fill: var(--signal);
+  }
+</style>

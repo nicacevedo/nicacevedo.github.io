@@ -1,6 +1,45 @@
 {
+  "name": "nicacevedo-github-io",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal research website of Nicolás Acevedo Villena.",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "og": "node --experimental-strip-types scripts/generate-og.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "playwright test",
+    "test:install": "playwright install --with-deps chromium",
+    "serve": "node scripts/serve.mjs",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2"
+  },
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "1.4.0",
-    "prettier": "3.1.1"
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "@fontsource/instrument-sans": "^5.3.0",
+    "@playwright/test": "^1.63.0",
+    "@retorquere/bibtex-parser": "^11.0.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^1.0.0",
+    "satori": "^0.18.2",
+    "sharp": "^0.35.4",
+    "typescript": "^5.9.2"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "sharp": true
   }
 }

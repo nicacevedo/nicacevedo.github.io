@@ -1,0 +1,107 @@
+---
+import ProjectFigure from '@components/research/ProjectFigure.astro';
+import { themeById } from '@data/themes';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'research'>;
+  compact?: boolean;
+}
+
+const { entry, compact = false } = Astro.props;
+const { data } = entry;
+const theme = themeById[data.primaryTheme];
+const href = `/projects/${entry.id}/`;
+---
+
+<article class:list={['row', compact && 'row--compact']}>
+  <div class="row__figure" aria-hidden="true">
+    <ProjectFigure visual={data.visual} width={220} height={150} />
+  </div>
+
+  <div class="row__body">
+    <p class="row__theme label">{theme.name}</p>
+    <h3 class="row__title">
+      <a class="link link--title" href={href}>
+        {data.title}
+      </a>
+    </h3>
+    <p class="row__thesis">{compact ? data.description : data.thesis}</p>
+  </div>
+
+  <dl class="row__meta">
+    <dt class="visually-hidden">Status</dt>
+    <dd class="row__status">{data.status}</dd>
+    <dt class="visually-hidden">Period</dt>
+    <dd class="row__period label">{data.period}</dd>
+  </dl>
+</article>
+
+<style>
+  .row {
+    display: grid;
+    gap: var(--space-4) var(--gutter);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--line);
+  }
+
+  .row:first-child {
+    border-top-color: var(--ink);
+  }
+
+  .row__figure {
+    max-width: 11rem;
+    opacity: 0.95;
+  }
+
+  .row__theme {
+    margin-bottom: var(--space-2);
+  }
+
+  .row__title {
+    font-size: var(--step-1);
+    line-height: 1.25;
+    max-width: 28ch;
+    margin-bottom: var(--space-3);
+  }
+
+  .row__thesis {
+    color: var(--ink-muted);
+    font-size: var(--step--1);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .row__meta {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .row__status {
+    margin: 0;
+    font-size: var(--step--1);
+    font-weight: 500;
+  }
+
+  .row__period {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 48rem) {
+    .row {
+      grid-template-columns: 11rem minmax(0, 1fr) 11rem;
+      align-items: start;
+    }
+
+    .row__meta {
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+      gap: var(--space-2);
+    }
+  }
+</style>

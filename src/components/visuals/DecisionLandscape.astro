@@ -1,0 +1,177 @@
+---
+/**
+ * The site's signature figure: level sets of an abstract valley-shaped
+ * objective, with a heavy-ball descent path running along the valley floor to
+ * the optimum. The geometry is computed at build time — see src/utils/field.ts.
+ *
+ * Abstract and unlabelled by design: it represents no measurement.
+ */
+import { contour, descentPath, projector, simplify, toSmoothPath, type Bounds } from '@utils/field';
+import '@components/visuals/figure.css';
+
+interface Props {
+  /** Aspect of the drawing area. */
+  width?: number;
+  height?: number;
+  /** Field window; wider windows show more of the outer level sets. */
+  bounds?: Bounds;
+  /** Enable the pointer-reactive layer shift on the hero. */
+  interactive?: boolean;
+  density?: 'full' | 'quiet';
+  class?: string;
+}
+
+const {
+  width = 520,
+  height = 480,
+  bounds = { x0: -2.1, x1: 2.55, y0: -0.5, y1: 3.68 },
+  interactive = false,
+  density = 'full',
+  class: className,
+} = Astro.props;
+
+/** Softened Rosenbrock: a curved valley with a single optimum at (1, 0.58). */
+const field = (x: number, y: number) => 0.55 * (1 - x) ** 2 + 2.6 * (y - 0.58 * x * x) ** 2;
+const optimum = [1, 0.58] as const;
+
+const levels =
+  density === 'full'
+    ? [0.05, 0.15, 0.34, 0.64, 1.08, 1.7, 2.55, 3.7, 5.2, 7.1, 9.5]
+    : [0.09, 0.3, 0.72, 1.4, 2.5, 4.2, 6.8];
+
+const proj = projector(bounds, width, height, 0);
+
+// One screen pixel in field units, used as the simplification tolerance so the
+// emitted path is as short as the drawing can be without visibly changing.
+const pixel = (bounds.x1 - bounds.x0) / width;
+
+const rings = levels.map((level, i) => ({
+  i,
+  paths: contour(field, level, bounds, 150).map((line) => {
+    const a = line[0]!;
+    const b = line[line.length - 1]!;
+    const closed = Math.hypot(a[0] - b[0], a[1] - b[1]) < 0.05;
+    return toSmoothPath(simplify(line, pixel * 0.45).map(proj), closed);
+  }),
+}));
+
+const iterates = descentPath(field, [-1.72, 2.55], {
+  steps: 120,
+  rate: 0.028,
+  momentum: 0.86,
+  stopWithin: 0.07,
+  target: optimum,
+});
+const trajectory = toSmoothPath(iterates.map(proj));
+const markEvery = Math.max(4, Math.round(iterates.length / 8));
+const marks = iterates
+  .filter((_, i) => i > 0 && i < iterates.length - 2 && i % markEvery === 0)
+  .map(proj);
+const opt = proj(optimum);
+const start = proj(iterates[0]!);
+
+/**
+ * The site's one interaction: contour layers shift by a few pixels with the
+ * pointer, deeper rings moving further. Fine pointers only, and disabled
+ * outright under prefers-reduced-motion.
+ */
+const POINTER_SCRIPT = `(() => {
+  const svg = document.querySelector('.landscape--live');
+  if (!svg) return;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  let frame = 0;
+  const onMove = (event) => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      const box = svg.getBoundingClientRect();
+      const clamp = (v) => Math.max(-0.5, Math.min(0.5, v));
+      svg.style.setProperty('--px', clamp((event.clientX - box.left) / box.width - 0.5).toFixed(3));
+      svg.style.setProperty('--py', clamp((event.clientY - box.top) / box.height - 0.5).toFixed(3));
+    });
+  };
+  const apply = () => {
+    removeEventListener('pointermove', onMove);
+    svg.style.setProperty('--px', '0');
+    svg.style.setProperty('--py', '0');
+    if (fine.matches && !still.matches) {
+      addEventListener('pointermove', onMove, { passive: true });
+    }
+  };
+  fine.addEventListener('change', apply);
+  still.addEventListener('change', apply);
+  apply();
+})();`;
+---
+
+<svg
+  class:list={['fig', 'landscape', interactive && 'landscape--live', className]}
+  viewBox={`0 0 ${width} ${height}`}
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  {rings.map(({ i, paths }) => (
+    <g class="landscape__ring" style={`--depth:${(i + 1) / rings.length}`}>
+      {paths.map((d) => (
+        <path
+          d={d}
+          class={i < levels.length - 2 ? 'f-line' : 'f-field'}
+          stroke-width={i < 3 ? 1.5 : 1.15}
+        />
+      ))}
+    </g>
+  ))}
+
+  <g class="landscape__path">
+    <path d={trajectory} class="f-signal" stroke-width="2.2" />
+    <circle cx={start[0]} cy={start[1]} r="3" class="f-dot-hollow" />
+    {marks.map(([x, y]) => (
+      <circle cx={x} cy={y} r="2.5" class="f-dot" />
+    ))}
+    <circle cx={opt[0]} cy={opt[1]} r="6.5" class="landscape__halo" />
+    <circle cx={opt[0]} cy={opt[1]} r="3.6" class="f-dot" />
+  </g>
+</svg>
+
+{interactive && <script is:inline set:html={POINTER_SCRIPT}></script>}
+
+<style>
+  .landscape__ring {
+    opacity: calc(1 - var(--depth) * 0.1);
+  }
+
+  .landscape__halo {
+    fill: none;
+    stroke: var(--graph-signal);
+    stroke-width: 1.2;
+    opacity: 0.45;
+  }
+
+  /* One subtle interaction: layers shift by depth as the pointer moves.
+     Displacement is at most a few pixels, and only on fine pointers. */
+  @media (hover: hover) and (pointer: fine) {
+    .landscape--live .landscape__ring {
+      transform: translate(
+        calc(var(--px, 0) * var(--depth) * 11px),
+        calc(var(--py, 0) * var(--depth) * 8px)
+      );
+      transition: transform 320ms var(--ease);
+      will-change: transform;
+    }
+
+    .landscape--live .landscape__path {
+      transform: translate(calc(var(--px, 0) * -3px), calc(var(--py, 0) * -2px));
+      transition: transform 320ms var(--ease);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .landscape--live .landscape__ring,
+    .landscape--live .landscape__path {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

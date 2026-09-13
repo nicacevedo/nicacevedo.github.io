@@ -1,0 +1,74 @@
+---
+import { Font } from 'astro:assets';
+import { profile } from '@data/profile';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path under /generated/og/ without the extension. */
+  ogImage?: string;
+  /** Extra JSON-LD emitted for this page. */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description, ogImage = 'default', schema, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = new URL(`/generated/og/${ogImage}.png`, Astro.site).href;
+const fullTitle = Astro.url.pathname === '/' ? title : `${title} — ${profile.name}`;
+const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={Astro.url.pathname === '/' ? 'profile' : 'article'} />
+<meta property="og:site_name" content={profile.name} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${title} — ${profile.name}`} />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<meta name="author" content={profile.name} />
+<meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)" />
+
+<link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+<link rel="manifest" href="/favicon/site.webmanifest" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<Font cssVariable="--font-sans" preload />
+<Font cssVariable="--font-serif" />
+
+{schemaBlocks.map((block) => (
+  <script type="application/ld+json" set:html={JSON.stringify(block)} is:inline></script>
+))}
+
+{/* Applied before first paint so the theme never flashes. */}
+<script is:inline>
+  try {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') {
+      document.documentElement.dataset.theme = stored;
+    }
+  } catch (_) {
+    /* storage unavailable — fall back to the system preference */
+  }
+</script>

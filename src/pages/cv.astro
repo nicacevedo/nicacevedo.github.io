@@ -1,0 +1,361 @@
+---
+import Base from '@layouts/Base.astro';
+import SectionHead from '@components/ui/SectionHead.astro';
+import { profile } from '@data/profile';
+import { cv } from '@data/cv';
+import { teaching, type Course } from '@data/teaching';
+import { getPublications, formatAuthors } from '@utils/publications';
+
+const publications = getPublications();
+
+const sections = [
+  { id: 'education', index: '01', label: 'Education', entries: cv.education },
+  { id: 'research', index: '02', label: 'Research experience', entries: cv.research },
+  { id: 'experience', index: '03', label: 'Professional experience', entries: cv.experience },
+] as const;
+
+const allCourses: Course[] = [
+  ...teaching.mit,
+  ...teaching.uchileGraduate,
+  ...teaching.uchileUndergraduate,
+];
+---
+
+<Base
+  title="Curriculum vitae"
+  description={`Curriculum vitae of ${profile.name} — education, research, professional experience, teaching and awards.`}
+  ogImage="cv"
+>
+  <section class="head">
+    <div class="shell">
+      <p class="label head__eyebrow">Curriculum vitae</p>
+      <h1 class="head__title">{profile.name}</h1>
+      <p class="head__role">
+        {profile.role} · {profile.affiliation} · {profile.location}
+      </p>
+
+      <div class="head__actions">
+        <a class="btn" href={profile.cvPdf} download>
+          Download PDF
+        </a>
+        <a class="btn btn--ghost" href={profile.cvPdf} target="_blank" rel="noopener">
+          View PDF
+          <span aria-hidden="true">↗</span>
+          <span class="visually-hidden">(opens in a new tab)</span>
+        </a>
+      </div>
+
+      <p class="head__note">
+        The PDF is the formal document. The summary below carries the same record as selectable,
+        searchable text.
+      </p>
+    </div>
+  </section>
+
+  {sections.map((section) => (
+    <section class="band" aria-labelledby={`cv-${section.id}`}>
+      <div class="shell">
+        <SectionHead
+          index={section.index}
+          title={section.label}
+          id={`cv-${section.id}`}
+          class="band__head"
+        />
+        <ol class="entries list-reset">
+          {section.entries.map((entry) => (
+            <li class="entry">
+              <span class="entry__period label">{entry.period}</span>
+              <div class="entry__body">
+                <h3 class="entry__role">{entry.role}</h3>
+                <p class="entry__org">
+                  {entry.org}
+                  {entry.place && <span class="entry__place"> · {entry.place}</span>}
+                </p>
+                {entry.notes && (
+                  <ul class="entry__notes list-reset">
+                    {entry.notes.map((note) => (
+                      <li>{note}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  ))}
+
+  <section class="band" aria-labelledby="cv-publications">
+    <div class="shell">
+      <SectionHead index="04" title="Publications" id="cv-publications" class="band__head" />
+      <ol class="entries list-reset">
+        {publications.map((publication) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{publication.year}</span>
+            <div class="entry__body">
+              <h3 class="entry__role entry__role--small">{publication.title}</h3>
+              <p class="entry__org">
+                {formatAuthors(publication.authors)} · {publication.kindLabel}
+                {publication.venue && ` · ${publication.venue}`}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="band__more">
+        <a class="arrow-link" href="/publications/">
+          Full list, with PDFs and BibTeX
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="cv-teaching">
+    <div class="shell">
+      <SectionHead index="05" title="Teaching" id="cv-teaching" class="band__head" />
+      <ol class="entries list-reset">
+        {allCourses.map((course) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{course.terms}</span>
+            <div class="entry__body">
+              <h3 class="entry__role entry__role--small">{course.title}</h3>
+              <p class="entry__org">
+                Teaching assistant · {course.unit ?? course.institution}
+                {course.level && ` · ${course.level}`}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="band__more">
+        <a class="arrow-link" href="/teaching/">
+          Teaching page, with recitation videos
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="cv-awards">
+    <div class="shell">
+      <SectionHead index="06" title="Grants and awards" id="cv-awards" class="band__head" />
+      <ol class="entries list-reset">
+        {cv.awards.map((award) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{award.year}</span>
+            <div class="entry__body">
+              <p class="entry__plain">{award.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="cv-extras">
+    <div class="shell">
+      <SectionHead
+        index="07"
+        title="Talks, posters and training"
+        id="cv-extras"
+        class="band__head"
+      />
+
+      <h3 class="sub label">Talks</h3>
+      <ol class="entries list-reset">
+        {cv.talks.map((item) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{item.year}</span>
+            <div class="entry__body">
+              <p class="entry__plain">{item.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <h3 class="sub label">Posters</h3>
+      <ol class="entries list-reset">
+        {cv.posters.map((item) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{item.year}</span>
+            <div class="entry__body">
+              <p class="entry__plain">{item.text}</p>
+              {item.href && (
+                <p class="chip-row">
+                  <a class="chip" href={item.href}>
+                    Poster PDF
+                  </a>
+                </p>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <h3 class="sub label">Training</h3>
+      <ol class="entries list-reset">
+        {cv.training.map((item) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{item.year}</span>
+            <div class="entry__body">
+              <p class="entry__plain">{item.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="band__more">
+        <a class="arrow-link" href="/research/">
+          Research projects
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) 0;
+  }
+
+  .head__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .head__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-4);
+  }
+
+  .head__role {
+    color: var(--ink-muted);
+    font-size: var(--step-1);
+    margin-bottom: var(--space-8);
+    max-width: 44ch;
+  }
+
+  .head__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .head__note {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 52ch;
+  }
+
+  .band {
+    padding-block: clamp(var(--space-12), 6vw, var(--space-16)) 0;
+  }
+
+  /* A CV reads as a document: hold it to a single measured column so the
+     section rules end where the content ends. */
+  .band > .shell,
+  .head > .shell {
+    max-width: 64rem;
+    margin-inline: 0;
+    padding-inline: var(--pad-x);
+  }
+
+  @media (min-width: 84rem) {
+    .band > .shell,
+    .head > .shell {
+      margin-inline: auto;
+      max-width: 68rem;
+    }
+  }
+
+  .band__head {
+    margin-bottom: var(--space-6);
+  }
+
+  .band__more {
+    margin-top: var(--space-6);
+  }
+
+  .sub {
+    display: block;
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-2);
+    color: var(--ink);
+  }
+
+  .entry {
+    display: grid;
+    gap: var(--space-1) var(--gutter);
+    padding-block: var(--space-5, var(--space-4));
+    border-top: 1px solid var(--line);
+  }
+
+  .entry__period {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    padding-top: 0.25em;
+  }
+
+  .entry__role {
+    font-size: var(--step-1);
+    line-height: 1.25;
+    margin-bottom: var(--space-1);
+    max-width: 40ch;
+  }
+
+  .entry__role--small {
+    font-size: var(--step-0);
+    font-weight: 550;
+  }
+
+  .entry__org {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  .entry__place {
+    color: var(--ink-faint);
+  }
+
+  .entry__notes {
+    margin-top: var(--space-3);
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 66ch;
+  }
+
+  .entry__notes li {
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .entry__notes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.45rem;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .entry__plain {
+    font-size: var(--step--1);
+    max-width: 70ch;
+    line-height: 1.6;
+  }
+
+  .entry--tight .chip-row {
+    margin-top: var(--space-3);
+  }
+
+  @media (min-width: 48rem) {
+    .entry {
+      grid-template-columns: 12rem minmax(0, 1fr);
+    }
+  }
+</style>

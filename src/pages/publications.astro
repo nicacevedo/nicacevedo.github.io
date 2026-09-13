@@ -1,0 +1,213 @@
+---
+import Base from '@layouts/Base.astro';
+import PublicationEntry from '@components/publications/PublicationEntry.astro';
+import SectionHead from '@components/ui/SectionHead.astro';
+import { getCollection } from 'astro:content';
+import { getPublications } from '@utils/publications';
+import { profile } from '@data/profile';
+
+const publications = getPublications();
+
+/** Public research software, listed separately so it is never read as a paper. */
+const software = (await getCollection('research'))
+  .filter((entry) => Boolean(entry.data.repository))
+  .sort((a, b) => a.data.order - b.data.order);
+
+/** Structured data only where the record is unambiguous: the deposited thesis. */
+const thesis = publications.find((p) => p.key === 'AcevedoVillena2023');
+const schema = thesis
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Thesis',
+      name: thesis.title,
+      inSupportOf: "Master's",
+      author: { '@type': 'Person', name: profile.name },
+      datePublished: String(thesis.year),
+      publisher: { '@type': 'CollegeOrUniversity', name: 'Universidad de Chile' },
+      url: thesis.links.find((l) => l.kind === 'page')?.href,
+      identifier: thesis.links.find((l) => l.kind === 'doi')?.href,
+      inLanguage: 'en',
+    }
+  : undefined;
+---
+
+<Base
+  title="Publications"
+  description="Theses, conference work and other formal research outputs by Nicolás Acevedo Villena."
+  ogImage="publications"
+  schema={schema}
+>
+  <section class="head">
+    <div class="shell">
+      <p class="label head__eyebrow">Publications</p>
+      <h1 class="head__title">Formal research outputs</h1>
+      <p class="head__lead lead">
+        Theses and conference work, most recent first. Code and documentation for each
+        <a class="link" href="/research/">
+          research project
+        </a>{' '}
+        live on its own page.
+      </p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="pubs-formal">
+    <div class="shell">
+      <SectionHead index="01" title="Papers and theses" id="pubs-formal" class="band__head" />
+      <ol class="list-reset">
+        {publications.map((publication, i) => (
+          <PublicationEntry publication={publication} index={i} />
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="pubs-software">
+    <div class="shell">
+      <SectionHead
+        index="02"
+        title="Research software"
+        id="pubs-software"
+        note="Public repositories that document a project's method and validation."
+        class="band__head"
+      />
+      <ol class="list-reset">
+        {software.map((entry) => (
+          <li class="soft">
+            <div class="soft__rail">
+              <span class="soft__year label">{entry.data.period.slice(0, 4)}</span>
+              <span class="soft__kind label">{entry.data.status}</span>
+            </div>
+            <div class="soft__body">
+              <h3 class="soft__title">{entry.data.shortTitle ?? entry.data.title}</h3>
+              <p class="soft__repo">{entry.data.repository!.replace('https://', '')}</p>
+              <p class="soft__desc">{entry.data.description}</p>
+              <div class="chip-row soft__links">
+                <a class="chip" href={entry.data.repository} target="_blank" rel="noopener">
+                  Repository
+                  <span class="visually-hidden"> (opens in a new tab)</span>
+                </a>
+                <a class="chip" href={`/projects/${entry.id}/`}>
+                  Research
+                </a>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="pubs-citing">
+    <div class="shell">
+      <SectionHead index="03" title="Citing this work" id="pubs-citing" class="band__head" />
+      <p class="note">
+        Each entry above carries its BibTeX record. The full bibliography is kept as a single{' '}
+        <code>.bib</code> file in the site's repository, and is the source this page is built from.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head {
+    padding-block: clamp(var(--space-8), 5vw, var(--space-16)) var(--space-12);
+  }
+
+  .head__eyebrow {
+    margin-bottom: var(--space-6);
+  }
+
+  .head__title {
+    font-size: var(--step-4);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 14ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .band {
+    padding-block: 0 0;
+  }
+
+  .band + .band {
+    padding-top: clamp(var(--space-12), 7vw, var(--space-24));
+  }
+
+  .band__head {
+    margin-bottom: var(--space-8);
+  }
+
+  .soft {
+    display: grid;
+    gap: var(--space-3) var(--gutter);
+    padding-block: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+
+  .soft:first-child {
+    border-top-color: var(--ink);
+  }
+
+  .soft__rail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .soft__year {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .soft__kind {
+    color: var(--ink-faint);
+  }
+
+  .soft__title {
+    font-size: var(--step-1);
+    line-height: 1.25;
+    margin-bottom: var(--space-1);
+    max-width: 34ch;
+  }
+
+  .soft__repo {
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    color: var(--ink-muted);
+    margin-bottom: var(--space-3);
+    word-break: break-word;
+  }
+
+  .soft__desc {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    max-width: 60ch;
+  }
+
+  .soft__links {
+    margin-top: var(--space-4);
+  }
+
+  @media (min-width: 48rem) {
+    .soft {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+
+    .soft__rail {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+  }
+
+  .note {
+    color: var(--ink-muted);
+    max-width: 58ch;
+    font-size: var(--step--1);
+  }
+
+  .note code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import BaseHead from '@components/layout/BaseHead.astro';
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
+import '@styles/base.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  noindex?: boolean;
+  bodyClass?: string;
+}
+
+const { title, description, ogImage, schema, noindex, bodyClass } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      schema={schema}
+      noindex={noindex}
+    />
+  </head>
+  <body class={bodyClass}>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const button = document.getElementById('theme-toggle');
+        if (!button) return;
+        const root = document.documentElement;
+
+        const current = () =>
+          root.dataset.theme ??
+          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        const sync = () => {
+          const isDark = current() === 'dark';
+          button.setAttribute('aria-pressed', String(isDark));
+          button.setAttribute(
+            'aria-label',
+            isDark ? 'Switch to light theme' : 'Switch to dark theme',
+          );
+        };
+
+        button.addEventListener('click', () => {
+          const next = current() === 'dark' ? 'light' : 'dark';
+          root.dataset.theme = next;
+          try {
+            localStorage.setItem('theme', next);
+          } catch (_) {
+            /* preference simply will not persist */
+          }
+          sync();
+        });
+
+        matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
+        sync();
+      })();
+    </script>
+    <style is:global>
+      .skip-link {
+        position: absolute;
+        top: 0;
+        left: var(--space-4);
+        z-index: 100;
+        transform: translateY(-120%);
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--ink);
+        border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        padding: 0.6rem 1rem;
+        font-size: var(--step--1);
+        font-weight: 500;
+        text-decoration: none;
+        transition: transform var(--dur) var(--ease);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+    </style>
+  </body>
+</html>

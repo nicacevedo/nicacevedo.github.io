@@ -1,0 +1,90 @@
+---
+import Base from '@layouts/Base.astro';
+import DecisionLandscape from '@components/visuals/DecisionLandscape.astro';
+
+const destinations = [
+  { label: 'Research', href: '/research/' },
+  { label: 'Publications', href: '/publications/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Curriculum vitae', href: '/cv/' },
+  { label: 'Updates', href: '/updates/' },
+];
+---
+
+<Base
+  title="Page not found"
+  description="This page does not exist on nicacevedo.github.io."
+  noindex
+>
+  <section class="notfound">
+    <div class="shell notfound__grid">
+      <div>
+        <p class="label notfound__code">Error 404</p>
+        <h1 class="notfound__title">No feasible page at this address.</h1>
+        <p class="lead notfound__lead">
+          The link may be out of date, or the page may have moved during the site's redesign. These
+          are the places worth trying:
+        </p>
+        <ul class="notfound__links list-reset">
+          {destinations.map((item) => (
+            <li>
+              <a class="arrow-link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="notfound__figure">
+        <DecisionLandscape width={420} height={360} density="quiet" />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .notfound {
+    padding-block: clamp(var(--space-12), 8vw, var(--space-24)) var(--space-24);
+  }
+
+  .notfound__grid {
+    display: grid;
+    gap: var(--space-12) var(--gutter);
+    align-items: center;
+  }
+
+  .notfound__code {
+    margin-bottom: var(--space-6);
+  }
+
+  .notfound__title {
+    font-size: var(--step-3);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    margin-bottom: var(--space-6);
+  }
+
+  .notfound__lead {
+    margin-bottom: var(--space-8);
+  }
+
+  .notfound__links {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 62rem) {
+    .notfound__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .notfound__grid > :first-child {
+      grid-column: 1 / 7;
+    }
+
+    .notfound__figure {
+      grid-column: 8 / 13;
+    }
+  }
+</style>

@@ -1,0 +1,37 @@
+---
+/** Maps a project's `visual` key to its figure, so pages never pick one by hand. */
+import FrontierCurve from '@components/visuals/FrontierCurve.astro';
+import NetworkFlow from '@components/visuals/NetworkFlow.astro';
+import Convergence from '@components/visuals/Convergence.astro';
+import SparseStructure from '@components/visuals/SparseStructure.astro';
+import ObservationField from '@components/visuals/ObservationField.astro';
+
+interface Props {
+  visual: 'frontier' | 'network' | 'convergence' | 'sparse' | 'observation';
+  labels?: boolean;
+  width?: number;
+  height?: number;
+  class?: string;
+}
+
+const { visual, labels = false, width = 440, height = 340, class: className } = Astro.props;
+const shared = { width, height, class: className };
+---
+
+{visual === 'frontier' && (
+  <FrontierCurve
+    {...shared}
+    labels={labels ? ['predictive error', 'systematic inequity'] : false}
+  />
+)}
+{visual === 'network' && <NetworkFlow {...shared} labels={labels} />}
+{visual === 'convergence' && (
+  <Convergence {...shared} labels={labels ? ['iterations', 'residual'] : false} />
+)}
+{visual === 'sparse' && <SparseStructure {...shared} labels={labels} />}
+{visual === 'observation' && (
+  <ObservationField
+    {...shared}
+    labels={labels ? ['reported score', 'screening statistic'] : false}
+  />
+)}
