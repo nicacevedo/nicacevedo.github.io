@@ -45,7 +45,7 @@ const earlier = projects.filter((p) => p.data.stage === 'earlier');
 
   <section class="band" aria-labelledby="themes-title">
     <div class="shell">
-      <SectionHead index="01" title="Themes" id="themes-title" class="band__head" />
+      <SectionHead index="01" title="Themes" id="themes-title" />
       <ThemeGrid />
     </div>
   </section>
@@ -57,7 +57,6 @@ const earlier = projects.filter((p) => p.data.stage === 'earlier');
         title="Active research"
         id="current-title"
         note="Work I am doing now at the MIT Operations Research Center."
-        class="band__head"
       />
       {current.map((entry) => (
         <ProjectRow entry={entry} />
@@ -72,7 +71,6 @@ const earlier = projects.filter((p) => p.data.stage === 'earlier');
         title="Earlier research"
         id="earlier-title"
         note="Completed work that shaped the methods above."
-        class="band__head"
       />
       {earlier.map((entry) => (
         <ProjectRow entry={entry} compact />
@@ -109,7 +107,7 @@ const earlier = projects.filter((p) => p.data.stage === 'earlier');
   }
 
   .intro__prose {
-    max-width: 60ch;
+    max-width: var(--prose-max);
     color: var(--ink-muted);
   }
 
@@ -154,11 +152,8 @@ const earlier = projects.filter((p) => p.data.stage === 'earlier');
   }
 
   .band {
+    --section-head-gap: var(--space-12);
     padding-block: clamp(var(--space-12), 7vw, var(--space-24)) 0;
-  }
-
-  .band__head {
-    margin-bottom: var(--space-12);
   }
 
   .band__more {

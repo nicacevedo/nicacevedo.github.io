@@ -11,12 +11,11 @@ export interface SocialLink {
   readonly external: boolean;
 }
 
-export interface TimelineEntry {
+export interface ChronologyEntry {
+  readonly kind: 'Education' | 'Research' | 'Industry';
+  readonly period: string;
   readonly role: string;
   readonly org: string;
-  readonly place?: string;
-  readonly period: string;
-  readonly detail?: string;
 }
 
 const email = 'nacevedo@mit.edu';
@@ -33,10 +32,10 @@ export const profile = {
   /** The site's central positioning. */
   statement: 'Optimization for consequential decisions.',
   summary:
-    'I develop optimization and data-driven methods for equitable prediction, infrastructure systems, and reliable large-scale computation.',
+    'I develop optimization and data-driven methods for fair and reliable prediction, infrastructure systems, and scalable computation.',
   /** Slightly longer form, used for meta descriptions and the About page opener. */
   description:
-    'Nicolás Acevedo Villena is a PhD student at the MIT Operations Research Center working on optimization and data-driven methods for equitable prediction, infrastructure systems, and reliable large-scale computation.',
+    'Nicolás Acevedo Villena is a PhD student at the MIT Operations Research Center. He works on optimization and data-driven methods for fair and reliable prediction, infrastructure modeling, and optimization at scale.',
 
   email,
   cvPdf: '/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf',
@@ -58,43 +57,45 @@ export const profile = {
     past: ['Haihao (Sean) Lu'],
   },
 
-  education: [
+  /**
+   * One compact reverse-chronological list for the homepage — education and
+   * work interleaved, because the point is the shape of the path, not a résumé.
+   * The full record lives on the CV page.
+   */
+  chronology: [
     {
+      kind: 'Education',
+      period: '2024 — present',
       role: 'PhD in Operations Research',
       org: 'Massachusetts Institute of Technology',
-      period: 'Sept. 2024 — present',
-      detail: 'Expected 2029',
     },
     {
-      role: 'Master in Operations Management',
-      org: 'Universidad de Chile',
-      period: '2022 — 2023',
-      detail: 'Graduated with highest honors',
-    },
-    {
-      role: 'Bachelor of Engineering Science in Industrial Engineering',
-      org: 'Universidad de Chile',
-      period: '2017 — 2021',
-      detail: 'Graduated with highest honors',
-    },
-  ] as const satisfies readonly TimelineEntry[],
-
-  experience: [
-    {
+      kind: 'Research',
+      period: '2023 — 2024',
       role: 'Researcher',
       org: 'Web Intelligence Centre (WIC) / ACHS',
-      place: 'Santiago, Chile',
-      period: 'Dec. 2023 — Apr. 2024',
-      detail: 'Demand forecasting and appointment capacity planning for Hospital del Trabajador.',
     },
     {
-      role: 'Research Engineer',
+      kind: 'Industry',
+      period: '2022 — 2023',
+      role: 'Research engineer',
       org: 'Nezasa AG / TripYeah',
-      place: 'Zurich, Switzerland',
-      period: 'June 2022 — Apr. 2023',
-      detail: 'Time-dependent routing formulation and solver work for itinerary selection.',
     },
-  ] as const satisfies readonly TimelineEntry[],
+    {
+      kind: 'Education',
+      period: '2022 — 2023',
+      role: 'Master in Operations Management',
+      org: 'Universidad de Chile',
+    },
+    {
+      kind: 'Education',
+      period: '2017 — 2021',
+      role: 'Bachelor of Engineering Science, Industrial Engineering',
+      org: 'Universidad de Chile',
+    },
+  ] as const satisfies readonly ChronologyEntry[],
+
+  interests: 'Music, climbing and time outdoors.',
 } as const;
 
 export type Profile = typeof profile;

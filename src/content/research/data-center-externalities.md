@@ -6,7 +6,7 @@ description: Public-data modeling of data-center resource systems, beginning wit
 researchQuestion: How can public data support transparent, reproducible modeling of the infrastructure and resource externalities associated with large data centers when detailed operational telemetry is unavailable?
 period: 2026 — present
 status: Ongoing public-data modeling
-primaryTheme: infrastructure-systems
+primaryTheme: infrastructure-modeling
 featured: true
 stage: current
 order: 2

@@ -1,5 +1,6 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Picture } from 'astro:assets';
 import Base from '@layouts/Base.astro';
 import ProjectFigure from '@components/research/ProjectFigure.astro';
 import SectionHead from '@components/ui/SectionHead.astro';
@@ -37,6 +38,11 @@ const related = projects
   .slice(0, 2);
 
 const publications = getPublications().filter((p) => p.projectSlug === entry.id);
+
+/** Real figures live in src/assets and are resolved by filename at build time. */
+const assets = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpg,jpeg,png,webp}');
+const figureLoader = data.figure ? assets[`/src/assets/${data.figure.src}`] : undefined;
+const figureImage = figureLoader ? (await figureLoader()).default : undefined;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -131,13 +137,35 @@ const schema = {
 
       <div class="project__prose prose">
         <Content />
+
+        {data.figure && figureImage && (
+          <figure class="evidence">
+            <div class="evidence__plate">
+              <Picture
+                src={figureImage}
+                formats={['avif', 'webp']}
+                widths={[560, 1112]}
+                sizes="(min-width: 62rem) 40vw, 92vw"
+                alt={data.figure.alt}
+                loading="lazy"
+                class="evidence__img"
+              />
+            </div>
+            <figcaption class="evidence__caption">
+              {data.figure.caption}{' '}
+              <a class="link" href={data.figure.sourceHref}>
+                {data.figure.source}
+              </a>
+            </figcaption>
+          </figure>
+        )}
       </div>
     </div>
 
     {publications.length > 0 && (
       <section class="band" aria-labelledby="project-pubs">
         <div class="shell">
-          <SectionHead index="01" title="Formal outputs" id="project-pubs" class="band__head" />
+          <SectionHead index="01" title="Formal outputs" id="project-pubs" />
           <ol class="list-reset pub-list">
             {publications.map((publication) => (
               <li class="pub">
@@ -164,12 +192,7 @@ const schema = {
     {related.length > 0 && (
       <section class="band" aria-labelledby="project-related">
         <div class="shell">
-          <SectionHead
-            index="02"
-            title="Related research"
-            id="project-related"
-            class="band__head"
-          />
+          <SectionHead index="02" title="Related research" id="project-related" />
           <ul class="list-reset related">
             {related.map((item) => (
               <li class="related__item">
@@ -305,6 +328,32 @@ const schema = {
     max-width: 44ch;
   }
 
+  .evidence {
+    margin-top: var(--space-12);
+  }
+
+  /* A reproduction, so it keeps its own paper in both themes rather than
+     pretending to be part of the interface. */
+  .evidence__plate {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+  }
+
+  .evidence__img {
+    width: 100%;
+    height: auto;
+  }
+
+  .evidence__caption {
+    margin-top: var(--space-3);
+    font-size: var(--step--2);
+    line-height: 1.55;
+    color: var(--ink-muted);
+    max-width: 58ch;
+  }
+
   .project__prose :global(h2) {
     font-size: var(--step-2);
   }
@@ -344,16 +393,13 @@ const schema = {
     }
 
     .project__prose {
-      grid-column: 6 / 12;
+      grid-column: 6 / 13;
     }
   }
 
   .band {
+    --section-head-gap: var(--space-8);
     padding-block: clamp(var(--space-12), 7vw, var(--space-24)) 0;
-  }
-
-  .band__head {
-    margin-bottom: var(--space-8);
   }
 
   .band__more {

@@ -37,7 +37,7 @@
   /* Typography scale — fluid between 360px and 1280px viewports. */
   --step--2: clamp(0.75rem, 0.735rem + 0.06vw, 0.78125rem);
   --step--1: clamp(0.8125rem, 0.79rem + 0.11vw, 0.875rem);
-  --step-0: clamp(1rem, 0.975rem + 0.11vw, 1.0625rem);
+  --step-0: clamp(1rem, 0.94rem + 0.26vw, 1.1875rem);
   --step-1: clamp(1.125rem, 1.05rem + 0.33vw, 1.3125rem);
   --step-2: clamp(1.375rem, 1.22rem + 0.68vw, 1.75rem);
   --step-3: clamp(1.75rem, 1.42rem + 1.46vw, 2.5rem);
@@ -58,7 +58,7 @@
 
   /* Layout */
   --shell-max: 78rem; /* 1248px */
-  --prose-max: 40rem; /* ~640px */
+  --prose-max: 41rem; /* ~656px, about 75 characters */
   --gutter: clamp(1rem, 0.4rem + 2.4vw, 1.75rem);
   --pad-x: clamp(1.25rem, 0.5rem + 3.4vw, 4rem);
 

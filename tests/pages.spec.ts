@@ -70,7 +70,8 @@ test.describe('url compatibility', () => {
     test(`${route.from} still reaches ${route.to}`, async ({ page }) => {
       const response = await page.goto(route.from);
       expect(response?.status()).toBe(200);
-      await page.waitForURL(`**${route.to}`, { timeout: 10_000 });
+      // A glob like `**/` also matches the source path, so match the pathname.
+      await page.waitForURL((url) => url.pathname === route.to, { timeout: 10_000 });
       expect(new URL(page.url()).pathname).toBe(route.to);
     });
   }
@@ -95,7 +96,7 @@ test.describe('navigation', () => {
   test('primary navigation is reachable and marks the current page', async ({ page }) => {
     await page.goto('/');
     const nav = page.getByRole('navigation', { name: 'Primary' });
-    for (const label of ['Research', 'Publications', 'About', 'CV']) {
+    for (const label of ['Research', 'Publications', 'Teaching', 'CV']) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
 
@@ -219,6 +220,14 @@ test.describe('links', () => {
     expect(unsafe).toBe(0);
   });
 
+  test('Teaching is in the primary navigation and About is not', async ({ page }) => {
+    await page.goto('/');
+    const nav = page.getByRole('navigation', { name: 'Primary' });
+    await expect(nav.getByRole('link', { name: 'Teaching', exact: true })).toBeVisible();
+    await expect(nav.getByRole('link', { name: 'About', exact: true })).toHaveCount(0);
+    await expect(page.locator('a[href="/about/"]')).toHaveCount(0);
+  });
+
   test('the CV is reachable as a PDF from the CV page', async ({ page, request }) => {
     await page.goto('/cv/');
     const href = await page.getByRole('link', { name: /download pdf/i }).getAttribute('href');
@@ -313,6 +322,24 @@ test.describe('images and media', () => {
           .map((img) => img.getAttribute('src') ?? 'unknown'),
       );
       expect(problems, `${route.path}`).toEqual([]);
+    }
+  });
+
+  test('every image actually loads', async ({ page }) => {
+    for (const route of PAGES) {
+      await page.goto(route.path);
+      const broken = await page.evaluate(async () => {
+        document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+          (img as HTMLImageElement).loading = 'eager';
+        });
+        await Promise.all(
+          [...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),
+        );
+        return [...document.images]
+          .filter((img) => img.naturalWidth === 0)
+          .map((img) => img.currentSrc || img.src);
+      });
+      expect(broken, `${route.path}`).toEqual([]);
     }
   });
 

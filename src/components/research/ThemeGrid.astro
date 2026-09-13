@@ -15,7 +15,6 @@ const { linked = false, headingLevel: Heading = 'h3' } = Astro.props;
   {themes.map((theme) => (
     <li class="theme" id={linked ? undefined : `theme-${theme.id}`}>
       <div class="theme__head">
-        <span class="theme__index label">{theme.index}</span>
         <ThemeMark kind={theme.mark} class="theme__mark" />
       </div>
       <Heading class="theme__name">
@@ -45,14 +44,8 @@ const { linked = false, headingLevel: Heading = 'h3' } = Astro.props;
 
   .theme__head {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--space-4);
+    justify-content: flex-start;
     margin-bottom: var(--space-6);
-  }
-
-  .theme__index {
-    font-variant-numeric: tabular-nums;
   }
 
   .theme__mark {

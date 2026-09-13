@@ -32,7 +32,7 @@ export async function getSelectedOutputs(): Promise<SelectedOutput[]> {
     .sort((a, b) => a.data.order - b.data.order)
     .map((entry) => ({
       kind: 'Research software',
-      title: entry.data.title,
+      title: entry.data.shortTitle ?? entry.data.title,
       meta: entry.data.repository!.replace('https://', ''),
       href: entry.data.repository!,
       year: Number(entry.data.period.slice(0, 4)),

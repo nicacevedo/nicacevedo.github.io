@@ -51,6 +51,7 @@ const LATIN_EXT = [
 
 /** Routes that exist only to keep old URLs alive; they must stay out of the sitemap. */
 const COMPATIBILITY_ROUTES = [
+  '/about/',
   '/projects/',
   '/projects/fairness-robust-constraints/',
   '/news/',
@@ -64,8 +65,13 @@ const COMPATIBILITY_ROUTES = [
 export default defineConfig({
   site: SITE,
   trailingSlash: 'always',
-  build: { format: 'directory' },
   compressHTML: true,
+  build: {
+    format: 'directory',
+    // The whole stylesheet is ~6 kB gzipped, so inlining it removes the only
+    // render-blocking request on the critical path.
+    inlineStylesheets: 'always',
+  },
   prefetch: false,
   devToolbar: { enabled: false },
   image: {
@@ -156,6 +162,7 @@ export default defineConfig({
     }),
   ],
   redirects: {
+    '/about/': '/',
     '/projects/': '/research/',
     '/projects/fairness-robust-constraints/': '/projects/equitable-property-assessment/',
     '/news/': '/updates/',

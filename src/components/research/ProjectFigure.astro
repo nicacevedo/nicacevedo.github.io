@@ -5,9 +5,10 @@ import NetworkFlow from '@components/visuals/NetworkFlow.astro';
 import Convergence from '@components/visuals/Convergence.astro';
 import SparseStructure from '@components/visuals/SparseStructure.astro';
 import ObservationField from '@components/visuals/ObservationField.astro';
+import SequentialChoice from '@components/visuals/SequentialChoice.astro';
 
 interface Props {
-  visual: 'frontier' | 'network' | 'convergence' | 'sparse' | 'observation';
+  visual: 'frontier' | 'network' | 'convergence' | 'sparse' | 'observation' | 'sequence';
   labels?: boolean;
   width?: number;
   height?: number;
@@ -29,6 +30,7 @@ const shared = { width, height, class: className };
   <Convergence {...shared} labels={labels ? ['iterations', 'residual'] : false} />
 )}
 {visual === 'sparse' && <SparseStructure {...shared} labels={labels} />}
+{visual === 'sequence' && <SequentialChoice {...shared} labels={labels} />}
 {visual === 'observation' && (
   <ObservationField
     {...shared}

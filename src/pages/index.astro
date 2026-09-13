@@ -133,9 +133,14 @@ const schema = {
     </div>
   </section>
 
-  <section class="band" aria-labelledby="themes-title">
+  <section class="band band--lead" aria-labelledby="themes-title">
     <div class="shell">
-      <SectionHead index="01" title="Research themes" id="themes-title" class="band__head" />
+      <SectionHead index="01" title="Research directions" id="themes-title" />
+      <p class="band__lead">
+        Property assessment, the resource footprint of data centers, and first-order solvers on GPUs
+        look unrelated from outside. Each is a computation that a decision rests on, and in each the
+        useful work is being precise about what that computation can and cannot support.
+      </p>
       <ThemeGrid linked />
     </div>
   </section>
@@ -144,10 +149,9 @@ const schema = {
     <div class="shell">
       <SectionHead
         index="02"
-        title="Featured research"
+        title="Flagship research"
         id="featured-title"
-        note="Three active directions, each with a public repository."
-        class="band__head"
+        note="The three directions I am working on now, each with a public repository."
       />
       <div class="cases">
         {featured.map((entry, i) => (
@@ -165,12 +169,7 @@ const schema = {
   {practice.length > 0 && (
     <section class="band practice" aria-labelledby="practice-title">
       <div class="shell">
-        <SectionHead
-          index="03"
-          title="Research to practice"
-          id="practice-title"
-          class="band__head"
-        />
+        <SectionHead index="03" title="Research in practice" id="practice-title" />
         {practice.map((record) => (
           <div class="practice__row">
             <div class="practice__when">
@@ -202,7 +201,7 @@ const schema = {
 
   <section class="band" aria-labelledby="outputs-title">
     <div class="shell">
-      <SectionHead index="04" title="Selected outputs" id="outputs-title" class="band__head" />
+      <SectionHead index="04" title="Selected outputs" id="outputs-title" />
       <ol class="outputs list-reset">
         {outputs.map((output) => (
           <li class="output">
@@ -233,55 +232,56 @@ const schema = {
     </div>
   </section>
 
-  <section class="band" aria-labelledby="currently-title">
+  <section class="band" aria-labelledby="background-title">
     <div class="shell">
-      <SectionHead index="05" title="Currently" id="currently-title" class="band__head" />
-      <div class="currently">
-        <div class="currently__now">
-          <p class="currently__lead serif">
-            PhD student at the MIT Operations Research Center, since September 2024.
+      <SectionHead index="05" title="Background" id="background-title" />
+      <p class="background__lead serif">
+        PhD student at the MIT Operations Research Center, since September 2024.
+      </p>
+
+      <div class="background">
+        <div class="background__prose">
+          <p>
+            I came to MIT from the Universidad de Chile, where I completed a master's in operations
+            management and a bachelor's in industrial engineering. My master's thesis — a
+            column-generation decomposition for large-scale feature selection — is where the
+            interest in scalable convex optimization started. Between degrees I worked as a research
+            engineer at Nezasa AG in Zurich on time-dependent routing, and with the Web Intelligence
+            Centre and ACHS on demand forecasting and capacity planning for a hospital in Santiago.
           </p>
-          <p class="currently__advising">
-            Advised by {profile.advising.current.join(' and ')}. Earlier in the PhD I also received
-            research guidance from {profile.advising.past.join(' and ')}.
+          <p>
+            I am advised by {profile.advising.current.join(' and ')}. Earlier in the PhD I also
+            received research guidance from {profile.advising.past.join(' and ')}. Before MIT I
+            worked with Fernando Ordóñez and Renaud Chicoisne on decomposition methods for feature
+            selection, and with Charles Thraves and Ricardo Montoya at the Complex Engineering
+            Systems Institute.
           </p>
-          <p class="currently__more">
-            <a class="arrow-link" href="/about/">
-              More about my background
+          <p class="background__interests">Outside research: {profile.interests.toLowerCase()}</p>
+
+          <p class="background__more">
+            <a class="arrow-link" href="/cv/">
+              Full curriculum vitae
             </a>
           </p>
         </div>
 
-        <div class="currently__history">
-          <h3 class="currently__heading label">Education</h3>
-          <ol class="chrono list-reset">
-            {profile.education.map((item) => (
-              <li class="chrono__item">
-                <span class="chrono__period label">{item.period}</span>
-                <span class="chrono__role">{item.role}</span>
-                <span class="chrono__org">{item.org}</span>
-              </li>
-            ))}
-          </ol>
-
-          <h3 class="currently__heading label">Selected experience</h3>
-          <ol class="chrono list-reset">
-            {profile.experience.map((item) => (
-              <li class="chrono__item">
-                <span class="chrono__period label">{item.period}</span>
-                <span class="chrono__role">{item.role}</span>
-                <span class="chrono__org">{item.org}</span>
-              </li>
-            ))}
-          </ol>
-        </div>
+        <ol class="chrono list-reset">
+          {profile.chronology.map((item) => (
+            <li class="chrono__item">
+              <span class="chrono__period label">{item.period}</span>
+              <span class="chrono__kind label">{item.kind}</span>
+              <span class="chrono__role">{item.role}</span>
+              <span class="chrono__org">{item.org}</span>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   </section>
 
   <section class="band" aria-labelledby="updates-title">
     <div class="shell">
-      <SectionHead index="06" title="Updates" id="updates-title" class="band__head" />
+      <SectionHead index="06" title="Updates" id="updates-title" />
       <UpdateList entries={updates} />
       <p class="band__more">
         <a class="arrow-link" href="/updates/">
@@ -474,11 +474,8 @@ const schema = {
   /* ---------- Sections ---------- */
 
   .band {
+    --section-head-gap: var(--space-12);
     padding-block: clamp(var(--space-12), 7vw, var(--space-24)) 0;
-  }
-
-  .band__head {
-    margin-bottom: var(--space-12);
   }
 
   .band__more {
@@ -577,84 +574,123 @@ const schema = {
     }
   }
 
-  /* ---------- Currently ---------- */
+  /* ---------- Background ---------- */
 
-  .currently {
+  .background {
     display: grid;
     gap: var(--space-12) var(--gutter);
   }
 
-  .currently__lead {
-    font-size: var(--step-2);
-    line-height: 1.25;
-    max-width: 24ch;
-    margin-bottom: var(--space-4);
+  .background__lead {
+    font-size: var(--step-3);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 26ch;
+    color: var(--ink);
+    margin-bottom: clamp(var(--space-8), 4vw, var(--space-12));
   }
 
-  .currently__advising {
+  .background__prose p + p {
+    margin-top: var(--space-4);
+  }
+
+  .background__prose {
     color: var(--ink-muted);
-    max-width: 44ch;
-    margin-bottom: var(--space-6);
+    max-width: var(--prose-max);
   }
 
-  .currently__heading {
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--line);
-    margin-bottom: var(--space-4);
-    display: block;
+  .background__interests {
+    color: var(--ink-faint);
   }
 
-  .currently__heading + .chrono {
-    margin-bottom: var(--space-8);
+  .background__more {
+    margin-top: var(--space-6);
   }
 
   .chrono__item {
     display: grid;
-    gap: 0.1rem var(--gutter);
-    padding-block: var(--space-3);
-  }
-
-  .chrono__item + .chrono__item {
+    grid-template-areas:
+      'period kind'
+      'role role'
+      'org org';
+    gap: 0.15rem var(--gutter);
+    padding-block: var(--space-4);
     border-top: 1px solid var(--line);
   }
 
+  .chrono__item:first-child {
+    border-top-color: var(--ink);
+  }
+
   .chrono__period {
+    grid-area: period;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    padding-top: 0.15em;
+    color: var(--ink);
+  }
+
+  .chrono__kind {
+    grid-area: kind;
+    color: var(--ink-faint);
   }
 
   .chrono__role {
+    grid-area: role;
     font-weight: 500;
-    font-size: var(--step--1);
+    font-size: var(--step-0);
+    line-height: 1.35;
+    margin-top: var(--space-2);
   }
 
   .chrono__org {
+    grid-area: org;
     font-size: var(--step--1);
     color: var(--ink-muted);
   }
 
   @media (min-width: 34rem) {
     .chrono__item {
-      grid-template-columns: 10rem minmax(0, 1fr);
+      grid-template-areas:
+        'period role kind'
+        'period org kind';
+      grid-template-columns: 8.5rem minmax(0, 1fr) 6rem;
+      align-items: baseline;
     }
 
-    .chrono__period {
-      grid-row: span 2;
+    .chrono__kind {
+      text-align: right;
+    }
+
+    .chrono__role {
+      margin-top: 0;
     }
   }
 
   @media (min-width: 62rem) {
-    .currently {
+    .background {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
 
-    .currently__now {
-      grid-column: 1 / 6;
+    .background__prose {
+      grid-column: 1 / 7;
     }
 
-    .currently__history {
-      grid-column: 6 / 13;
+    .background .chrono {
+      grid-column: 8 / 13;
     }
+  }
+
+  /* Where a lead paragraph follows the heading, the two belong together and
+     the air goes below the pair instead. */
+  .band--lead {
+    --section-head-gap: var(--space-6);
+  }
+
+  .band__lead {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-muted);
+    max-width: 58ch;
+    margin-bottom: clamp(var(--space-12), 5vw, var(--space-16));
   }
 </style>

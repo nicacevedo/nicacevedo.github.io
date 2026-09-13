@@ -1,85 +1,140 @@
 ---
 import Base from '@layouts/Base.astro';
 import SectionHead from '@components/ui/SectionHead.astro';
-import { teaching } from '@data/teaching';
+import { teaching, topics, recitationCount } from '@data/teaching';
 
-const groups = [
-  { id: 'mit', index: '01', title: 'Massachusetts Institute of Technology', courses: teaching.mit },
-  {
-    id: 'uchile-graduate',
-    index: '02',
-    title: 'Universidad de Chile — graduate',
-    courses: teaching.uchileGraduate,
-  },
-  {
-    id: 'uchile-undergraduate',
-    index: '03',
-    title: 'Universidad de Chile — undergraduate',
-    courses: teaching.uchileUndergraduate,
-  },
-] as const;
+const mit = [...teaching.mit].sort((a, b) => a.order - b.order);
+const uchile = [...teaching.uchile].sort((a, b) => a.order - b.order);
+
+/** One representative recitation per topic, chosen for coverage not ranking. */
+const selected = topics.flatMap((topic) => {
+  for (const set of teaching.recitations) {
+    if (set.topic !== topic) continue;
+    const video = set.videos.find((v) => 'featured' in v && v.featured);
+    if (video) return [{ topic, course: set.course, video }];
+  }
+  return [];
+});
+
+const byTopic = topics.map((topic) => ({
+  topic,
+  sets: teaching.recitations.filter((set) => set.topic === topic),
+}));
 ---
 
 <Base
   title="Teaching"
-  description="Teaching assistantships at MIT Sloan and the Universidad de Chile, with public recitation videos."
+  description="Teaching assistantships at MIT Sloan and the Universidad de Chile, with public recitation videos in optimization, probability, decision models and operations."
   ogImage="teaching"
 >
   <section class="head">
-    <div class="shell">
-      <p class="label head__eyebrow">Teaching</p>
-      <h1 class="head__title">Courses and recitations</h1>
-      <p class="lead">
-        Teaching assistantships in optimization, probability, statistics and operations management.
-        Several recitations recorded at the Universidad de Chile are public.
-      </p>
+    <div class="shell head__grid">
+      <div>
+        <p class="label head__eyebrow">Teaching</p>
+        <h1 class="head__title">Courses and recitations</h1>
+        <p class="lead">
+          Teaching assistantships across optimization, probability, statistics and operations
+          management — four courses at MIT Sloan and nine at the Universidad de Chile, where I
+          recorded {recitationCount} public recitations.
+        </p>
+      </div>
     </div>
   </section>
 
-  {groups.map((group) => (
-    <section class="band" aria-labelledby={`t-${group.id}`}>
-      <div class="shell">
-        <SectionHead
-          index={group.index}
-          title={group.title}
-          id={`t-${group.id}`}
-          class="band__head"
-        />
-        <ol class="courses list-reset">
-          {group.courses.map((course) => (
-            <li class="course">
-              <span class="course__terms label">{course.terms}</span>
-              <div>
-                <h3 class="course__title">{course.title}</h3>
-                <p class="course__org">
-                  Teaching assistant ·{' '}
-                  {'unit' in course && course.unit ? course.unit : course.institution}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  ))}
-
-  <section class="band" aria-labelledby="recitations">
+  <section class="band" aria-labelledby="t-mit">
     <div class="shell">
-      <SectionHead index="04" title="Recitation videos" id="recitations" class="band__head" />
-      <div class="recitations">
-        {teaching.recitations.map((set) => (
-          <section class="recitation">
-            <h3 class="recitation__course">{set.course}</h3>
-            <ul class="recitation__list list-reset">
-              {set.videos.map((video) => (
-                <li>
-                  <a class="link" href={video.href} target="_blank" rel="noopener">
-                    {video.label}
-                    <span class="visually-hidden"> (opens in a new tab)</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+      <SectionHead
+        index="01"
+        title="MIT"
+        id="t-mit"
+        note="Sloan School of Management, most recent first."
+      />
+      <ol class="courses list-reset">
+        {mit.map((course) => (
+          <li class="course course--lead">
+            <span class="course__terms label">{course.terms}</span>
+            <div>
+              <h3 class="course__title">{course.title}</h3>
+              <p class="course__org">{course.unit}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="t-uchile">
+    <div class="shell">
+      <SectionHead
+        index="02"
+        title="Universidad de Chile"
+        id="t-uchile"
+        note="Graduate and undergraduate courses, most recent first."
+      />
+      <ol class="courses list-reset">
+        {uchile.map((course) => (
+          <li class="course">
+            <span class="course__terms label">{course.terms}</span>
+            <h3 class="course__title course__title--compact">{course.title}</h3>
+            <span class="course__level label">{course.level}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="t-selected">
+    <div class="shell">
+      <SectionHead
+        index="03"
+        title="Selected recitations"
+        id="t-selected"
+        note="One per topic. The full index follows."
+      />
+      <ul class="selected list-reset">
+        {selected.map(({ topic, course, video }) => (
+          <li class="selected__item">
+            <p class="selected__topic label">{topic}</p>
+            <h3 class="selected__title">
+              <a class="link link--title" href={video.href} target="_blank" rel="noopener">
+                {video.label}
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </h3>
+            <p class="selected__course">{course}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="t-index">
+    <div class="shell">
+      <SectionHead
+        index="04"
+        title="Full recitation index"
+        id="t-index"
+        note="All public recordings, grouped by topic."
+      />
+      <div class="index">
+        {byTopic.map(({ topic, sets }) => (
+          <section class="index__topic">
+            <h3 class="index__heading label">{topic}</h3>
+            {sets.map((set) => (
+              <div class="index__course">
+                <p class="index__course-name">{set.course}</p>
+                <ul class="index__list list-reset">
+                  {set.videos.map((video) => (
+                    <li>
+                      <a class="index__link" href={video.href} target="_blank" rel="noopener">
+                        {video.label}
+                        <span class="visually-hidden"> (opens in a new tab)</span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </section>
         ))}
       </div>
@@ -105,12 +160,11 @@ const groups = [
   }
 
   .band {
+    --section-head-gap: var(--space-8);
     padding-block: clamp(var(--space-12), 6vw, var(--space-16)) 0;
   }
 
-  .band__head {
-    margin-bottom: var(--space-6);
-  }
+  /* ---------- Courses ---------- */
 
   .course {
     display: grid;
@@ -119,56 +173,160 @@ const groups = [
     border-top: 1px solid var(--line);
   }
 
+  .course:first-child {
+    border-top-color: var(--ink);
+  }
+
+  .course--lead {
+    padding-block: var(--space-6);
+  }
+
   .course__terms {
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
-    padding-top: 0.25em;
+    padding-top: 0.3em;
+    color: var(--ink);
   }
 
   .course__title {
-    font-size: var(--step-0);
-    font-weight: 550;
-    line-height: 1.35;
-    margin-bottom: var(--space-1);
+    font-size: var(--step-1);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
     max-width: 44ch;
+  }
+
+  .course__title--compact {
+    font-size: var(--step-0);
+    font-weight: 500;
   }
 
   .course__org {
     font-size: var(--step--1);
     color: var(--ink-muted);
+    margin-top: var(--space-1);
   }
 
-  .recitations {
-    display: grid;
-    gap: var(--space-8) var(--gutter);
-  }
-
-  .recitation {
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--line);
-  }
-
-  .recitation__course {
-    font-size: var(--step-0);
-    font-weight: 550;
-    margin-bottom: var(--space-3);
-  }
-
-  .recitation__list {
-    display: grid;
-    gap: var(--space-2);
-    font-size: var(--step--1);
-    color: var(--ink-muted);
-    max-width: 46ch;
+  .course__level {
+    color: var(--ink-faint);
   }
 
   @media (min-width: 48rem) {
     .course {
-      grid-template-columns: 12rem minmax(0, 1fr);
+      grid-template-columns: 13rem minmax(0, 1fr);
+      align-items: baseline;
     }
 
-    .recitations {
+    .course--lead {
+      align-items: start;
+    }
+
+    .courses .course:not(.course--lead) {
+      grid-template-columns: 16rem minmax(0, 1fr) 9rem;
+    }
+
+    .course__level {
+      text-align: right;
+    }
+  }
+
+  /* ---------- Selected ---------- */
+
+  .selected {
+    display: grid;
+    gap: var(--space-8) var(--gutter);
+  }
+
+  .selected__item {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-4);
+  }
+
+  .selected__topic {
+    margin-bottom: var(--space-4);
+  }
+
+  .selected__title {
+    font-size: var(--step-1);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    margin-bottom: var(--space-3);
+  }
+
+  .selected__course {
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 48rem) {
+    .selected {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .selected {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* ---------- Full index ---------- */
+
+  .index {
+    display: grid;
+    gap: var(--space-8) var(--gutter);
+  }
+
+  .index__topic {
+    border-top: 1px solid var(--line);
+    padding-top: var(--space-3);
+  }
+
+  .index__heading {
+    display: block;
+    margin-bottom: var(--space-4);
+  }
+
+  .index__course + .index__course {
+    margin-top: var(--space-4);
+  }
+
+  .index__course-name {
+    font-size: var(--step--1);
+    font-weight: 550;
+    margin-bottom: var(--space-2);
+  }
+
+  .index__list {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .index__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    font-size: var(--step--1);
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .index__link:hover {
+    color: var(--signal);
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  @media (min-width: 48rem) {
+    .index {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .index {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
 </style>

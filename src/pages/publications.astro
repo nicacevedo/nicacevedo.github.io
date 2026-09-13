@@ -53,7 +53,7 @@ const schema = thesis
 
   <section class="band" aria-labelledby="pubs-formal">
     <div class="shell">
-      <SectionHead index="01" title="Papers and theses" id="pubs-formal" class="band__head" />
+      <SectionHead index="01" title="Papers and theses" id="pubs-formal" />
       <ol class="list-reset">
         {publications.map((publication, i) => (
           <PublicationEntry publication={publication} index={i} />
@@ -69,7 +69,6 @@ const schema = thesis
         title="Research software"
         id="pubs-software"
         note="Public repositories that document a project's method and validation."
-        class="band__head"
       />
       <ol class="list-reset">
         {software.map((entry) => (
@@ -100,7 +99,7 @@ const schema = thesis
 
   <section class="band" aria-labelledby="pubs-citing">
     <div class="shell">
-      <SectionHead index="03" title="Citing this work" id="pubs-citing" class="band__head" />
+      <SectionHead index="03" title="Citing this work" id="pubs-citing" />
       <p class="note">
         Each entry above carries its BibTeX record. The full bibliography is kept as a single{' '}
         <code>.bib</code> file in the site's repository, and is the source this page is built from.
@@ -127,15 +126,12 @@ const schema = thesis
   }
 
   .band {
+    --section-head-gap: var(--space-8);
     padding-block: 0 0;
   }
 
   .band + .band {
     padding-top: clamp(var(--space-12), 7vw, var(--space-24));
-  }
-
-  .band__head {
-    margin-bottom: var(--space-8);
   }
 
   .soft {

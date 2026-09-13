@@ -1,7 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const themeId = z.enum(['equitable-prediction', 'infrastructure-systems', 'optimization-at-scale']);
+const themeId = z.enum([
+  'fair-reliable-prediction',
+  'infrastructure-modeling',
+  'scalable-optimization',
+]);
 
 /** Status labels are deliberately few and factual. */
 const status = z.enum([
@@ -40,8 +44,21 @@ const research = defineCollection({
     /** Lower sorts first within its stage. */
     order: z.number(),
     /** Which built-in figure represents this project. */
-    visual: z.enum(['frontier', 'network', 'convergence', 'sparse', 'observation']),
+    visual: z.enum(['frontier', 'network', 'convergence', 'sparse', 'observation', 'sequence']),
     visualCaption: z.string(),
+    /**
+     * An actual research figure, as opposed to the schematic above. Requires a
+     * description and a source, so a real figure can never appear unattributed.
+     */
+    figure: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+        caption: z.string(),
+        source: z.string(),
+        sourceHref: z.string(),
+      })
+      .optional(),
     outputs: z.array(outputLink).default([]),
     repository: z.string().optional(),
   }),

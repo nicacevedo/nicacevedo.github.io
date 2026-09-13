@@ -6,7 +6,7 @@ description: Master's research on a scalable decomposition approach for feature 
 researchQuestion: How can feature selection remain tractable when data have many, highly correlated candidate features?
 period: 2022 — 2023
 status: Completed
-primaryTheme: optimization-at-scale
+primaryTheme: scalable-optimization
 featured: false
 stage: earlier
 order: 4

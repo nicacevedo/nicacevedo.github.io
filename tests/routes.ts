@@ -27,8 +27,12 @@ export const PAGES = [
     name: 'project-tests',
     h1: 'Outlier detection for standardized tests',
   },
+  {
+    path: '/projects/adaptive-questionnaires/',
+    name: 'project-adaptive',
+    h1: 'Adaptive questionnaires',
+  },
   { path: '/publications/', name: 'publications', h1: 'Formal research outputs' },
-  { path: '/about/', name: 'about', h1: 'Nicolás Acevedo Villena' },
   { path: '/cv/', name: 'cv', h1: 'Nicolás Acevedo Villena' },
   { path: '/updates/', name: 'updates', h1: 'What has changed' },
   { path: '/teaching/', name: 'teaching', h1: 'Courses and recitations' },
@@ -36,6 +40,7 @@ export const PAGES = [
 
 /** Old URLs that must keep resolving after the framework migration. */
 export const COMPATIBILITY = [
+  { from: '/about/', to: '/' },
   { from: '/projects/', to: '/research/' },
   {
     from: '/projects/fairness-robust-constraints/',

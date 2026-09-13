@@ -36,10 +36,13 @@ const generated = new Set([17, 31, 42]);
 
 const stems = active.map((i, k) => {
   const magnitude = 0.42 + rand() * 0.55;
+  const sign = signs[k]!;
   return {
     i,
-    y: baseline - signs[k]! * magnitude * (ih / 2 - 10),
+    y: baseline - sign * magnitude * (ih / 2 - 10),
     gen: generated.has(i),
+    /** The marker sits opposite the stem so the two never overlap. */
+    markerDir: -sign,
   };
 });
 

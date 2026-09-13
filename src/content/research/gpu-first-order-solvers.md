@@ -6,7 +6,7 @@ description: Ongoing research on numerical reliability in GPU-based first-order 
 researchQuestion: How can first-order optimization methods remain reliable when large-scale solvers are implemented on GPU hardware?
 period: 2024 — present
 status: Ongoing research
-primaryTheme: optimization-at-scale
+primaryTheme: scalable-optimization
 featured: true
 stage: current
 order: 3

@@ -6,12 +6,24 @@ description: An interpretable anomaly-screening protocol for Chile's university 
 researchQuestion: How can statistical and machine-learning methods support interpretable screening for anomalous standardized-test results?
 period: 2020 — 2022
 status: Conference presentation (unpublished)
-primaryTheme: equitable-prediction
+primaryTheme: fair-reliable-prediction
 featured: false
 stage: earlier
 order: 5
 visual: observation
 visualCaption: Schematic. A screening rule separates ordinary variation from the few results it ranks as anomalous. No data is shown.
+figure:
+  src: outlier-screening-table.jpg
+  alt: >-
+    A ranked table of twenty test takers. Columns give scores for language,
+    mathematics, history and science, and the final column gives the combined
+    anomaly score used to rank them. Several rows are highlighted in colour.
+  caption: >-
+    Example screening output: test takers ranked by the combined anomaly score,
+    shown alongside the per-subject scores behind it. Reproduced from the
+    presentation —
+  source: see the slides for the method
+  sourceHref: /assets/pdf/psu-outliers-slides.pdf
 outputs:
   - label: Presentation paper
     href: /assets/pdf/psu-outliers-tex.pdf

@@ -25,6 +25,13 @@ const { index, title, as: Tag = 'h2', id, note, class: className } = Astro.props
 </div>
 
 <style>
+  /* Scoped styles cannot reach across the component boundary, so the gap below
+     a section heading is set here and tuned by pages through an inherited
+     custom property rather than a class they cannot style. */
+  .section-head {
+    margin-bottom: var(--section-head-gap, var(--space-12));
+  }
+
   .section-head__title {
     font-size: var(--step-2);
     margin-right: auto;

@@ -6,8 +6,8 @@ description: Optimization-based predictive modeling for mass appraisal that hold
 researchQuestion: How can mass-appraisal models improve predictive performance without worsening systematic vertical inequity across properties?
 period: 2024 — present
 status: Ongoing research
-primaryTheme: equitable-prediction
-secondaryThemes: [optimization-at-scale]
+primaryTheme: fair-reliable-prediction
+secondaryThemes: [scalable-optimization]
 featured: true
 stage: current
 order: 1
