@@ -232,6 +232,14 @@ publishes it with the official GitHub Pages action. `.github/workflows/ci.yml`
 runs formatting, type checks, the full browser and accessibility suite, and
 `npm audit` on every push and pull request.
 
+The empty `.nojekyll` at the repository root exists only because this repository
+still carries a vestigial branch-based Pages source from its Jekyll days. That
+legacy builder is triggered on every push, tries to run Jekyll over the repo and
+fails; its deploy step is always skipped, so it cannot affect the live site, but
+`.nojekyll` makes it exit cleanly instead of showing a red run. Setting the Pages
+source explicitly to "GitHub Actions" in the repository settings removes the
+legacy record altogether, after which the file can go.
+
 `dist/` is never committed. The site has no custom domain; adding one means
 putting a `CNAME` file in `public/` and updating `site` in `astro.config.mjs`.
 
