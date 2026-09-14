@@ -15,19 +15,35 @@ header. No UI framework, no runtime dependencies, no analytics.
 ## Everyday commands
 
 ```bash
-npm install        # install dependencies from the lockfile
+npm ci             # install exactly what the lockfile pins — the normal case
 npm run dev        # local dev server on http://localhost:4321
-npm run build      # production build into dist/
+npm run build      # regenerate icons and cards, then build into dist/
 npm run serve      # serve dist/ the way GitHub Pages does
 npm run check      # TypeScript + content-schema check
 npm test           # Playwright browser and accessibility suite
+npm run budget     # architecture and weight budgets for dist/
 npm run format     # Prettier
 ```
 
-The first test run also needs a browser:
+Use `npm ci` to install. It installs the locked versions and nothing else, so a
+checkout builds the same way everywhere and CI matches a laptop. `npm install`
+is for the one case it is meant for: deliberately adding, removing or bumping a
+dependency, which rewrites `package-lock.json` and should be committed as its
+own change.
+
+The first test run also needs the browsers. Chromium carries the full
+regression suite; Firefox and WebKit are used only by the cross-engine smoke
+spec:
 
 ```bash
 npm run test:install
+```
+
+Two checks reach the network and so are not part of `npm test`:
+
+```bash
+npm run links        # resolve every external link the site depends on
+npm run production   # verify the deployed site, route by route
 ```
 
 ## Where things live
@@ -45,7 +61,7 @@ public/
   assets/pdf/         the CV and other PDFs, at their original URLs
   favicon/            generated icon set
   generated/og/       generated social cards
-scripts/              figure, icon, social-card and static-server scripts
+scripts/              figure, icon, social-card, static-server and check scripts
 tests/                Playwright specs and the route inventory
 ```
 
@@ -56,6 +72,15 @@ returns home. There is deliberately no About page — the homepage carries the
 identity, positioning, background and advising context, so a separate page would
 only duplicate it. `/about/` redirects home in case the URL is ever linked.
 Updates are a secondary destination reachable from the homepage and the footer.
+
+Two conventions hold across every page:
+
+- **`CV` means the HTML page at `/cv/`,** never the file. Every link labelled CV
+  or "Curriculum vitae" goes to that page, and the PDF-specific actions —
+  Download PDF, View PDF — live only on it. The PDF is still the formal
+  document; the HTML exists so the same record is selectable and searchable.
+- **The `↗` marker means the link leaves the site.** Internal routes never carry
+  one. `tests/consistency.spec.ts` asserts both rules on every route.
 
 ## Adding or updating a research project
 
@@ -80,6 +105,7 @@ order: 1 # sort order within its stage
 visual: frontier # frontier | network | convergence | sparse | observation
 visualCaption: What the figure is, and that it shows no data.
 repository: https://github.com/... # optional
+repositoryKind: Research repository # Research repository | Research code | Research software
 outputs:
   - label: Project repository
     href: https://github.com/...
@@ -116,6 +142,12 @@ Two conventions worth keeping:
   figure is ever added, it needs a caption naming its source.
 - **Statuses are factual.** The status enum exists so an ongoing project cannot
   quietly become a publication.
+- **A repository is not software.** `repositoryKind` says what a public
+  repository actually is, and it defaults to the weakest claim,
+  `Research repository`. Use `Research software` only for something built to be
+  run by other people. It is the label shown on `/publications/` under "Open
+  research code" and in the homepage output list, so upgrading it upgrades the
+  claim everywhere.
 
 ## Adding an update
 
@@ -154,6 +186,19 @@ browser. Standard BibTeX fields work as expected, plus these extras:
 
 Buttons appear only for fields that are present.
 
+Entry kinds come from the BibTeX entry type, mapped in
+`src/utils/publications.ts`. `@unpublished` deliberately renders as
+**Conference presentation (unpublished)** — the qualifier is part of the label
+rather than a footnote, so no compact rendering anywhere on the site can read as
+a published paper. `/publications/` separates **Scholarly outputs** from **Open
+research code** for the same reason.
+
+Everything the parser returns passes through one conversion boundary in
+`src/utils/publications.ts`, which strips the parser's inline markup and
+normalizes to Unicode NFC. The parser decomposes accents, so without this
+`Nicolás` would reach the page as `a` + U+0301: visually identical, but a
+different string to search, sort and copy.
+
 ## Teaching
 
 `src/data/teaching.ts` drives both `/teaching/` and the CV page. Courses carry an
@@ -185,20 +230,35 @@ splits, preload links and metric-matched fallbacks. Nothing is fetched from a
 font CDN, at build time or in the browser. To change a face, drop the new file
 in and update the `fonts` array in `astro.config.mjs`.
 
+`@fontsource/instrument-sans` is still a devDependency, and is required:
+`scripts/generate-og.mjs` resolves static `.woff` files out of that package to
+hand to satori, which cannot use a variable font. It never reaches the site — it
+exists only so the social cards can be drawn. `npm run budget` asserts that no
+font is ever requested from a CDN at runtime.
+
 ## Design tokens
 
 `src/styles/tokens.css` is the whole palette, type scale and spacing scale.
 `--prose-max` is tuned so a reading column lands at roughly 75 characters; if you
 change `--step-0`, re-check it.
 
-Astro's scoped styles cannot cross a component boundary, so a page cannot style
-`SectionHead` directly. The gap below a section heading is set inside that
-component and tuned by pages through the inherited `--section-head-gap` custom
-property. Both
-themes are defined there: light on bare `:root`, dark under both
+Both themes are defined there: light on bare `:root`, dark under both
 `prefers-color-scheme` and an explicit `[data-theme="dark"]`, so the toggle wins
 in either direction. Contrast is asserted by the accessibility tests, so a token
 change that breaks AA fails CI.
+
+The whole theme mechanism is one inline script in
+`src/components/layout/BaseHead.astro`, applied before first paint. It also owns
+the single `<meta name="theme-color">` tag, so the browser chrome follows the
+effective theme — system preference, or an explicit choice, whichever applies.
+The toggle at the end of `Base.astro` calls into it rather than reimplementing
+it. The two canvas colors appear in that file as well as in `tokens.css`; the
+cross-browser spec asserts they still agree.
+
+Astro's scoped styles cannot cross a component boundary, so a page cannot style
+`SectionHead` directly. The gap below a section heading is set inside that
+component and tuned by pages through the inherited `--section-head-gap` custom
+property.
 
 ## Figures
 
@@ -210,7 +270,8 @@ tokens via `figure.css`.
 
 ## Icons and social cards
 
-Both are generated and committed:
+Both are generated, committed, and regenerated on every build: `prebuild` runs
+`npm run icons && npm run og` before Astro, so there is no way to forget.
 
 ```bash
 npm run icons   # public/favicon/* and public/favicon.ico
@@ -219,29 +280,92 @@ npm run og      # public/generated/og/*.png
 
 `npm run og` builds one 1200×630 card per page and one per research project,
 reading titles, directions and figure types straight from the content
-frontmatter — a new project gets a card without editing the script. Each project
-card carries that project's own figure (`scripts/og-figures.mjs` draws
-card-scale renditions of the same geometry), never a portrait and never the same
-generic artwork. Cards are laid out with satori and rasterised with sharp;
-nothing screenshots a page.
+frontmatter, and identity and positioning straight from `src/data/profile.ts`
+and `src/data/themes.ts` — so a card cannot disagree with the site, and a new
+project gets one without editing the script. Each project card carries that
+project's own figure (`scripts/og-figures.mjs` draws card-scale renditions of
+the same geometry), never a portrait and never the same generic artwork. Cards
+are laid out with satori and rasterised with sharp; nothing screenshots a page.
+
+Both generators are byte-for-byte deterministic, which is what makes the
+committed files checkable: CI builds and then fails if `public/` is dirty. So
+the two models — generated and committed — cannot drift apart. If you change a
+project title or a theme name, run the generators and commit the new PNGs in the
+same change.
+
+## Tests and checks
+
+`npm test` runs one Playwright config with several projects, so nothing is paid
+for twice:
+
+| Project                     | Specs           | What it is for                                        |
+| --------------------------- | --------------- | ----------------------------------------------------- |
+| `desktop` `tablet` `mobile` | `pages`, `a11y` | the full regression suite at 1440, 768 and 412px      |
+| `consistency`               | `consistency`   | what every route _says_ — checked once, not per width |
+| `narrow`                    | `narrow`        | the 320 and 360px floor                               |
+| `smoke-*`                   | `cross-browser` | Chromium, Firefox, WebKit and a mobile WebKit profile |
+
+The regression suite is deliberately **not** multiplied across engines. The
+smoke spec is the part an engine can actually differ on: layout width, sticky
+positioning, font loading, inline scripting and SVG rendering.
+
+`npm run budget` checks the shape of `dist/` rather than a Lighthouse score: no
+emitted JavaScript bundle, no request to a font CDN or an analytics host, no
+external `<script src>`, no framework runtime markers, and page weight under a
+deliberately roomy ceiling. It runs in CI, so the site cannot quietly stop being
+a static, dependency-free page.
+
+`npm run production` makes the same assertions as `consistency`, but against
+what GitHub Pages is actually serving: every route in the published sitemap, the
+legacy redirects, the files that must stay put, and the 404 behaviour. Run it
+after a deploy.
 
 ## Deployment
 
 Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and
-publishes it with the official GitHub Pages action. `.github/workflows/ci.yml`
-runs formatting, type checks, the full browser and accessibility suite, and
-`npm audit` on every push and pull request.
-
-The empty `.nojekyll` at the repository root exists only because this repository
-still carries a vestigial branch-based Pages source from its Jekyll days. That
-legacy builder is triggered on every push, tries to run Jekyll over the repo and
-fails; its deploy step is always skipped, so it cannot affect the live site, but
-`.nojekyll` makes it exit cleanly instead of showing a red run. Setting the Pages
-source explicitly to "GitHub Actions" in the repository settings removes the
-legacy record altogether, after which the file can go.
+publishes it with the official GitHub Pages actions. `.github/workflows/ci.yml`
+runs formatting, type checks, the build, the generated-asset check, the budgets,
+the full test suite and `npm audit` on every push and pull request.
+`.github/workflows/external-links.yml` resolves the site's external links
+monthly and opens an issue if one is genuinely gone — it is kept off the normal
+path so a briefly unreachable DOI resolver can never block a deploy.
+`.github/dependabot.yml` proposes npm and Actions updates monthly, grouped;
+nothing auto-merges.
 
 `dist/` is never committed. The site has no custom domain; adding one means
 putting a `CNAME` file in `public/` and updating `site` in `astro.config.mjs`.
+
+### One setting that still needs a human
+
+This repository predates the Astro site, and its **Pages source is still a
+branch**. GitHub therefore also runs its built-in `pages-build-deployment`
+workflow on every push to `main`, alongside the real one. That run now fails
+(there is no Jekyll site to build) and publishes nothing, so the Actions
+deployment is always what goes live — a red run in the list, and nothing worse.
+
+Making it stop, and letting the leftovers go, needs one change that only a
+repository admin can make:
+
+1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
+   Equivalently, with an authenticated CLI:
+
+   ```bash
+   gh api --method PUT repos/nicacevedo/nicacevedo.github.io/pages -f build_type=workflow
+   gh api repos/nicacevedo/nicacevedo.github.io/pages   # expect build_type: workflow
+   ```
+
+2. Push anything and confirm only **Quality** and **Deploy to GitHub Pages**
+   run — no `pages build and deployment`.
+
+3. Then the obsolete branch can go. The pre-Astro source is already kept by the
+   `pre-astro-redesign-20260913` tag, so nothing is lost:
+
+   ```bash
+   git push origin --delete gh-pages
+   ```
+
+Do not delete `gh-pages` before step 2 confirms the source is GitHub Actions —
+while Pages is still serving from a branch, deleting it can take the site down.
 
 ## URL compatibility
 

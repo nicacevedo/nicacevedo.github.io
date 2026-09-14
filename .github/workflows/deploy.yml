@@ -20,9 +20,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -33,18 +33,16 @@ jobs:
       - name: Types and content schemas
         run: npm run check
 
+      # `prebuild` regenerates the favicons and social cards first, so what is
+      # deployed always matches the content it was built from.
       - name: Build
         run: npm run build
 
-      # `enablement` switches this repository's Pages source to GitHub Actions
-      # on the first run, replacing the old gh-pages branch deployment.
       - name: Configure Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+        uses: actions/configure-pages@v6
 
       - name: Upload the site
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -58,4 +56,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

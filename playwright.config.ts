@@ -3,6 +3,15 @@ import { defineConfig, devices } from '@playwright/test';
 const PORT = 4321;
 const baseURL = `http://localhost:${PORT}`;
 
+/** The full regression suite, run at three widths on Chromium. */
+const REGRESSION = /(pages|a11y)\.spec\.ts/;
+/** Viewport-independent assertions about what every page says. Run once. */
+const CONSISTENCY = /consistency\.spec\.ts/;
+/** The narrow-phone pass. Sets its own viewports. Run once. */
+const NARROW = /narrow\.spec\.ts/;
+/** The small suite worth paying for on every engine. */
+const SMOKE = /cross-browser\.spec\.ts/;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -20,13 +29,25 @@ export default defineConfig({
   projects: [
     {
       name: 'desktop',
+      testMatch: REGRESSION,
       use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
     },
     {
       name: 'tablet',
+      testMatch: REGRESSION,
       use: { ...devices['Desktop Chrome'], viewport: { width: 768, height: 1024 } },
     },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    { name: 'mobile', testMatch: REGRESSION, use: { ...devices['Pixel 7'] } },
+
+    { name: 'consistency', testMatch: CONSISTENCY, use: { ...devices['Desktop Chrome'] } },
+    { name: 'narrow', testMatch: NARROW, use: { ...devices['Desktop Chrome'] } },
+
+    // Three engines, plus a modern iPhone profile for mobile WebKit. Deliberately
+    // only the smoke suite: the regression suite is not multiplied across engines.
+    { name: 'smoke-chromium', testMatch: SMOKE, use: { ...devices['Desktop Chrome'] } },
+    { name: 'smoke-firefox', testMatch: SMOKE, use: { ...devices['Desktop Firefox'] } },
+    { name: 'smoke-webkit', testMatch: SMOKE, use: { ...devices['Desktop Safari'] } },
+    { name: 'smoke-webkit-mobile', testMatch: SMOKE, use: { ...devices['iPhone 15'] } },
   ],
   webServer: {
     command: `node scripts/serve.mjs ${PORT}`,

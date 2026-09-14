@@ -24,6 +24,10 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-The typefaces used by this site (Instrument Sans and Newsreader) are licensed
-under the SIL Open Font License 1.1 and are fetched at build time from their
-respective npm packages.
+The typefaces used by this site, Instrument Sans and Newsreader, are vendored
+into this repository as variable .woff2 subsets under src/assets/fonts/. They
+are licensed under the SIL Open Font License, Version 1.1, and the full license
+text for each is stored alongside the font files:
+
+  src/assets/fonts/Instrument-Sans-OFL.txt
+  src/assets/fonts/Newsreader-OFL.txt

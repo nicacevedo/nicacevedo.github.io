@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run icons && npm run og",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
@@ -16,9 +17,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "playwright test",
-    "test:install": "playwright install --with-deps chromium",
+    "test:install": "playwright install --with-deps chromium firefox webkit",
     "serve": "node scripts/serve.mjs",
-    "icons": "node scripts/generate-icons.mjs"
+    "icons": "node scripts/generate-icons.mjs",
+    "budget": "node scripts/check-budget.mjs",
+    "links": "node scripts/check-external-links.mjs",
+    "production": "node scripts/check-production.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

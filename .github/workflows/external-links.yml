@@ -1,0 +1,80 @@
+name: External links
+
+# Deliberately separate from Quality: a DOI resolver or a university repository
+# being briefly unreachable must never block a pull request or a deploy.
+on:
+  schedule:
+    # 06:00 UTC on the first of each month.
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: external-links
+  cancel-in-progress: false
+
+jobs:
+  resolve:
+    name: Resolve every external link
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # No install step: the checker uses only Node built-ins.
+      - name: Check
+        run: node scripts/check-external-links.mjs --report external-links-report.md
+
+      - name: Keep the report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: external-links-report
+          path: external-links-report.md
+          retention-days: 90
+          if-no-files-found: warn
+
+      - name: Open or update an issue
+        if: failure()
+        continue-on-error: true
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('node:fs');
+            const title = 'Broken external links';
+            const report = fs.existsSync('external-links-report.md')
+              ? fs.readFileSync('external-links-report.md', 'utf8')
+              : 'The check failed before it could write a report.';
+            const run = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `${report}\n[Workflow run](${run})\n`;
+
+            const { data: open } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              creator: 'github-actions[bot]',
+              per_page: 100,
+            });
+            const existing = open.find((issue) => issue.title === title);
+
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+              });
+            }

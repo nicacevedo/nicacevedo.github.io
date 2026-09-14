@@ -67,3 +67,48 @@ export const STATIC_FILES = [
   '/favicon/site.webmanifest',
   '/generated/og/home.png',
 ] as const;
+
+/** The primary navigation, in order. Every page offers exactly these. */
+export const NAV = ['Research', 'Publications', 'Teaching', 'CV'] as const;
+
+/**
+ * Which navigation item a route marks as current, or null where none does:
+ * a project page is reached through Research but is not Research, and Updates
+ * is a secondary destination that never appears in the primary navigation.
+ */
+export const CURRENT_NAV: Record<string, (typeof NAV)[number] | null> = {
+  '/': null,
+  '/research/': 'Research',
+  '/publications/': 'Publications',
+  '/teaching/': 'Teaching',
+  '/cv/': 'CV',
+  '/updates/': null,
+};
+
+/** The current research-direction vocabulary. Nothing else may name a theme. */
+export const THEMES = [
+  'Fair & reliable predictive modeling',
+  'Infrastructure modeling & planning',
+  'Scalable optimization & computation',
+] as const;
+
+/**
+ * Labels this site has used before. A cached page or a half-finished rename
+ * must never put one of them back.
+ */
+export const RETIRED_LABELS = [
+  'Equitable Prediction',
+  'Equitable prediction',
+  'Infrastructure Systems',
+  'Infrastructure systems',
+  'Optimization at Scale',
+  'Optimization at scale',
+  'Decisions / Systems / Computation',
+  'Fairness and Robust Constraints',
+  'Papers and theses',
+] as const;
+
+/** The pages used by the cross-engine smoke suite: one of each kind. */
+export const SMOKE_PAGES = PAGES.filter((page) =>
+  ['home', 'research', 'project-property', 'publications', 'teaching', 'cv'].includes(page.name),
+);
