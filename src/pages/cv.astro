@@ -21,6 +21,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
   title="Curriculum vitae"
   description={`Curriculum vitae of ${profile.name} — education, research, professional experience, teaching and awards.`}
   ogImage="cv"
+  ogType="profile"
 >
   <section class="head">
     <div class="shell">
@@ -79,7 +80,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 
   <section class="band" aria-labelledby="cv-publications">
     <div class="shell">
-      <SectionHead index="04" title="Publications" id="cv-publications" />
+      <SectionHead index="04" title="Publications & presentations" id="cv-publications" />
       <ol class="entries list-reset">
         {publications.map((publication) => (
           <li class="entry entry--tight">

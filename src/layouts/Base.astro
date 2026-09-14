@@ -1,5 +1,5 @@
 ---
-import BaseHead from '@components/layout/BaseHead.astro';
+import BaseHead, { type OgType } from '@components/layout/BaseHead.astro';
 import Header from '@components/layout/Header.astro';
 import Footer from '@components/layout/Footer.astro';
 import '@styles/base.css';
@@ -8,12 +8,13 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  ogType?: OgType;
   schema?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
   bodyClass?: string;
 }
 
-const { title, description, ogImage, schema, noindex, bodyClass } = Astro.props;
+const { title, description, ogImage, ogType, schema, noindex, bodyClass } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,6 +24,7 @@ const { title, description, ogImage, schema, noindex, bodyClass } = Astro.props;
       title={title}
       description={description}
       ogImage={ogImage}
+      ogType={ogType}
       schema={schema}
       noindex={noindex}
     />
@@ -40,15 +42,11 @@ const { title, description, ogImage, schema, noindex, bodyClass } = Astro.props;
     <script is:inline>
       (() => {
         const button = document.getElementById('theme-toggle');
-        if (!button) return;
-        const root = document.documentElement;
-
-        const current = () =>
-          root.dataset.theme ??
-          (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const theme = window.__theme;
+        if (!button || !theme) return;
 
         const sync = () => {
-          const isDark = current() === 'dark';
+          const isDark = theme.effective() === 'dark';
           button.setAttribute('aria-pressed', String(isDark));
           button.setAttribute(
             'aria-label',
@@ -57,13 +55,7 @@ const { title, description, ogImage, schema, noindex, bodyClass } = Astro.props;
         };
 
         button.addEventListener('click', () => {
-          const next = current() === 'dark' ? 'light' : 'dark';
-          root.dataset.theme = next;
-          try {
-            localStorage.setItem('theme', next);
-          } catch (_) {
-            /* preference simply will not persist */
-          }
+          theme.set(theme.effective() === 'dark' ? 'light' : 'dark');
           sync();
         });
 

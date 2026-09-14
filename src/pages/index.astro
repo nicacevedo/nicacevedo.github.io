@@ -9,6 +9,7 @@ import SectionHead from '@components/ui/SectionHead.astro';
 import UpdateList from '@components/ui/UpdateList.astro';
 import { profile } from '@data/profile';
 import { practice } from '@data/practice';
+import { themes } from '@data/themes';
 import { getSelectedOutputs } from '@utils/outputs';
 import portrait from '@assets/portrait.jpg';
 
@@ -22,10 +23,11 @@ const updates = (await getCollection('updates'))
 
 const outputs = (await getSelectedOutputs()).slice(0, 5);
 
+/* No dateModified: a deployment date is not a content modification date, and a
+   value derived from the build clock would change on every deploy. */
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  dateModified: new Date().toISOString().slice(0, 10),
   mainEntity: {
     '@type': 'Person',
     name: profile.name,
@@ -39,13 +41,7 @@ const schema = {
       url: 'https://www.mit.edu/',
     },
     alumniOf: [{ '@type': 'CollegeOrUniversity', name: 'Universidad de Chile' }],
-    knowsAbout: [
-      'Operations research',
-      'Optimization',
-      'Equitable prediction',
-      'Infrastructure systems',
-      'Large-scale optimization',
-    ],
+    knowsAbout: ['Operations research', 'Optimization', ...themes.map((t) => t.name)],
     sameAs: profile.socials.filter((s) => s.external).map((s) => s.href),
   },
 };
@@ -55,6 +51,7 @@ const schema = {
   title={`${profile.name} — ${profile.statement}`}
   description={profile.description}
   ogImage="home"
+  ogType="profile"
   schema={schema}
 >
   <section class="hero" aria-labelledby="hero-title">
@@ -103,10 +100,8 @@ const schema = {
             <a class="btn" href="/research/">
               Explore research
             </a>
-            <a class="btn btn--ghost" href={profile.cvPdf}>
+            <a class="btn btn--ghost" href="/cv/">
               Curriculum vitae
-              <span aria-hidden="true">↗</span>
-              <span class="visually-hidden">(PDF)</span>
             </a>
           </div>
         </div>

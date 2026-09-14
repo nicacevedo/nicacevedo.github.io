@@ -11,8 +11,9 @@ export interface SelectedOutput {
 }
 
 /**
- * The homepage's short list: formal publications plus the research software
- * that is genuinely a public output of a project.
+ * The homepage's short list: scholarly outputs plus the open research code
+ * that is genuinely a public output of a project. Each entry keeps the label
+ * its own record gives it, so nothing is promoted on the way to this list.
  */
 export async function getSelectedOutputs(): Promise<SelectedOutput[]> {
   const publications: SelectedOutput[] = getPublications()
@@ -27,11 +28,11 @@ export async function getSelectedOutputs(): Promise<SelectedOutput[]> {
     }));
 
   const projects = await getCollection('research');
-  const software: SelectedOutput[] = projects
+  const code: SelectedOutput[] = projects
     .filter((entry) => Boolean(entry.data.repository))
     .sort((a, b) => a.data.order - b.data.order)
     .map((entry) => ({
-      kind: 'Research software',
+      kind: entry.data.repositoryKind,
       title: entry.data.shortTitle ?? entry.data.title,
       meta: entry.data.repository!.replace('https://', ''),
       href: entry.data.repository!,
@@ -39,5 +40,5 @@ export async function getSelectedOutputs(): Promise<SelectedOutput[]> {
       external: true,
     }));
 
-  return [...publications, ...software].sort((a, b) => b.year - a.year);
+  return [...publications, ...code].sort((a, b) => b.year - a.year);
 }

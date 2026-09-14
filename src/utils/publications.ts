@@ -34,22 +34,53 @@ export interface Publication {
   readonly bibtex: string;
 }
 
-const stripTags = (value: string) => value.replace(/<[^>]+>/g, '');
+/**
+ * The single conversion boundary for everything the .bib contributes to a page.
+ *
+ * The parser returns decoded Unicode with any parsed markup as inline HTML
+ * tags, and it decomposes accents: "Nicolás" arrives as `a` + U+0301 (NFD).
+ * Markup is stripped, whitespace collapsed and the result normalized to NFC
+ * here, once, so no individual name ever needs patching downstream.
+ */
+const clean = (value: string) =>
+  value
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .normalize('NFC');
+
+/**
+ * Reads a displayable field. BibTeX fields arrive as a string, or as a list
+ * when the parser treats the field as repeatable (`organization`).
+ */
+function display(value: unknown): string | undefined {
+  if (typeof value === 'string') return clean(value) || undefined;
+  if (Array.isArray(value)) {
+    const parts = value.filter((part): part is string => typeof part === 'string').map(clean);
+    const joined = parts.filter(Boolean).join(', ');
+    return joined || undefined;
+  }
+  return undefined;
+}
+
+/** Reads a link target. Kept separate: a URL is not prose and is never joined. */
+function target(value: unknown): string | undefined {
+  return typeof value === 'string' && value.trim() ? value.trim() : undefined;
+}
 
 const kindLabels: Record<string, string> = {
   mastersthesis: "Master's thesis",
   phdthesis: 'Doctoral thesis',
-  unpublished: 'Conference presentation',
+  // The qualifier is part of the label, so no compact rendering of this entry
+  // anywhere on the site can read as a published paper.
+  unpublished: 'Conference presentation (unpublished)',
   article: 'Journal article',
   inproceedings: 'Conference paper',
   misc: 'Preprint',
 };
 
 function buildLinks(fields: Record<string, unknown>): PublicationLink[] {
-  const get = (name: string) => {
-    const value = fields[name];
-    return typeof value === 'string' && value.trim() ? value.trim() : undefined;
-  };
+  const get = (name: string) => target(fields[name]);
 
   const links: PublicationLink[] = [];
   const pdf = get('pdf');
@@ -75,10 +106,7 @@ function buildLinks(fields: Record<string, unknown>): PublicationLink[] {
 }
 
 function buildVenue(type: string, fields: Record<string, unknown>): string {
-  const text = (name: string) => {
-    const value = fields[name];
-    return typeof value === 'string' ? stripTags(value).trim() : '';
-  };
+  const text = (name: string) => display(fields[name]) ?? '';
 
   if (type === 'mastersthesis' || type === 'phdthesis') {
     return [text('school'), text('address')].filter(Boolean).join(' · ');
@@ -86,6 +114,8 @@ function buildVenue(type: string, fields: Record<string, unknown>): string {
   const parts = [text('booktitle') || text('journal'), text('organization'), text('address')];
   return parts.filter(Boolean).join(' · ');
 }
+
+const self = profile.name.normalize('NFC');
 
 let cache: Publication[] | undefined;
 
@@ -100,31 +130,28 @@ export function getPublications(): Publication[] {
 
     const authors = creators.map((creator) => {
       const record = creator as { firstName?: string; lastName?: string; name?: string };
-      const name = record.name ?? [record.firstName, record.lastName].filter(Boolean).join(' ');
-      const last = record.lastName ?? '';
-      return { name, isSelf: last === 'Acevedo Villena' || name === profile.name };
+      const last = clean(record.lastName ?? '');
+      const first = clean(record.firstName ?? '');
+      const literal = clean(record.name ?? '');
+      const name = literal || [first, last].filter(Boolean).join(' ');
+      return { name, isSelf: last === 'Acevedo Villena' || name === self };
     });
-
-    const asText = (name: string) => {
-      const value = fields[name];
-      return typeof value === 'string' ? stripTags(value).trim() : undefined;
-    };
-
-    const typeOverride = asText('type');
 
     return {
       key: entry.key,
-      title: stripTags(String(fields.title ?? '')).trim(),
+      title: display(fields.title) ?? '',
       authors,
       year: Number(fields.year ?? 0),
       month: Number(fields.month ?? 0),
-      kindLabel: typeOverride ?? kindLabels[entry.type] ?? 'Research output',
+      kindLabel: display(fields.type) ?? kindLabels[entry.type] ?? 'Research output',
       venue: buildVenue(entry.type, fields),
-      note: asText('note'),
+      note: display(fields.note),
       links: buildLinks(fields),
-      projectSlug: asText('project'),
-      selected: asText('selected') === 'true',
-      bibtex: entry.input.trim(),
+      projectSlug: display(fields.project),
+      selected: display(fields.selected) === 'true',
+      // The verbatim record, so it can be copied and cited; only normalized,
+      // never reflowed.
+      bibtex: entry.input.trim().normalize('NFC'),
     };
   });
 

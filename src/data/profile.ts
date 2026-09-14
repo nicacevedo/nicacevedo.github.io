@@ -19,9 +19,18 @@ export interface ChronologyEntry {
 }
 
 const email = 'nacevedo@mit.edu';
+const name = 'Nicolás Acevedo Villena';
+
+/**
+ * The research program as one noun phrase. Every summary on the site and on
+ * the generated social cards is built from this, so the three directions are
+ * always described in the same words and cannot drift apart.
+ */
+const methods =
+  'optimization and data-driven methods for fair and reliable prediction, infrastructure modeling and planning, and scalable computation';
 
 export const profile = {
-  name: 'Nicolás Acevedo Villena',
+  name,
   /** Used where diacritics would break (BibTeX matching, file names). */
   nameAscii: 'Nicolas Acevedo Villena',
   role: 'PhD student in Operations Research',
@@ -31,11 +40,12 @@ export const profile = {
 
   /** The site's central positioning. */
   statement: 'Optimization for consequential decisions.',
-  summary:
-    'I develop optimization and data-driven methods for fair and reliable prediction, infrastructure systems, and scalable computation.',
-  /** Slightly longer form, used for meta descriptions and the About page opener. */
-  description:
-    'Nicolás Acevedo Villena is a PhD student at the MIT Operations Research Center. He works on optimization and data-driven methods for fair and reliable prediction, infrastructure modeling, and optimization at scale.',
+  /** The research program, as a phrase other copy can be built from. */
+  methods,
+  /** First person, for the homepage hero. */
+  summary: `I develop ${methods}.`,
+  /** Third person, for meta descriptions and structured data. */
+  description: `${name} is a PhD student at the MIT Operations Research Center. He works on ${methods}.`,
 
   email,
   cvPdf: '/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf',

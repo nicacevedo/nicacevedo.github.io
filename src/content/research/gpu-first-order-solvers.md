@@ -13,6 +13,7 @@ order: 3
 visual: convergence
 visualCaption: Schematic. Residuals fall until they reach a floor set by arithmetic rather than by the algorithm. No data is shown.
 repository: https://github.com/nicacevedo/cuPDLP.jl
+repositoryKind: Research software
 outputs:
   - label: Experimental GPU solver code
     href: https://github.com/nicacevedo/cuPDLP.jl

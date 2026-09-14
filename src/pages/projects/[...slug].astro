@@ -60,7 +60,13 @@ const schema = {
 };
 ---
 
-<Base title={data.title} description={data.description} ogImage={entry.id} schema={schema}>
+<Base
+  title={data.title}
+  description={data.description}
+  ogImage={entry.id}
+  ogType="article"
+  schema={schema}
+>
   <article class="project">
     <header class="project__head">
       <div class="shell project__masthead">

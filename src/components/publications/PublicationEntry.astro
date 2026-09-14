@@ -1,12 +1,11 @@
 ---
-import { formatAuthors, type Publication } from '@utils/publications';
+import type { Publication } from '@utils/publications';
 
 interface Props {
   publication: Publication;
-  index: number;
 }
 
-const { publication, index } = Astro.props;
+const { publication } = Astro.props;
 ---
 
 <li class="pub">

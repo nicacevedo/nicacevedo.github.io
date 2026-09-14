@@ -1,6 +1,10 @@
 /**
  * The three current research directions. These are descriptive groupings of
  * live work, not fixed disciplines, and this ordering is used site-wide.
+ *
+ * The names and summaries here are the site's only vocabulary for the three
+ * directions: the homepage, the research index, every project page, the CV and
+ * the generated social cards all read from this file.
  */
 
 export type ThemeId =
@@ -20,7 +24,7 @@ export const themes = [
     index: '01',
     name: 'Fair & reliable predictive modeling',
     summary:
-      'Predictive systems whose errors are not neutral — where being wrong in a particular direction has distributional or institutional consequences, and accuracy alone is the wrong thing to optimize.',
+      'Predictive systems whose errors carry distributional or institutional consequences — where accuracy alone is not the right objective.',
     mark: 'frontier',
   },
   {
@@ -28,7 +32,7 @@ export const themes = [
     index: '02',
     name: 'Infrastructure modeling & planning',
     summary:
-      'Energy, water and environmental systems reconstructed from imperfect public records, where the accounting boundary matters as much as the model that sits inside it.',
+      'Energy, water, and environmental systems reconstructed from imperfect public records, with an explicit boundary between reported and modeled quantities.',
     mark: 'network',
   },
   {
@@ -36,7 +40,7 @@ export const themes = [
     index: '03',
     name: 'Scalable optimization & computation',
     summary:
-      'Optimization at sizes that force a change of method — decomposition, sparsity, first-order algorithms on modern hardware — and the numerical reliability they need to be trusted.',
+      'Decomposition, sparsity, and first-order methods on modern hardware, with numerical reliability that survives scale.',
     mark: 'convergence',
   },
 ] as const satisfies readonly ResearchDirection[];
@@ -45,3 +49,6 @@ export const themeById = Object.fromEntries(themes.map((t) => [t.id, t])) as Rec
   ThemeId,
   ResearchDirection
 >;
+
+/** "Fair & reliable predictive modeling · Infrastructure modeling & planning · …" */
+export const themeNames = themes.map((t) => t.name).join(' · ');

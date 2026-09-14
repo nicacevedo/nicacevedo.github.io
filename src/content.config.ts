@@ -61,6 +61,14 @@ const research = defineCollection({
       .optional(),
     outputs: z.array(outputLink).default([]),
     repository: z.string().optional(),
+    /**
+     * What the public repository actually is. A repository is not "software"
+     * merely because it contains code, so the conservative label is the
+     * default and anything stronger has to be stated here.
+     */
+    repositoryKind: z
+      .enum(['Research repository', 'Research code', 'Research software'])
+      .default('Research repository'),
   }),
 });
 

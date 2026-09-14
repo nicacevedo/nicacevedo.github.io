@@ -13,6 +13,7 @@ order: 2
 visual: network
 visualCaption: Schematic of the accounting boundary. Solid paths are supplied quantities, dashed paths leave the reported boundary. No data is shown.
 repository: https://github.com/nicacevedo/data-center-externalities-modeling
+repositoryKind: Research repository
 outputs:
   - label: Project repository
     href: https://github.com/nicacevedo/data-center-externalities-modeling

@@ -8,8 +8,8 @@ import { profile } from '@data/profile';
 
 const publications = getPublications();
 
-/** Public research software, listed separately so it is never read as a paper. */
-const software = (await getCollection('research'))
+/** Public research code, listed separately so it is never read as a paper. */
+const code = (await getCollection('research'))
   .filter((entry) => Boolean(entry.data.repository))
   .sort((a, b) => a.data.order - b.data.order);
 
@@ -53,10 +53,10 @@ const schema = thesis
 
   <section class="band" aria-labelledby="pubs-formal">
     <div class="shell">
-      <SectionHead index="01" title="Papers and theses" id="pubs-formal" />
+      <SectionHead index="01" title="Scholarly outputs" id="pubs-formal" />
       <ol class="list-reset">
-        {publications.map((publication, i) => (
-          <PublicationEntry publication={publication} index={i} />
+        {publications.map((publication) => (
+          <PublicationEntry publication={publication} />
         ))}
       </ol>
     </div>
@@ -66,16 +66,17 @@ const schema = thesis
     <div class="shell">
       <SectionHead
         index="02"
-        title="Research software"
+        title="Open research code"
         id="pubs-software"
         note="Public repositories that document a project's method and validation."
       />
       <ol class="list-reset">
-        {software.map((entry) => (
+        {code.map((entry) => (
           <li class="soft">
             <div class="soft__rail">
               <span class="soft__year label">{entry.data.period.slice(0, 4)}</span>
-              <span class="soft__kind label">{entry.data.status}</span>
+              <span class="soft__kind label">{entry.data.repositoryKind}</span>
+              <span class="soft__status label">{entry.data.status}</span>
             </div>
             <div class="soft__body">
               <h3 class="soft__title">{entry.data.shortTitle ?? entry.data.title}</h3>
@@ -157,6 +158,10 @@ const schema = thesis
   }
 
   .soft__kind {
+    color: var(--ink);
+  }
+
+  .soft__status {
     color: var(--ink-faint);
   }
 

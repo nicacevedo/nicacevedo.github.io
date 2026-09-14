@@ -3,10 +3,16 @@ import Mark from '@components/ui/Mark.astro';
 import ThemeToggle from '@components/layout/ThemeToggle.astro';
 import { profile } from '@data/profile';
 
+/**
+ * One rule for the whole site: `CV` means the accessible HTML CV at /cv/, and
+ * the PDF-specific actions live on that page. Nothing here leaves the site, so
+ * nothing here carries an external-link marker.
+ */
 const nav = [
   { label: 'Research', href: '/research/' },
   { label: 'Publications', href: '/publications/' },
   { label: 'Teaching', href: '/teaching/' },
+  { label: 'CV', href: '/cv/' },
 ] as const;
 
 const path = Astro.url.pathname;
@@ -34,18 +40,6 @@ const isCurrent = (href: string) =>
             </a>
           </li>
         ))}
-        <li>
-          <a
-            class="site-nav__link site-nav__link--cv"
-            href="/cv/"
-            aria-current={path === '/cv/' ? 'page' : undefined}
-          >
-            CV
-            <span class="site-nav__ext" aria-hidden="true">
-              ↗
-            </span>
-          </a>
-        </li>
       </ul>
     </nav>
 
@@ -134,6 +128,9 @@ const isCurrent = (href: string) =>
   .site-nav__link {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    /* A two-letter label is only ~19px wide, so the target needs a floor. */
+    min-width: 1.5rem;
     min-height: 2.75rem;
     color: var(--ink-muted);
     text-decoration: none;
@@ -176,10 +173,41 @@ const isCurrent = (href: string) =>
     background: var(--signal);
   }
 
-  .site-nav__ext {
-    margin-left: 0.3em;
-    font-size: 0.85em;
-    line-height: 1;
+  /* On a phone the brand name is already hidden, so the row is the mark, four
+     labels and the toggle. Tightening the two gaps is what keeps the toggle at
+     its full size rather than letting flex shrink it away. */
+  @media (max-width: 30rem) {
+    .site-header__inner {
+      gap: var(--space-3);
+    }
+
+    .site-nav__list {
+      gap: var(--space-2);
+    }
+  }
+
+  /* Below 23.5rem they genuinely do not fit on one line. The navigation takes a
+     row of its own, which is the only honest option at this width. */
+  @media (max-width: 23.5rem) {
+    .site-header__inner {
+      flex-wrap: wrap;
+      row-gap: 0;
+      padding-bottom: var(--space-1);
+    }
+
+    .site-nav {
+      order: 3;
+      flex-basis: 100%;
+    }
+
+    .site-nav__list {
+      justify-content: space-between;
+      gap: var(--space-1);
+    }
+
+    .site-nav__link {
+      min-height: 2.5rem;
+    }
   }
 
   @media (min-width: 40rem) {

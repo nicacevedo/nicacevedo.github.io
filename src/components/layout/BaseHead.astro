@@ -2,22 +2,44 @@
 import { Font } from 'astro:assets';
 import { profile } from '@data/profile';
 
+/** Valid OpenGraph object types this site uses. */
+export type OgType = 'website' | 'profile' | 'article';
+
 interface Props {
   title: string;
   description: string;
   /** Path under /generated/og/ without the extension. */
   ogImage?: string;
+  /**
+   * The OpenGraph object type. `website` suits an index; `profile` the two
+   * pages that are about the person; `article` a project case study.
+   */
+  ogType?: OgType;
   /** Extra JSON-LD emitted for this page. */
   schema?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
 }
 
-const { title, description, ogImage = 'default', schema, noindex = false } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = 'default',
+  ogType = 'website',
+  schema,
+  noindex = false,
+} = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = new URL(`/generated/og/${ogImage}.png`, Astro.site).href;
 const fullTitle = Astro.url.pathname === '/' ? title : `${title} — ${profile.name}`;
 const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+
+/** Describes the generated card, which is what a reader of the alt text gets. */
+const cardAlt = `Social card for ${fullTitle}: the page title set beside a schematic figure.`;
+
+/* The two canvas colors, from --canvas in tokens.css. The browser chrome has to
+   be told them separately, and the theme test asserts they still match. */
+const CANVAS = { light: '#f7f6f2', dark: '#0e1116' } as const;
 ---
 
 <meta charset="utf-8" />
@@ -28,7 +50,7 @@ const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 <link rel="canonical" href={canonical} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 
-<meta property="og:type" content={Astro.url.pathname === '/' ? 'profile' : 'article'} />
+<meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={profile.name} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
@@ -36,17 +58,21 @@ const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 <meta property="og:image" content={ogImageUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content={`${title} — ${profile.name}`} />
+<meta property="og:image:alt" content={cardAlt} />
 <meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={cardAlt} />
 
 <meta name="author" content={profile.name} />
-<meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0e1116" media="(prefers-color-scheme: dark)" />
+
+{/* Without scripting these two carry the OS preference; the script below
+    replaces them with one tag it keeps in step with the effective theme. */}
+<meta name="theme-color" content={CANVAS.light} media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content={CANVAS.dark} media="(prefers-color-scheme: dark)" />
 
 <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
 <link rel="icon" href="/favicon/favicon-32.png" sizes="32x32" type="image/png" />
@@ -61,14 +87,52 @@ const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
   <script type="application/ld+json" set:html={JSON.stringify(block)} is:inline></script>
 ))}
 
-{/* Applied before first paint so the theme never flashes. */}
-<script is:inline>
-  try {
-    const stored = localStorage.getItem('theme');
-    if (stored === 'light' || stored === 'dark') {
-      document.documentElement.dataset.theme = stored;
-    }
-  } catch (_) {
-    /* storage unavailable — fall back to the system preference */
-  }
+{/* The whole theme mechanism, applied before first paint so neither the page
+    nor the browser chrome ever flashes the other theme. The toggle at the end
+    of the body reuses this; there is no second implementation. */}
+<script is:inline define:vars={{ CANVAS }}>
+  window.__theme = (() => {
+    const root = document.documentElement;
+    const query = matchMedia('(prefers-color-scheme: dark)');
+
+    // One tag under script control, so a manual choice is not overruled by a
+    // media attribute the browser evaluates on its own.
+    document.querySelectorAll('meta[name="theme-color"]').forEach((tag) => tag.remove());
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    document.head.appendChild(meta);
+
+    const stored = () => {
+      try {
+        const value = localStorage.getItem('theme');
+        return value === 'light' || value === 'dark' ? value : null;
+      } catch (_) {
+        return null; /* storage unavailable — follow the system preference */
+      }
+    };
+
+    const effective = () => root.dataset.theme ?? (query.matches ? 'dark' : 'light');
+    const paint = () => {
+      meta.content = CANVAS[effective()];
+    };
+
+    const set = (value) => {
+      root.dataset.theme = value;
+      try {
+        localStorage.setItem('theme', value);
+      } catch (_) {
+        /* the preference simply will not persist */
+      }
+      paint();
+    };
+
+    const initial = stored();
+    if (initial) root.dataset.theme = initial;
+    paint();
+
+    // A system change only matters while no explicit choice is stored.
+    query.addEventListener('change', paint);
+
+    return { effective, set, paint };
+  })();
 </script>

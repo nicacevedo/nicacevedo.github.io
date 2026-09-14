@@ -14,6 +14,7 @@ order: 1
 visual: frontier
 visualCaption: Schematic. Attainable models sit above a frontier along which lower predictive error can only be bought with higher systematic inequity. No data is shown.
 repository: https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal
+repositoryKind: Research code
 outputs:
   - label: Project repository
     href: https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal

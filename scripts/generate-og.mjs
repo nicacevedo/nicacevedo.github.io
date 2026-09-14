@@ -12,13 +12,18 @@ import { createRequire } from 'node:module';
 import satori from 'satori';
 import sharp from 'sharp';
 import { artworkFor, landscape } from './og-figures.mjs';
-import { themeById } from '../src/data/themes.ts';
+import { themeById, themeNames } from '../src/data/themes.ts';
+import { profile } from '../src/data/profile.ts';
 
 const require = createRequire(import.meta.url);
 const OUT = new URL('../public/generated/og/', import.meta.url);
 
-const NAME = 'Nicolás Acevedo Villena';
-const CONTEXT = 'MIT Operations Research Center';
+// Identity, positioning and the research vocabulary come from the same data the
+// pages read, so a card can never disagree with the site.
+const NAME = profile.name;
+const CONTEXT = profile.affiliation;
+/** profile.methods as a standalone sentence; a card is not written in first person. */
+const METHODS = `${profile.methods[0].toUpperCase()}${profile.methods.slice(1)}.`;
 
 const C = {
   canvas: '#f7f6f2',
@@ -183,38 +188,35 @@ const CARDS = [
   {
     slug: 'default',
     eyebrow: CONTEXT,
-    title: 'Optimization for consequential decisions.',
-    subtitle:
-      'Optimization and data-driven methods for fair and reliable prediction, infrastructure systems, and scalable computation.',
+    title: profile.statement,
+    subtitle: METHODS,
     footer: 'nicacevedo.github.io',
   },
   {
     slug: 'home',
     eyebrow: CONTEXT,
-    title: 'Optimization for consequential decisions.',
-    subtitle:
-      'Optimization and data-driven methods for fair and reliable prediction, infrastructure systems, and scalable computation.',
+    title: profile.statement,
+    subtitle: METHODS,
     footer: 'nicacevedo.github.io',
   },
   {
     slug: 'research',
     eyebrow: 'Research',
     title: 'Where a model is wrong matters as much as how often.',
-    subtitle:
-      'Fair & reliable predictive modeling · Infrastructure modeling & planning · Scalable optimization & computation',
+    subtitle: themeNames,
     footer: 'Research',
   },
   {
     slug: 'publications',
     eyebrow: 'Publications',
     title: 'Formal research outputs',
-    subtitle: 'Theses, conference work and public research software.',
+    subtitle: 'Theses, conference work and open research code.',
     footer: 'Publications',
   },
   {
     slug: 'cv',
     eyebrow: 'Curriculum vitae',
-    title: 'Nicolás Acevedo Villena',
+    title: NAME,
     subtitle: 'Education, research, experience, teaching and awards.',
     footer: 'CV',
   },
