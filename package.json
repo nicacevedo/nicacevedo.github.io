@@ -36,7 +36,7 @@
     "@retorquere/bibtex-parser": "^11.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-astro": "^1.0.0",
-    "satori": "^0.18.2",
+    "satori": "^0.33.4",
     "sharp": "^0.35.4",
     "typescript": "^5.9.2"
   },
