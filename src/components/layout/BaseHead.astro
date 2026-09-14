@@ -34,8 +34,12 @@ const ogImageUrl = new URL(`/generated/og/${ogImage}.png`, Astro.site).href;
 const fullTitle = Astro.url.pathname === '/' ? title : `${title} — ${profile.name}`;
 const schemaBlocks = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
 
-/** Describes the generated card, which is what a reader of the alt text gets. */
-const cardAlt = `Social card for ${fullTitle}: the page title set beside a schematic figure.`;
+/**
+ * Describes the generated card, which is what a reader of the alt text gets.
+ * The title's own end punctuation is trimmed so it never collides with the
+ * colon that follows it.
+ */
+const cardAlt = `Social card for ${fullTitle.replace(/[.:;]+$/, '')}: the page title set beside a schematic figure.`;
 
 /* The two canvas colors, from --canvas in tokens.css. The browser chrome has to
    be told them separately, and the theme test asserts they still match. */

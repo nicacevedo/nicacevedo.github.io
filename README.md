@@ -335,7 +335,12 @@ nothing auto-merges.
 `dist/` is never committed. The site has no custom domain; adding one means
 putting a `CNAME` file in `public/` and updating `site` in `astro.config.mjs`.
 
-### One setting that still needs a human
+### Two settings that still need a repository admin
+
+Neither is reachable from the source tree; both need `repo` scope on the
+GitHub API, or a few clicks in the repository settings.
+
+#### 1. The Pages source
 
 This repository predates the Astro site, and its **Pages source is still a
 branch**. GitHub therefore also runs its built-in `pages-build-deployment`
@@ -366,6 +371,30 @@ repository admin can make:
 
 Do not delete `gh-pages` before step 2 confirms the source is GitHub Actions —
 while Pages is still serving from a branch, deleting it can take the site down.
+
+#### 2. The repository's About panel
+
+It is still empty, so the repository sidebar says nothing about what this is:
+
+```bash
+gh repo edit nicacevedo/nicacevedo.github.io \
+  --homepage "https://nicacevedo.github.io/" \
+  --description "Personal research website of Nicolás Acevedo Villena — optimization, fair and reliable prediction, infrastructure modeling, and scalable computation." \
+  --add-topic astro \
+  --add-topic operations-research \
+  --add-topic optimization \
+  --add-topic research \
+  --add-topic academic-website
+```
+
+The description deliberately uses the same research vocabulary as
+`src/data/themes.ts`; the retired labels listed in `tests/routes.ts` should not
+reappear here either.
+
+GitHub will also keep showing that this repository was generated from the
+al-folio template. That is accurate history and harmless. It is not worth
+deleting or recreating the repository to hide it, which would throw away every
+pull request, issue and Actions record.
 
 ## URL compatibility
 
