@@ -35,11 +35,11 @@ export const profile = {
   nameAscii: 'Nicolas Acevedo Villena',
   role: 'PhD student in Operations Research',
   affiliation: 'MIT Operations Research Center',
-  affiliationShort: 'MIT Operations Research Center',
+  affiliationShort: 'MIT ORC',
   location: 'Cambridge, Massachusetts',
 
   /** The site's central positioning. */
-  statement: 'Optimization for consequential decisions.',
+  statement: 'Optimization & AI for consequential decisions.',
   /** The research program, as a phrase other copy can be built from. */
   methods,
   /** First person, for the homepage hero. */
@@ -63,8 +63,8 @@ export const profile = {
   ] as const satisfies readonly SocialLink[],
 
   advising: {
-    current: ['Saurabh Amin', 'Deepjyoti (Deep) Deka'],
-    past: ['Haihao (Sean) Lu'],
+    current: ['Saurabh Amin', 'Deep Deka'],
+    past: ['Haihao Lu'],
   },
 
   /**
@@ -74,7 +74,7 @@ export const profile = {
    */
   chronology: [
     {
-      kind: 'Education',
+      kind: 'Research',
       period: '2024 — present',
       role: 'PhD in Operations Research',
       org: 'Massachusetts Institute of Technology',
@@ -88,7 +88,7 @@ export const profile = {
     {
       kind: 'Industry',
       period: '2022 — 2023',
-      role: 'Research engineer',
+      role: 'Research Engineer',
       org: 'Nezasa AG / TripYeah',
     },
     {
