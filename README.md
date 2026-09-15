@@ -322,59 +322,37 @@ after a deploy.
 
 ## Deployment
 
-Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and
-publishes it with the official GitHub Pages actions. `.github/workflows/ci.yml`
-runs formatting, type checks, the build, the generated-asset check, the budgets,
-the full test suite and `npm audit` on every push and pull request.
-`.github/workflows/external-links.yml` resolves the site's external links
-monthly and opens an issue if one is genuinely gone — it is kept off the normal
-path so a briefly unreachable DOI resolver can never block a deploy.
-`.github/dependabot.yml` proposes npm and Actions updates monthly, grouped;
-nothing auto-merges.
+GitHub Pages publishes this site from **GitHub Actions**, not from a branch.
+`.github/workflows/deploy.yml` is the sole production publisher: every push to
+`main` builds the site with Astro into `dist/`, and the official
+`actions/upload-pages-artifact` and `actions/deploy-pages` steps publish that
+directory. `dist/` is never committed, and no branch is served — the obsolete
+`gh-pages` branch has been deleted. The pre-Astro site it used to carry is
+preserved by the `pre-astro-redesign-20260913` tag.
 
-`dist/` is never committed. The site has no custom domain; adding one means
-putting a `CNAME` file in `public/` and updating `site` in `astro.config.mjs`.
+`.github/workflows/ci.yml` runs formatting, type checks, the build, the
+generated-asset check, the budgets, the full test suite and `npm audit` on every
+push and pull request. `.github/workflows/external-links.yml` resolves the site's
+external links monthly and opens an issue if one is genuinely gone — it is kept
+off the normal path so a briefly unreachable DOI resolver can never block a
+deploy. `.github/dependabot.yml` proposes npm and Actions updates monthly,
+grouped; nothing auto-merges.
 
-### Two settings that still need a repository admin
+The site has no custom domain; adding one means putting a `CNAME` file in
+`public/` and updating `site` in `astro.config.mjs`.
 
-Neither is reachable from the source tree; both need `repo` scope on the
-GitHub API, or a few clicks in the repository settings.
+### Repository metadata
 
-#### 1. The Pages source
+The About panel is not reachable from the source tree; setting it needs `repo`
+scope on the GitHub API, or a few clicks in the repository sidebar. The values it
+should carry:
 
-This repository predates the Astro site, and its **Pages source is still a
-branch**. GitHub therefore also runs its built-in `pages-build-deployment`
-workflow on every push to `main`, alongside the real one. That run now fails
-(there is no Jekyll site to build) and publishes nothing, so the Actions
-deployment is always what goes live — a red run in the list, and nothing worse.
-
-Making it stop, and letting the leftovers go, needs one change that only a
-repository admin can make:
-
-1. **Settings → Pages → Build and deployment → Source: GitHub Actions.**
-   Equivalently, with an authenticated CLI:
-
-   ```bash
-   gh api --method PUT repos/nicacevedo/nicacevedo.github.io/pages -f build_type=workflow
-   gh api repos/nicacevedo/nicacevedo.github.io/pages   # expect build_type: workflow
-   ```
-
-2. Push anything and confirm only **Quality** and **Deploy to GitHub Pages**
-   run — no `pages build and deployment`.
-
-3. Then the obsolete branch can go. The pre-Astro source is already kept by the
-   `pre-astro-redesign-20260913` tag, so nothing is lost:
-
-   ```bash
-   git push origin --delete gh-pages
-   ```
-
-Do not delete `gh-pages` before step 2 confirms the source is GitHub Actions —
-while Pages is still serving from a branch, deleting it can take the site down.
-
-#### 2. The repository's About panel
-
-It is still empty, so the repository sidebar says nothing about what this is:
+- **Description:** Personal research website of Nicolás Acevedo Villena —
+  optimization, fair and reliable prediction, infrastructure modeling, and
+  scalable computation.
+- **Homepage:** `https://nicacevedo.github.io/`
+- **Topics:** `astro`, `operations-research`, `optimization`, `research`,
+  `academic-website`
 
 ```bash
 gh repo edit nicacevedo/nicacevedo.github.io \
@@ -391,10 +369,10 @@ The description deliberately uses the same research vocabulary as
 `src/data/themes.ts`; the retired labels listed in `tests/routes.ts` should not
 reappear here either.
 
-GitHub will also keep showing that this repository was generated from the
-al-folio template. That is accurate history and harmless. It is not worth
-deleting or recreating the repository to hide it, which would throw away every
-pull request, issue and Actions record.
+GitHub also keeps showing that this repository was generated from the al-folio
+template. That is accurate history and harmless — hiding it would mean deleting
+and recreating the repository, throwing away every pull request, issue and
+Actions record.
 
 ## URL compatibility
 
