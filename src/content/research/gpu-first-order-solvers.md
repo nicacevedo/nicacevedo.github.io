@@ -2,7 +2,7 @@
 title: Reliable and scalable first-order optimization on GPUs
 shortTitle: First-order methods on GPUs
 thesis: A first-order solver that runs fast on a GPU is only useful if its termination criteria still mean what they meant on a CPU.
-description: Ongoing research on numerical reliability in GPU-based first-order methods for large-scale optimization.
+description: Numerical reliability of GPU-based first-order methods for large-scale optimization.
 researchQuestion: How can first-order optimization methods remain reliable when large-scale solvers are implemented on GPU hardware?
 period: 2024 — present
 status: Ongoing research

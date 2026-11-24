@@ -2,14 +2,11 @@
 import { Picture } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '@layouts/Base.astro';
-import DecisionLandscape from '@components/visuals/DecisionLandscape.astro';
-import ThemeGrid from '@components/research/ThemeGrid.astro';
-import CaseStudy from '@components/research/CaseStudy.astro';
+import ProjectRow from '@components/research/ProjectRow.astro';
 import SectionHead from '@components/ui/SectionHead.astro';
 import UpdateList from '@components/ui/UpdateList.astro';
 import { profile } from '@data/profile';
 import { practice } from '@data/practice';
-import { themes } from '@data/themes';
 import { getSelectedOutputs } from '@utils/outputs';
 import portrait from '@assets/portrait.jpg';
 
@@ -21,7 +18,7 @@ const updates = (await getCollection('updates'))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
 
-const outputs = (await getSelectedOutputs()).slice(0, 5);
+const outputs = await getSelectedOutputs();
 
 /* No dateModified: a deployment date is not a content modification date, and a
    value derived from the build clock would change on every deploy. */
@@ -45,9 +42,9 @@ const schema = {
       'Operations research',
       'Optimization',
       'Machine learning',
+      'Game theory',
       'Algorithmic fairness',
       'Sustainable computing',
-      ...themes.map((t) => t.name),
     ],
     sameAs: profile.socials.filter((s) => s.external).map((s) => s.href),
   },
@@ -68,22 +65,9 @@ const schema = {
         <span class="label hero__meta-end">{profile.location}</span>
       </p>
 
-      <div class="hero__top">
-        <h1 class="hero__title" id="hero-title">
-          <span class="hero__name">{profile.name}</span>
-          <span class="hero__statement">
-            <span class="hero__line">Optimization for</span>
-            <span class="hero__line">
-              <em class="serif">consequential</em>
-            </span>
-            <span class="hero__line">decisions.</span>
-          </span>
-        </h1>
-
-        <div class="hero__figure">
-          <DecisionLandscape interactive />
-        </div>
-      </div>
+      <h1 class="hero__title" id="hero-title">
+        {profile.name}
+      </h1>
 
       <div class="hero__band">
         <figure class="hero__portrait">
@@ -97,11 +81,11 @@ const schema = {
             fetchpriority="high"
             class="hero__portrait-img"
           />
-          <figcaption class="hero__portrait-caption">{profile.role}</figcaption>
         </figure>
 
         <div class="hero__intro">
           <p class="hero__summary">{profile.summary}</p>
+          <p class="hero__current">{profile.current}</p>
 
           <div class="hero__actions">
             <a class="btn" href="/research/">
@@ -114,7 +98,7 @@ const schema = {
         </div>
 
         <div class="hero__rail">
-          <h2 class="label hero__rail-title">Elsewhere</h2>
+          <h2 class="label hero__rail-title">Contact</h2>
           <ul class="hero__socials list-reset">
             {profile.socials.map((social) => (
               <li>
@@ -135,34 +119,50 @@ const schema = {
     </div>
   </section>
 
-  <section class="band band--lead" aria-labelledby="themes-title">
+  <section class="band" aria-labelledby="outputs-title">
     <div class="shell">
-      <SectionHead index="01" title="Research directions" id="themes-title" />
-      <p class="band__lead">
-        Property assessment, the resource footprint of data centers, and first-order solvers on GPUs
-        look unrelated from outside. Each is a computation that a decision rests on, and in each the
-        useful work is being precise about what that computation can and cannot support.
+      <SectionHead title="Publications and code" id="outputs-title" />
+      <ol class="outputs list-reset">
+        {outputs.map((output) => (
+          <li class="output">
+            <span class="output__year label">{output.year}</span>
+            <div class="output__body">
+              <p class="output__kind label">{output.kind}</p>
+              <h3 class="output__title">
+                <a
+                  class="link link--title"
+                  href={output.href}
+                  target={output.external ? '_blank' : undefined}
+                  rel={output.external ? 'noopener' : undefined}
+                >
+                  {output.title}
+                  {output.external && <span class="visually-hidden"> (opens in a new tab)</span>}
+                </a>
+              </h3>
+              <p class="output__meta">{output.meta}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p class="band__more">
+        <a class="arrow-link" href="/publications/">
+          All publications
+        </a>
       </p>
-      <ThemeGrid linked />
     </div>
   </section>
 
   <section class="band" aria-labelledby="featured-title">
     <div class="shell">
-      <SectionHead
-        index="02"
-        title="Flagship research"
-        id="featured-title"
-        note="The three directions I am working on now, each with a public repository."
-      />
-      <div class="cases">
-        {featured.map((entry, i) => (
-          <CaseStudy entry={entry} index={String(i + 1).padStart(2, '0')} flip={i % 2 === 1} />
+      <SectionHead title="Selected research" id="featured-title" />
+      <div>
+        {featured.map((entry) => (
+          <ProjectRow entry={entry} />
         ))}
       </div>
       <p class="band__more">
         <a class="arrow-link" href="/research/">
-          All research, including earlier work
+          All research
         </a>
       </p>
     </div>
@@ -171,7 +171,7 @@ const schema = {
   {practice.length > 0 && (
     <section class="band practice" aria-labelledby="practice-title">
       <div class="shell">
-        <SectionHead index="03" title="Research in practice" id="practice-title" />
+        <SectionHead title="Research in practice" id="practice-title" />
         {practice.map((record) => (
           <div class="practice__row">
             <div class="practice__when">
@@ -201,46 +201,9 @@ const schema = {
     </section>
   )}
 
-  <section class="band" aria-labelledby="outputs-title">
-    <div class="shell">
-      <SectionHead index="04" title="Selected outputs" id="outputs-title" />
-      <ol class="outputs list-reset">
-        {outputs.map((output) => (
-          <li class="output">
-            <span class="output__year label">{output.year}</span>
-            <div class="output__body">
-              <p class="output__kind label">{output.kind}</p>
-              <h3 class="output__title">
-                <a
-                  class="link link--title"
-                  href={output.href}
-                  target={output.external ? '_blank' : undefined}
-                  rel={output.external ? 'noopener' : undefined}
-                >
-                  {output.title}
-                  {output.external && <span class="visually-hidden"> (opens in a new tab)</span>}
-                </a>
-              </h3>
-              <p class="output__meta">{output.meta}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
-      <p class="band__more">
-        <a class="arrow-link" href="/publications/">
-          All publications and research outputs
-        </a>
-      </p>
-    </div>
-  </section>
-
   <section class="band" aria-labelledby="background-title">
     <div class="shell">
-      <SectionHead index="05" title="Background" id="background-title" />
-      <p class="background__lead serif">
-        PhD student at the MIT Operations Research Center, since September 2024.
-      </p>
-
+      <SectionHead title="Background" id="background-title" />
       <div class="background">
         <div class="background__prose">
           <p>
@@ -283,7 +246,7 @@ const schema = {
 
   <section class="band" aria-labelledby="updates-title">
     <div class="shell">
-      <SectionHead index="06" title="Updates" id="updates-title" />
+      <SectionHead title="Updates" id="updates-title" />
       <UpdateList entries={updates} />
       <p class="band__more">
         <a class="arrow-link" href="/updates/">
@@ -316,43 +279,11 @@ const schema = {
     }
   }
 
-  .hero__top {
-    display: grid;
-    gap: var(--space-8) var(--gutter);
-    align-items: start;
-  }
-
-  .hero__name {
-    display: block;
-    font-size: var(--step-1);
+  .hero__title {
+    font-size: var(--step-4);
     font-weight: 500;
-    letter-spacing: -0.005em;
-    color: var(--ink-muted);
-    margin-bottom: var(--space-4);
-  }
-
-  .hero__statement {
-    display: block;
-    font-size: var(--step-5);
-    font-weight: 500;
-    line-height: 0.96;
-    letter-spacing: -0.035em;
-  }
-
-  .hero__line {
-    display: block;
-  }
-
-  .hero__statement em {
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -0.018em;
-  }
-
-  .hero__figure {
-    max-width: 34rem;
-    width: 100%;
-    justify-self: end;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
   }
 
   .hero__band {
@@ -377,19 +308,16 @@ const schema = {
     height: auto;
   }
 
-  .hero__portrait-caption {
-    margin-top: var(--space-3);
-    display: block;
-    font-size: var(--step--1);
-    color: var(--ink-muted);
-    line-height: 1.4;
-    max-width: 17ch;
-  }
-
   .hero__summary {
     font-size: var(--step-1);
     line-height: 1.45;
     max-width: 32ch;
+    margin-bottom: var(--space-4);
+  }
+
+  .hero__current {
+    color: var(--ink-muted);
+    max-width: 48ch;
     margin-bottom: var(--space-6);
   }
 
@@ -438,19 +366,6 @@ const schema = {
   }
 
   @media (min-width: 62rem) {
-    .hero__top {
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
-
-    .hero__title {
-      grid-column: 1 / 8;
-    }
-
-    .hero__figure {
-      grid-column: 8 / 13;
-      max-width: none;
-    }
-
     .hero__band {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
@@ -482,11 +397,6 @@ const schema = {
 
   .band__more {
     margin-top: var(--space-8);
-  }
-
-  .cases {
-    display: grid;
-    gap: clamp(var(--space-16), 8vw, var(--space-24));
   }
 
   /* ---------- Research to practice ---------- */
@@ -583,15 +493,6 @@ const schema = {
     gap: var(--space-12) var(--gutter);
   }
 
-  .background__lead {
-    font-size: var(--step-3);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    max-width: 26ch;
-    color: var(--ink);
-    margin-bottom: clamp(var(--space-8), 4vw, var(--space-12));
-  }
-
   .background__prose p + p {
     margin-top: var(--space-4);
   }
@@ -680,19 +581,5 @@ const schema = {
     .background .chrono {
       grid-column: 8 / 13;
     }
-  }
-
-  /* Where a lead paragraph follows the heading, the two belong together and
-     the air goes below the pair instead. */
-  .band--lead {
-    --section-head-gap: var(--space-6);
-  }
-
-  .band__lead {
-    font-size: var(--step-1);
-    line-height: 1.5;
-    color: var(--ink-muted);
-    max-width: 58ch;
-    margin-bottom: clamp(var(--space-12), 5vw, var(--space-16));
   }
 </style>

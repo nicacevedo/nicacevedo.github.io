@@ -43,12 +43,7 @@ const byTopic = topics.map((topic) => ({
 
   <section class="band" aria-labelledby="t-mit">
     <div class="shell">
-      <SectionHead
-        index="01"
-        title="MIT"
-        id="t-mit"
-        note="Sloan School of Management, most recent first."
-      />
+      <SectionHead title="MIT" id="t-mit" note="Sloan School of Management, most recent first." />
       <ol class="courses list-reset">
         {mit.map((course) => (
           <li class="course course--lead">
@@ -66,7 +61,6 @@ const byTopic = topics.map((topic) => ({
   <section class="band" aria-labelledby="t-uchile">
     <div class="shell">
       <SectionHead
-        index="02"
         title="Universidad de Chile"
         id="t-uchile"
         note="Graduate and undergraduate courses, most recent first."
@@ -86,7 +80,6 @@ const byTopic = topics.map((topic) => ({
   <section class="band" aria-labelledby="t-selected">
     <div class="shell">
       <SectionHead
-        index="03"
         title="Selected recitations"
         id="t-selected"
         note="One per topic. The full index follows."
@@ -111,7 +104,6 @@ const byTopic = topics.map((topic) => ({
   <section class="band" aria-labelledby="t-index">
     <div class="shell">
       <SectionHead
-        index="04"
         title="Full recitation index"
         id="t-index"
         note="All public recordings, grouped by topic."

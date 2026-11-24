@@ -296,8 +296,8 @@ test.describe('content integrity', () => {
     expect(profile).toBeDefined();
     expect(profile.mainEntity.name).toBe('Nicolás Acevedo Villena');
     expect(profile.mainEntity.sameAs).toContain('https://github.com/nicacevedo');
-    // Nothing unverified: no invented identifiers.
-    expect(JSON.stringify(profile)).not.toMatch(/orcid|scholar/i);
+    // Nothing unverified: no invented identifiers. Google Scholar is a real, linked profile.
+    expect(JSON.stringify(profile)).not.toMatch(/orcid/i);
   });
 
   test('project statuses stay within the agreed vocabulary', async ({ page }) => {

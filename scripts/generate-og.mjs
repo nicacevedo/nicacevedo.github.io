@@ -12,7 +12,6 @@ import { createRequire } from 'node:module';
 import satori from 'satori';
 import sharp from 'sharp';
 import { artworkFor, landscape } from './og-figures.mjs';
-import { themeById, themeNames } from '../src/data/themes.ts';
 import { profile } from '../src/data/profile.ts';
 
 const require = createRequire(import.meta.url);
@@ -188,29 +187,29 @@ const CARDS = [
   {
     slug: 'default',
     eyebrow: CONTEXT,
-    title: profile.statement,
+    title: profile.name,
     subtitle: METHODS,
     footer: 'nicacevedo.github.io',
   },
   {
     slug: 'home',
     eyebrow: CONTEXT,
-    title: profile.statement,
+    title: profile.name,
     subtitle: METHODS,
     footer: 'nicacevedo.github.io',
   },
   {
     slug: 'research',
-    eyebrow: 'Research',
-    title: 'Where a model is wrong matters as much as how often.',
-    subtitle: themeNames,
+    eyebrow: CONTEXT,
+    title: 'Research',
+    subtitle: 'Current and earlier research projects.',
     footer: 'Research',
   },
   {
     slug: 'publications',
-    eyebrow: 'Publications',
-    title: 'Formal research outputs',
-    subtitle: 'Theses, conference work and open research code.',
+    eyebrow: CONTEXT,
+    title: 'Publications',
+    subtitle: 'Preprints, theses, and conference work.',
     footer: 'Publications',
   },
   {
@@ -260,7 +259,7 @@ for (const file of (await readdir(RESEARCH_DIR)).filter((f) => f.endsWith('.md')
   const art = artworkFor[data.visual];
   projects.push({
     slug: file.replace(/\.md$/, ''),
-    eyebrow: themeById[data.primaryTheme]?.name ?? 'Research',
+    eyebrow: 'Research',
     title: data.title,
     subtitle: data.description ?? '',
     footer: 'Research',

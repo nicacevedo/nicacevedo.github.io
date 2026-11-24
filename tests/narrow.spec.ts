@@ -102,34 +102,9 @@ for (const width of WIDTHS) {
       }
     });
 
-    test('the hero statement breaks only where it is told to', async ({ page }) => {
-      await page.goto('/');
-      await page.evaluate(() => document.fonts.ready);
-
-      const lines = page.locator('.hero__line');
-      await expect(lines).toHaveCount(3);
-
-      const measured = await lines.evaluateAll((nodes) =>
-        nodes.map((node) => ({
-          text: node.textContent?.trim() ?? '',
-          height: node.getBoundingClientRect().height,
-          overflow: node.scrollWidth - node.clientWidth,
-        })),
-      );
-
-      // Each authored line is one visual line: the tallest may not be much
-      // taller than the shortest, and none may run past its own box.
-      const heights = measured.map((line) => line.height);
-      expect(Math.max(...heights) / Math.min(...heights)).toBeLessThan(1.6);
-      for (const line of measured) {
-        expect(line.overflow, `"${line.text}" overflow`).toBeLessThanOrEqual(1);
-      }
-    });
-
     test('dense titles and metadata stay inside their columns', async ({ page }) => {
       const checks = [
-        { path: '/', selector: '.theme__name' },
-        { path: '/', selector: '.case__title' },
+        { path: '/', selector: '.row__title' },
         { path: '/', selector: '.chrono__period' },
         { path: '/', selector: '.output__title' },
         { path: '/teaching/', selector: '.course__title' },

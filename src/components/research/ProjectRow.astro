@@ -1,32 +1,23 @@
 ---
-import ProjectFigure from '@components/research/ProjectFigure.astro';
-import { themeById } from '@data/themes';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   entry: CollectionEntry<'research'>;
-  compact?: boolean;
 }
 
-const { entry, compact = false } = Astro.props;
+const { entry } = Astro.props;
 const { data } = entry;
-const theme = themeById[data.primaryTheme];
 const href = `/projects/${entry.id}/`;
 ---
 
-<article class:list={['row', compact && 'row--compact']}>
-  <div class="row__figure" aria-hidden="true">
-    <ProjectFigure visual={data.visual} width={220} height={150} />
-  </div>
-
+<article class="row">
   <div class="row__body">
-    <p class="row__theme label">{theme.name}</p>
     <h3 class="row__title">
       <a class="link link--title" href={href}>
         {data.title}
       </a>
     </h3>
-    <p class="row__thesis">{compact ? data.description : data.thesis}</p>
+    <p class="row__thesis">{data.description}</p>
   </div>
 
   <dl class="row__meta">
@@ -47,15 +38,6 @@ const href = `/projects/${entry.id}/`;
 
   .row:first-child {
     border-top-color: var(--ink);
-  }
-
-  .row__figure {
-    max-width: 11rem;
-    opacity: 0.95;
-  }
-
-  .row__theme {
-    margin-bottom: var(--space-2);
   }
 
   .row__title {
@@ -93,7 +75,7 @@ const href = `/projects/${entry.id}/`;
 
   @media (min-width: 48rem) {
     .row {
-      grid-template-columns: 11rem minmax(0, 1fr) 11rem;
+      grid-template-columns: minmax(0, 1fr) 11rem;
       align-items: start;
     }
 

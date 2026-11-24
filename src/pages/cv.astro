@@ -9,9 +9,9 @@ import { getPublications, formatAuthors } from '@utils/publications';
 const publications = getPublications();
 
 const sections = [
-  { id: 'education', index: '01', label: 'Education', entries: cv.education },
-  { id: 'research', index: '02', label: 'Research experience', entries: cv.research },
-  { id: 'experience', index: '03', label: 'Professional experience', entries: cv.experience },
+  { id: 'education', label: 'Education', entries: cv.education },
+  { id: 'research', label: 'Research experience', entries: cv.research },
+  { id: 'experience', label: 'Professional experience', entries: cv.experience },
 ] as const;
 
 const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
@@ -51,7 +51,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
   {sections.map((section) => (
     <section class="band" aria-labelledby={`cv-${section.id}`}>
       <div class="shell">
-        <SectionHead index={section.index} title={section.label} id={`cv-${section.id}`} />
+        <SectionHead title={section.label} id={`cv-${section.id}`} />
         <ol class="entries list-reset">
           {section.entries.map((entry) => (
             <li class="entry">
@@ -79,7 +79,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 
   <section class="band" aria-labelledby="cv-publications">
     <div class="shell">
-      <SectionHead index="04" title="Publications & presentations" id="cv-publications" />
+      <SectionHead title="Publications & presentations" id="cv-publications" />
       <ol class="entries list-reset">
         {publications.map((publication) => (
           <li class="entry entry--tight">
@@ -114,7 +114,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 
   <section class="band" aria-labelledby="cv-teaching">
     <div class="shell">
-      <SectionHead index="05" title="Teaching" id="cv-teaching" />
+      <SectionHead title="Teaching" id="cv-teaching" />
       <ol class="entries list-reset">
         {allCourses.map((course) => (
           <li class="entry entry--tight">
@@ -139,7 +139,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 
   <section class="band" aria-labelledby="cv-awards">
     <div class="shell">
-      <SectionHead index="06" title="Grants and awards" id="cv-awards" />
+      <SectionHead title="Grants and awards" id="cv-awards" />
       <ol class="entries list-reset">
         {cv.awards.map((award) => (
           <li class="entry entry--tight">
@@ -155,7 +155,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 
   <section class="band" aria-labelledby="cv-extras">
     <div class="shell">
-      <SectionHead index="07" title="Talks, posters and training" id="cv-extras" />
+      <SectionHead title="Talks, posters and training" id="cv-extras" />
 
       <h3 class="sub label">Talks</h3>
       <ol class="entries list-reset">

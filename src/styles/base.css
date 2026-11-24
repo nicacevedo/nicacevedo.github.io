@@ -212,7 +212,7 @@ main {
   margin: 0;
 }
 
-/* Section headers: number + title on a hairline. */
+/* Section headers: title on a hairline. */
 .section-head {
   display: flex;
   flex-wrap: wrap;
@@ -220,14 +220,6 @@ main {
   gap: var(--space-3) var(--space-6);
   padding-top: var(--space-4);
   border-top: 1px solid var(--ink);
-}
-
-.section-head__index {
-  font-family: var(--font-mono);
-  font-size: var(--step--2);
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
-  font-variant-numeric: tabular-nums;
 }
 
 /* ---------------------------------------------------------------------------

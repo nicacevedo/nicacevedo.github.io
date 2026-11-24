@@ -1,7 +1,7 @@
 /** Every route the site is expected to serve, with the page's own H1. */
 export const PAGES = [
   { path: '/', name: 'home', h1: 'Nicolás Acevedo Villena' },
-  { path: '/research/', name: 'research', h1: 'Where a model is wrong' },
+  { path: '/research/', name: 'research', h1: 'Research' },
   {
     path: '/projects/equitable-property-assessment/',
     name: 'project-property',
@@ -32,7 +32,7 @@ export const PAGES = [
     name: 'project-adaptive',
     h1: 'Adaptive questionnaires',
   },
-  { path: '/publications/', name: 'publications', h1: 'Formal research outputs' },
+  { path: '/publications/', name: 'publications', h1: 'Publications' },
   { path: '/cv/', name: 'cv', h1: 'Nicolás Acevedo Villena' },
   { path: '/updates/', name: 'updates', h1: 'What has changed' },
   { path: '/teaching/', name: 'teaching', h1: 'Courses and recitations' },
@@ -84,13 +84,6 @@ export const CURRENT_NAV: Record<string, (typeof NAV)[number] | null> = {
   '/cv/': 'CV',
   '/updates/': null,
 };
-
-/** The current research-direction vocabulary. Nothing else may name a theme. */
-export const THEMES = [
-  'Fair & reliable predictive modeling',
-  'Infrastructure modeling & planning',
-  'Scalable optimization & computation',
-] as const;
 
 /**
  * Labels this site has used before. A cached page or a half-finished rename

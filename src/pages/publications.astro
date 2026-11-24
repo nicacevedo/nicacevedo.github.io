@@ -33,14 +33,13 @@ const schema = thesis
 
 <Base
   title="Publications"
-  description="Preprints, theses, conference work and other formal research outputs by Nicolás Acevedo Villena."
+  description="Preprints, theses, and conference work by Nicolás Acevedo Villena."
   ogImage="publications"
   schema={schema}
 >
   <section class="head">
     <div class="shell">
-      <p class="label head__eyebrow">Publications</p>
-      <h1 class="head__title">Formal research outputs</h1>
+      <h1 class="head__title">Publications</h1>
       <p class="head__lead lead">
         Preprints, theses and conference work, most recent first. Code and documentation for each
         <a class="link" href="/research/">
@@ -53,7 +52,7 @@ const schema = thesis
 
   <section class="band" aria-labelledby="pubs-formal">
     <div class="shell">
-      <SectionHead index="01" title="Scholarly outputs" id="pubs-formal" />
+      <SectionHead title="Scholarly outputs" id="pubs-formal" />
       <ol class="list-reset">
         {publications.map((publication) => (
           <PublicationEntry publication={publication} />
@@ -65,7 +64,6 @@ const schema = thesis
   <section class="band" aria-labelledby="pubs-software">
     <div class="shell">
       <SectionHead
-        index="02"
         title="Open research code"
         id="pubs-software"
         note="Public repositories that document a project's method and validation."
@@ -100,7 +98,7 @@ const schema = thesis
 
   <section class="band" aria-labelledby="pubs-citing">
     <div class="shell">
-      <SectionHead index="03" title="Citing this work" id="pubs-citing" />
+      <SectionHead title="Citing this work" id="pubs-citing" />
       <p class="note">
         Each entry above carries its BibTeX record. The full bibliography is kept as a single{' '}
         <code>.bib</code> file in the site's repository, and is the source this page is built from.
@@ -112,10 +110,6 @@ const schema = thesis
 <style>
   .head {
     padding-block: clamp(var(--space-8), 5vw, var(--space-16)) var(--space-12);
-  }
-
-  .head__eyebrow {
-    margin-bottom: var(--space-6);
   }
 
   .head__title {

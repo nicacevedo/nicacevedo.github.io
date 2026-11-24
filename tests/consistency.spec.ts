@@ -7,7 +7,7 @@
  * rename impossible to ship.
  */
 import { test, expect } from '@playwright/test';
-import { PAGES, NAV, CURRENT_NAV, THEMES, RETIRED_LABELS } from './routes';
+import { PAGES, NAV, CURRENT_NAV, RETIRED_LABELS } from './routes';
 
 test.describe('primary navigation', () => {
   for (const route of PAGES) {
@@ -57,50 +57,6 @@ test.describe('research vocabulary', () => {
       for (const label of RETIRED_LABELS) {
         expect(html, `${route.path} still says "${label}"`).not.toContain(label);
       }
-    }
-  });
-
-  test('every theme named on a project page is one of the three current ones', async ({ page }) => {
-    for (const route of PAGES.filter((p) => p.name.startsWith('project-'))) {
-      await page.goto(route.path);
-
-      // The breadcrumb names the primary theme, and the facts list names all of
-      // them. `.label` is uppercased by CSS, so the source text is what to read.
-      const crumb = ((await page.locator('.crumbs li').last().textContent()) ?? '').trim();
-      expect(THEMES, `${route.path} breadcrumb`).toContain(crumb);
-
-      const themesFact = page
-        .locator('.project__fact')
-        .filter({ has: page.locator('dt', { hasText: 'Themes' }) })
-        .locator('dd');
-      await expect(themesFact, `${route.path} has a Themes fact`).toHaveCount(1);
-      const named = ((await themesFact.textContent()) ?? '')
-        .split('·')
-        .map((part) => part.trim())
-        .filter(Boolean);
-      expect(named.length).toBeGreaterThan(0);
-      for (const name of named) {
-        expect(THEMES, `${route.path} theme "${name}"`).toContain(name);
-      }
-    }
-  });
-
-  test('the research index lists the three themes in order, with their summaries', async ({
-    page,
-  }) => {
-    await page.goto('/research/');
-    const names = await page.locator('.theme__name').allInnerTexts();
-    expect(names.map((n) => n.trim())).toEqual([...THEMES]);
-    const summaries = await page.locator('.theme__summary').allInnerTexts();
-    for (const summary of summaries) expect(summary.trim().length).toBeGreaterThan(60);
-  });
-
-  test('the homepage links each theme to its section on the research page', async ({ page }) => {
-    await page.goto('/');
-    const links = page.locator('.theme__name a');
-    await expect(links).toHaveCount(THEMES.length);
-    for (const name of THEMES) {
-      await expect(links.filter({ hasText: name })).toHaveCount(1);
     }
   });
 });

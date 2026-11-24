@@ -39,7 +39,6 @@ test.describe('zoom and reduced motion', () => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
     await expect(page.locator('h1')).toBeVisible();
-    await expect(page.locator('.hero__figure svg')).toBeVisible();
     const duration = await page.evaluate(
       () => getComputedStyle(document.querySelector('.btn')!).transitionDuration,
     );

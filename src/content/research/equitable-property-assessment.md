@@ -4,12 +4,12 @@ shortTitle: Property assessment
 thesis: A mass-appraisal model can be made more accurate and still leave some owners systematically over-assessed; the two goals have to be optimized together.
 description: Optimization-based predictive modeling for mass appraisal that holds predictive quality and vertical equity in the same objective.
 researchQuestion: How can mass-appraisal models improve predictive performance without worsening systematic vertical inequity across properties?
-period: 2024 — present
-status: Ongoing research
+period: 2024 — 2026
+status: Completed
 primaryTheme: fair-reliable-prediction
 secondaryThemes: [scalable-optimization]
 featured: true
-stage: current
+stage: earlier
 order: 1
 visual: frontier
 visualCaption: Schematic. Attainable models sit above a frontier along which lower predictive error can only be bought with higher systematic inequity. No data is shown.
@@ -79,5 +79,5 @@ the `mse_cov` objective.
 
 ## Status
 
-Ongoing research at the MIT Operations Research Center. The preprint and public
+Completed research at the MIT Operations Research Center. The preprint and public
 materials describe the methods, empirical findings, and validation pipeline.

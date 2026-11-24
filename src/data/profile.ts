@@ -21,13 +21,8 @@ export interface ChronologyEntry {
 const email = 'nacevedo@mit.edu';
 const name = 'Nicolás Acevedo Villena';
 
-/**
- * The research program as one noun phrase. Every summary on the site and on
- * the generated social cards is built from this, so the three directions are
- * always described in the same words and cannot drift apart.
- */
-const methods =
-  'optimization and data-driven methods for fair and reliable prediction, infrastructure modeling and planning, and scalable computation';
+/** Research interests, as a phrase other copy is built from. */
+const methods = 'optimization, machine learning, game theory, and applied mathematics';
 
 export const profile = {
   name,
@@ -38,14 +33,16 @@ export const profile = {
   affiliationShort: 'MIT ORC',
   location: 'Cambridge, Massachusetts',
 
-  /** The site's central positioning. */
-  statement: 'Optimization & AI for consequential decisions.',
-  /** The research program, as a phrase other copy can be built from. */
+  /** Plain one-line identification, used in the home page title. */
+  statement: 'PhD student at the MIT Operations Research Center',
   methods,
   /** First person, for the homepage hero. */
-  summary: `I develop ${methods}.`,
+  summary: `I am a PhD student at the MIT Operations Research Center. My interests include ${methods}, from theory and algorithms to real-world applications.`,
+  /** Current work, stated as areas rather than as the limits of the interests above. */
+  current:
+    'Recent and current research includes fairness in machine learning, sustainable computing, and optimization on GPUs.',
   /** Third person, for meta descriptions and structured data. */
-  description: `${name} is a PhD student at the MIT Operations Research Center. He works on ${methods}.`,
+  description: `${name} is a PhD student at the MIT Operations Research Center. He is interested in ${methods}.`,
 
   email,
   cvPdf: '/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf',
