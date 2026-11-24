@@ -16,6 +16,9 @@ visualCaption: Schematic. Attainable models sit above a frontier along which low
 repository: https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal
 repositoryKind: Research code
 outputs:
+  - label: arXiv preprint
+    href: https://arxiv.org/abs/2611.27009
+    kind: paper
   - label: Project repository
     href: https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraissal
     kind: repository
@@ -53,12 +56,19 @@ scored on sales it could not have seen. Against that protocol it compares
 baseline models with fairness-regularized ones on both predictive error and the
 assessor-facing equity measures.
 
-The methodological direction is to move the equity criterion inside the
-optimization problem rather than around it. This takes two forms: penalizing
-the covariance between assessment ratio and value directly in the training
-objective, and combining models by convex stacking whose weights are chosen
-subject to vertical-equity constraints across validation folds. Both make the
-trade-off a decision variable instead of a diagnostic.
+The preprint moves the equity criterion inside the training objective. It
+compares a Direct penalty on the squared covariance between log valuation errors
+and log sale prices with an observation-additive Surrogate that yields a
+weighted squared-error loss. Both retain the LightGBM model class used by CCAO.
+
+## Findings
+
+At a Surrogate setting selected by cross-validation, the magnitude of
+price-related bias fell by approximately 49% on held-out sales and 39% on 2025
+sales relative to the unpenalized LightGBM baseline. Price-scale R² was
+essentially unchanged, while log-price RMSE increased by 3.1% and 1.7%,
+respectively. In an additional eight-county benchmark, both methods reduced
+regressivity in every county, with higher log-price prediction error.
 
 ## Research to practice
 
@@ -69,6 +79,5 @@ the `mse_cov` objective.
 
 ## Status
 
-Ongoing research at the MIT Operations Research Center. The public materials
-document the modeling and validation pipeline; no empirical findings are
-reported here.
+Ongoing research at the MIT Operations Research Center. The preprint and public
+materials describe the methods, empirical findings, and validation pipeline.

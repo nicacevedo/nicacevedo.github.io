@@ -43,8 +43,7 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
       </div>
 
       <p class="head__note">
-        The PDF is the formal document. The summary below carries the same record as selectable,
-        searchable text.
+        The PDF is the formal document. The searchable summary below may include more recent work.
       </p>
     </div>
   </section>
@@ -91,6 +90,16 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
                 {formatAuthors(publication.authors)} · {publication.kindLabel}
                 {publication.venue && ` · ${publication.venue}`}
               </p>
+              {publication.links.find((link) => link.label === 'arXiv') && (
+                <a
+                  class="link"
+                  href={publication.links.find((link) => link.label === 'arXiv')!.href}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  arXiv<span class="visually-hidden"> (opens in a new tab)</span>
+                </a>
+              )}
             </div>
           </li>
         ))}

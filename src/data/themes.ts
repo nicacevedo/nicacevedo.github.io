@@ -24,7 +24,7 @@ export const themes = [
     index: '01',
     name: 'Fair & reliable predictive modeling',
     summary:
-      'Predictive systems whose errors carry distributional or institutional consequences — where accuracy alone is not the right objective.',
+      'Algorithmic fairness and machine learning for predictive systems whose errors carry distributional or institutional consequences — where accuracy alone is not the right objective.',
     mark: 'frontier',
   },
   {
@@ -32,7 +32,7 @@ export const themes = [
     index: '02',
     name: 'Infrastructure modeling & planning',
     summary:
-      'Energy, water, and environmental systems reconstructed from imperfect public records, with an explicit boundary between reported and modeled quantities.',
+      'Energy, water, and environmental systems, including sustainable computing and data centers, reconstructed from imperfect public records with an explicit boundary between reported and modeled quantities.',
     mark: 'network',
   },
   {

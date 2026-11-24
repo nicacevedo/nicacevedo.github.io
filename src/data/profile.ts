@@ -52,6 +52,12 @@ export const profile = {
   siteUrl: 'https://nicacevedo.github.io',
 
   socials: [
+    {
+      label: 'Google Scholar',
+      short: 'Google Scholar',
+      href: 'https://scholar.google.com/citations?user=pYNjmpgAAAAJ',
+      external: true,
+    },
     { label: 'GitHub', short: 'GitHub', href: 'https://github.com/nicacevedo', external: true },
     {
       label: 'LinkedIn',

@@ -41,7 +41,14 @@ const schema = {
       url: 'https://www.mit.edu/',
     },
     alumniOf: [{ '@type': 'CollegeOrUniversity', name: 'Universidad de Chile' }],
-    knowsAbout: ['Operations research', 'Optimization', ...themes.map((t) => t.name)],
+    knowsAbout: [
+      'Operations research',
+      'Optimization',
+      'Machine learning',
+      'Algorithmic fairness',
+      'Sustainable computing',
+      ...themes.map((t) => t.name),
+    ],
     sameAs: profile.socials.filter((s) => s.external).map((s) => s.href),
   },
 };
