@@ -287,11 +287,10 @@ project's own figure (`scripts/og-figures.mjs` draws card-scale renditions of
 the same geometry), never a portrait and never the same generic artwork. Cards
 are laid out with satori and rasterised with sharp; nothing screenshots a page.
 
-Both generators are byte-for-byte deterministic, which is what makes the
-committed files checkable: CI builds and then fails if `public/` is dirty. So
-the two models — generated and committed — cannot drift apart. If you change a
-project title or a theme name, run the generators and commit the new PNGs in the
-same change.
+CI checks the committed icons for changes. Social-card rasterization can differ
+between platforms, so CI does not compare their bytes; every build regenerates
+the cards it deploys. If you change card content, regenerate and commit the PNGs
+so the repository previews stay current.
 
 ## Tests and checks
 

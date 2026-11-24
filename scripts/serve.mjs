@@ -59,8 +59,16 @@ async function resolveFile(pathname) {
 }
 
 createServer(async (req, res) => {
-  const url = new URL(req.url ?? '/', `http://localhost:${PORT}`);
-  const found = await resolveFile(url.pathname);
+  let found;
+  try {
+    const url = new URL(req.url ?? '/', `http://localhost:${PORT}`);
+    found = await resolveFile(url.pathname);
+  } catch (error) {
+    if (!(error instanceof URIError || error instanceof TypeError)) throw error;
+    res.writeHead(400, { 'content-type': 'text/plain; charset=utf-8' });
+    res.end('Bad request');
+    return;
+  }
 
   if (!found) {
     const fallback = await resolveFile('/404.html');

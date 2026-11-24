@@ -61,6 +61,7 @@ const { title, description, ogImage, ogType, schema, noindex, bodyClass } = Astr
 
         matchMedia('(prefers-color-scheme: dark)').addEventListener('change', sync);
         sync();
+        button.hidden = false;
       })();
     </script>
     <style is:global>

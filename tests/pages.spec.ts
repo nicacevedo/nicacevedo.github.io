@@ -66,6 +66,11 @@ test.describe('every page', () => {
 });
 
 test.describe('url compatibility', () => {
+  test('malformed URL returns 400 and the server stays available', async ({ request }) => {
+    expect((await request.get('/%ZZ')).status()).toBe(400);
+    expect((await request.get('/')).status()).toBe(200);
+  });
+
   for (const route of COMPATIBILITY) {
     test(`${route.from} still reaches ${route.to}`, async ({ page }) => {
       const response = await page.goto(route.from);

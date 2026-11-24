@@ -40,13 +40,13 @@ jobs:
       - name: Production build
         run: npm run build
 
-      # The generators are deterministic, so a clean tree here is the proof that
-      # the committed icons and cards match the content they are built from.
-      - name: Committed icons and social cards are up to date
+      # Cards are regenerated for every build; rasterized bytes can differ
+      # between platforms, so only compare the platform-stable icons here.
+      - name: Committed icons are up to date
         run: |
-          if ! git diff --quiet -- public; then
-            echo "::error::Generated assets are stale. Run 'npm run icons && npm run og' and commit the result."
-            git --no-pager diff --stat -- public
+          if ! git diff --quiet -- public/favicon public/favicon.ico; then
+            echo "::error::Generated icons are stale. Run 'npm run icons' and commit the result."
+            git --no-pager diff --stat -- public/favicon public/favicon.ico
             exit 1
           fi
           echo "generated assets match the content they are built from"

@@ -2,8 +2,8 @@
  * Deterministic 1200x630 social cards.
  *
  * Satori lays the card out and embeds the type as outlines, so rasterising with
- * sharp needs no font at all. Nothing here screenshots a page; the same inputs
- * always produce the same bytes.
+ * sharp needs no font at all. Nothing here screenshots a page. Rasterized bytes
+ * can vary across platforms; each build regenerates the cards it deploys.
  *
  * Run with `npm run og`. Output is committed under public/generated/og/.
  */
@@ -75,14 +75,14 @@ function card({ eyebrow, title, subtitle, footer, art = SITE_ART }) {
           props: {
             style: {
               position: 'absolute',
-              right: '54px',
-              top: '80px',
+              right: '35px',
+              top: '105px',
               display: 'flex',
               opacity: 0.95,
             },
             children: {
               type: 'img',
-              props: { src: dataUri(art), width: 520, height: 470 },
+              props: { src: dataUri(art), width: 470, height: 425 },
             },
           },
         },

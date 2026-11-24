@@ -6,6 +6,7 @@
   type="button"
   class="theme-toggle"
   id="theme-toggle"
+  hidden
   aria-label="Switch to dark theme"
   aria-pressed="false"
 >
@@ -39,6 +40,10 @@
     transition:
       color var(--dur) var(--ease),
       border-color var(--dur) var(--ease);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
   }
 
   .theme-toggle:hover {
