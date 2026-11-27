@@ -22,7 +22,7 @@ const SCANNED = new Set(['.ts', '.tsx', '.astro', '.md', '.bib', '.mjs', '.css']
 const ATTEMPTS = 3;
 const TIMEOUT_MS = 20_000;
 const AGENT =
-  'Mozilla/5.0 (compatible; nicacevedo.github.io link check; +https://nicacevedo.github.io/)';
+  'Mozilla/5.0 (compatible; nicacevedo.com link check; +https://nicacevedo.com/)';
 
 /**
  * Hosts that answer bots with a challenge or a hard block, so a status code
@@ -32,7 +32,8 @@ const EXCLUDED = [
   'linkedin.com', // returns 999 to anything that is not a browser
   'schema.org', // a vocabulary namespace, not a link
   'w3.org', // SVG/XML namespaces
-  'nicacevedo.github.io', // this site; internal links are covered by the test suite
+  'nicacevedo.com', // this site
+  'nicacevedo.github.io', // redirects to this site; internal links are covered by the test suite
   'localhost',
   'youtube.com/oembed', // the probe endpoint this script builds, not a link
   'example.com',

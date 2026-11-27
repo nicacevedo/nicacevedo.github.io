@@ -2,24 +2,32 @@
 import Base from '@layouts/Base.astro';
 import SectionHead from '@components/ui/SectionHead.astro';
 import { profile } from '@data/profile';
-import { cv } from '@data/cv';
+import { cv, type CvEntry } from '@data/cv';
 import { teaching, type Course } from '@data/teaching';
 import { getPublications, formatAuthors } from '@utils/publications';
 
 const publications = getPublications();
 
-const sections = [
+interface CvSection {
+  readonly id: string;
+  readonly label: string;
+  readonly entries: readonly (CvEntry & { readonly href?: string })[];
+}
+
+const sections: readonly CvSection[] = [
   { id: 'education', label: 'Education', entries: cv.education },
   { id: 'research', label: 'Research experience', entries: cv.research },
   { id: 'experience', label: 'Professional experience', entries: cv.experience },
-] as const;
+  { id: 'graduate-projects', label: 'Selected graduate project', entries: cv.graduateProjects },
+  { id: 'projects', label: 'Side projects', entries: cv.projects },
+];
 
 const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
 ---
 
 <Base
   title="Curriculum vitae"
-  description={`Curriculum vitae of ${profile.name} — education, research, professional experience, teaching and awards.`}
+  description={`Curriculum vitae of ${profile.name} — optimization, machine learning and applied mathematics: education, research, industry experience, projects, teaching and awards.`}
   ogImage="cv"
   ogType="profile"
 >
@@ -57,7 +65,16 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
             <li class="entry">
               <span class="entry__period label">{entry.period}</span>
               <div class="entry__body">
-                <h3 class="entry__role">{entry.role}</h3>
+                <h3 class="entry__role">
+                  {entry.href ? (
+                    <a class="link link--title" href={entry.href} target="_blank" rel="noopener">
+                      {entry.role}
+                      <span class="visually-hidden"> (opens in a new tab)</span>
+                    </a>
+                  ) : (
+                    entry.role
+                  )}
+                </h3>
                 <p class="entry__org">
                   {entry.org}
                   {entry.place && <span class="entry__place"> · {entry.place}</span>}
@@ -76,6 +93,20 @@ const allCourses: Course[] = [...teaching.mit, ...teaching.uchile];
       </div>
     </section>
   ))}
+
+  <section class="band" aria-labelledby="cv-skills">
+    <div class="shell">
+      <SectionHead title="Technical skills" id="cv-skills" />
+      <ul class="entries list-reset">
+        {cv.skills.map((skill) => (
+          <li class="entry entry--tight">
+            <span class="entry__period label">{skill.category}</span>
+            <p class="entry__plain">{skill.items}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
 
   <section class="band" aria-labelledby="cv-publications">
     <div class="shell">

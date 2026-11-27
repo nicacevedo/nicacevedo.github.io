@@ -2,7 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-const SITE = 'https://nicacevedo.github.io';
+const SITE = 'https://nicacevedo.com';
 
 // Subset ranges as published by Google Fonts, so a page of plain English never
 // downloads the extended-Latin file.

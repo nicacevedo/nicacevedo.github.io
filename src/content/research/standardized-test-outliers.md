@@ -54,9 +54,9 @@ produced it.
 
 The project developed an outlier-detection protocol combining statistical
 discrepancy measures, clustering-based screening and outlier-detection models
-into one interpretable anomaly score per test taker. The methodology was
-validated and presented to DEMRE, the government agency responsible for
-administering the exam.
+into one interpretable anomaly score per test taker, using exam data provided by
+DEMRE, the government agency responsible for administering the exam. The
+methodology was presented to DEMRE.
 
 ## Status
 

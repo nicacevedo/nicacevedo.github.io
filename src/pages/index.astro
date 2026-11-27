@@ -39,11 +39,12 @@ const schema = {
     },
     alumniOf: [{ '@type': 'CollegeOrUniversity', name: 'Universidad de Chile' }],
     knowsAbout: [
-      'Operations research',
-      'Optimization',
       'Machine learning',
-      'Game theory',
+      'Operations research',
+      'Large-scale optimization',
+      'GPU computing',
       'Algorithmic fairness',
+      'Large language model agents',
       'Sustainable computing',
     ],
     sameAs: profile.socials.filter((s) => s.external).map((s) => s.href),
@@ -217,7 +218,7 @@ const schema = {
           <p>
             I am advised by {profile.advising.current.join(' and ')}. Earlier in the PhD I also
             received research guidance from {profile.advising.past.join(' and ')}. Before MIT I
-            worked with Fernando Ordóñez and Renaud Chicoisne on decomposition methods for feature
+            worked with Fernando Ordonez and Renaud Chicoisne on decomposition methods for feature
             selection, and with Charles Thraves and Ricardo Montoya at the Complex Engineering
             Systems Institute.
           </p>

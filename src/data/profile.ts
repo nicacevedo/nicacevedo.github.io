@@ -40,13 +40,13 @@ export const profile = {
   summary: `I am a PhD student at the MIT Operations Research Center. My interests include ${methods}, from theory and algorithms to real-world applications.`,
   /** Current work, stated as areas rather than as the limits of the interests above. */
   current:
-    'Recent and current research includes fairness in machine learning, sustainable computing, and optimization on GPUs.',
+    "Recent and current work includes fairness in machine learning (now selectable in the Cook County Assessor's open-source valuation model), optimization on GPUs, and optimization models of data centers.",
   /** Third person, for meta descriptions and structured data. */
   description: `${name} is a PhD student at the MIT Operations Research Center. He is interested in ${methods}.`,
 
   email,
   cvPdf: '/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf',
-  siteUrl: 'https://nicacevedo.github.io',
+  siteUrl: 'https://nicacevedo.com',
 
   socials: [
     {

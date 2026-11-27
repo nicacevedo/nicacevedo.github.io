@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nicacevedo.github.io/sitemap-index.xml
+Sitemap: https://nicacevedo.com/sitemap-index.xml

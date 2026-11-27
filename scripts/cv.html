@@ -1,0 +1,98 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="footer" content="Nicolas Acevedo Villena — CV"><title>Nicolas Acevedo Villena — Curriculum Vitae</title>
+<!--
+  Source of public/assets/pdf/Nicolas_Acevedo_Villena_CV.pdf.
+  Render: node scripts/render-cv.mjs   (Letter, Chromium print, two pages)
+  Every claim here must be checkable against the preprint, a public repository,
+  the project reports in meta-data/, or src/data/*.ts. Keep it in step with src/data/cv.ts.
+  No small caps or letter-spacing on text: some résumé parsers split it.
+-->
+<style>
+@page{size:letter;margin:.45in .58in}
+body{color:#171717;font:10pt/1.26 Georgia,serif;margin:0}
+h1{font-size:21pt;text-align:center;margin:0 0 2pt}
+.tagline{text-align:center;font-size:10.5pt;margin:0 0 2pt}
+.contact{text-align:center;font-size:9.2pt;margin:0 0 6pt}
+.summary{margin:0 0 2pt;text-align:justify}
+a{color:#173e68;text-decoration:none}
+h2{font-size:11.5pt;border-bottom:.6pt solid #555;padding-bottom:1.5pt;margin:7pt 0 3.5pt}
+.entry{margin:0 0 4pt;break-inside:avoid}
+.line{display:flex;justify-content:space-between;gap:10pt}
+.date{white-space:nowrap}
+.sub{color:#444;font-style:italic}
+p{margin:1.5pt 0}
+ul{padding-left:14pt;margin:1.5pt 0 0}
+li{padding-left:1pt;margin-bottom:1.5pt}
+.skills p{margin:1pt 0}
+code{font:8.8pt Menlo,Consolas,monospace}
+</style></head><body>
+
+<h1>Nicolas Acevedo Villena</h1>
+<p class="tagline">Operations Research · Optimization · Machine Learning · Applied Mathematics</p>
+<p class="contact">Cambridge, MA · <a href="mailto:nacevedo@mit.edu">nacevedo@mit.edu</a> · <a href="https://nacevedo.com/">nacevedo.com</a> · <a href="https://github.com/nicacevedo">github.com/nicacevedo</a> · <a href="https://scholar.google.com/citations?user=pYNjmpgAAAAJ">Google Scholar</a> · <a href="https://www.linkedin.com/in/nacevedo-villena">LinkedIn</a></p>
+
+<p class="summary">MIT Operations Research PhD student interested in the mathematical foundations, algorithms and real-world applications of optimization, machine learning and game theory.</p>
+
+<h2>Education</h2>
+<div class="entry"><div class="line"><span><strong>Massachusetts Institute of Technology</strong> — PhD in Operations Research</span><span class="date">Sept. 2024–present</span></div><p class="sub">Operations Research Center. Advisors: <a href="https://scholar.google.com/citations?user=qTCXoLQAAAAJ">Saurabh Amin</a>, <a href="https://scholar.google.com/citations?user=gv6Jmj0AAAAJ">Deepjyoti Deka</a>; earlier PhD guidance from <a href="https://scholar.google.com/citations?user=DnRJBwUAAAAJ">Haihao Lu</a>. Expected 2029.</p></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — Master in Operations Management</span><span class="date">2022–2023</span></div><p class="sub">Highest honors; second-highest GPA in cohort. Best Master Thesis Award (FCFM).</p></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — Professional title of Ingeniero Civil Industrial (Industrial Engineering)</span><span class="date">2022–2023</span></div><p class="sub">Highest honors; highest GPA in cohort.</p></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — Bachelor of Engineering Science in Industrial Engineering</span><span class="date">2017–2021</span></div><p class="sub">Highest honors; highest GPA in cohort.</p></div>
+
+<h2>Publications and Thesis</h2>
+<div class="entry"><p><strong>N. Acevedo Villena</strong>, H. Lu, M. Wagner, and T. Sparer. “Fair Property Tax: Reducing Regressivity in Machine-Learning Valuation.” Preprint, 2026. <a href="https://arxiv.org/abs/2611.27009">arXiv:2611.27009</a>.</p></div>
+<div class="entry"><p><strong>N. Acevedo Villena</strong>. “Column generation-based decomposition for large-scale feature selection problems.” Master’s thesis, Universidad de Chile, 2023. <a href="https://doi.org/10.58011/yyb6-dk92">doi:10.58011/yyb6-dk92</a>.</p></div>
+
+<h2>Research and Industry Experience</h2>
+<div class="entry"><div class="line"><strong>Research Assistant · MIT Operations Research Center</strong><span class="date">Sept. 2024–present</span></div>
+<ul>
+<li><strong>Fair machine learning (first-author).</strong> Developed two covariance-based LightGBM training objectives, with custom gradients and Hessians, to reduce regressivity in property valuation: a direct squared-covariance penalty and an observation-additive surrogate. <a href="https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraisal">GitHub</a>.</li>
+<li><strong>Results.</strong> The cross-validated surrogate reduced the magnitude of price-related bias (PRB) by 49% on held-out sales and 39% on 2025 sales versus an unpenalized fit, with price-scale R² essentially unchanged and log-price RMSE up 3.1% and 1.7%, respectively. Data: 382,897 historical Cook County sales, a separate 26,641-sale 2025 test set and an eight-county benchmark, where both methods reduced regressivity in every county.</li>
+<li><strong>Research adoption.</strong> Collaborated with the Cook County Assessor’s Office, which merged the direct covariance penalty into its open-source residential valuation model as a selectable training objective (<code>mse_cov</code>; <a href="https://github.com/ccao-data/model-res-avm/pull/475">PR #475</a>, July 2026).</li>
+<li><strong>Numerical optimization on GPUs.</strong> Studied the convergence and numerical accuracy of large-scale first-order linear programming (LP) solvers on GPUs; implemented and tested iterative refinement and residual-based matrix scaling in a fork of cuPDLP.jl (CUDA.jl). <a href="https://github.com/nicacevedo/cuPDLP.jl">GitHub</a>.</li>
+<li><strong>Data-center modeling.</strong> Developing optimization and public-data models of data-center operations, including workload scheduling, electricity use and cooling-water use. <a href="https://github.com/nicacevedo/data-center-externalities-modeling">GitHub</a>.</li>
+<li><strong>Tabular deep learning.</strong> Built fairness-aware PyTorch networks with projection layers and group-balanced batching, and compared them with gradient boosting under temporal cross-validation.</li>
+</ul></div>
+<div class="entry"><div class="line"><strong>Researcher · Web Intelligence Centre, Universidad de Chile / ACHS</strong><span class="date">Dec. 2023–Apr. 2024</span></div>
+<ul><li>Built department-level patient-volume forecasts for Hospital del Trabajador (Prophet, NeuralProphet; random-forest and XGBoost baselines) and used them in a scheduling optimization model for appointment capacity planning.</li></ul></div>
+<div class="entry"><div class="line"><strong>Research Assistant · FCFM, Universidad de Chile</strong><span class="date">Aug. 2022–July 2024</span></div>
+<ul><li><strong>Master’s thesis.</strong> Reformulated LASSO feature selection as a second-order cone program and developed a column-generation decomposition driven by conic-dual pricing. On large, strongly regularized instances with sparse solutions, it solved in seconds problems on which the original SOCP and coordinate-descent LASSO needed over 30 minutes, and it converged faster than coordinate descent and Frank–Wolfe on highly correlated features. Advisors: <a href="https://scholar.google.com/citations?user=uwqsEvgAAAAJ">Fernando Ordonez</a>, <a href="https://scholar.google.com/citations?user=l8jjQ4cAAAAJ">Renaud Chicoisne</a>.</li></ul></div>
+<div class="entry"><div class="line"><span><strong>Research Engineer · Nezasa AG / TripYeah</strong> · Zurich, Switzerland (remote from Chile)</span><span class="date">June 2022–Apr. 2023</span></div>
+<ul><li>Coordinated a small team developing a time-dependent traveling salesman problem (TSP) formulation and preliminary solver for ranking multi-leg flight itineraries.</li>
+<li>Developed machine-learning classifiers (Extra Trees, neural networks) that prune the search space to reduce flight-data queries, and evaluated the trade-off between query savings and itinerary optimality.</li></ul></div>
+<div class="entry"><div class="line"><strong>Research Assistant · Complex Engineering Systems Institute (ISCI)</strong><span class="date">Sept. 2020–Mar. 2022</span></div>
+<ul><li><strong>Anomaly detection.</strong> Built an interpretable, unsupervised anomaly score for Chile’s national university-admission exam, combining robust Mahalanobis distances, Isolation Forest, PCA and clustering on data from DEMRE, the agency that administers the exam; presented the methodology to DEMRE. Advisor: <a href="https://scholar.google.com/citations?user=RzY813MAAAAJ">Charles Thraves</a>.</li>
+<li><strong>Adaptive questionnaires.</strong> Formulated question selection and ordering as online matrix completion, using predictive-model ensembles, probabilistic greedy policies and dynamic programming to maximize expected information gain. Advisors: <a href="https://scholar.google.com/citations?user=UPq3SPUAAAAJ">Ricardo Montoya</a>, <a href="https://scholar.google.com/citations?user=RzY813MAAAAJ">Charles Thraves</a>.</li></ul></div>
+
+<h2>Selected Graduate Project (MIT)</h2>
+<div class="entry"><div class="line"><span><strong>Robust model selection</strong> — 15.094 Robust Modeling, Optimization, and Computation</span><span class="date">Spring 2026</span></div>
+<p>Joint with D. K. Agarwal. Built bootstrap box and ellipsoidal uncertainty sets and a mixed-integer selection model (Gurobi) that raised out-of-sample satisfaction of group-error constraints from 80% to 96% (box set; 95% ellipsoidal) across 100 random splits of the Communities and Crime dataset, at about 6% higher mean test MSE.</p></div>
+
+<h2>Technical Skills</h2>
+<div class="skills">
+<p><strong>Optimization:</strong> mathematical modeling · convex and conic optimization (SOCP) · linear and mixed-integer programming (LP/MILP) · robust optimization · numerical optimization · numerical linear algebra · column generation · combinatorial optimization · first-order methods · dynamic programming</p>
+<p><strong>Machine learning and statistics:</strong> probability and statistics · statistical learning · gradient boosting · custom loss functions · neural networks · time-series forecasting · anomaly detection · temporal cross-validation · bootstrap</p>
+<p><strong>Programming:</strong> Python · Julia · R · SQL</p>
+<p><strong>Libraries and solvers:</strong> PyTorch · LightGBM · XGBoost · scikit-learn · Optuna · NumPy · pandas · SciPy · Gurobi · CVXPY</p>
+<p><strong>Scientific computing:</strong> GPU computing (CUDA.jl) · Git · Linux · Slurm</p>
+<p><strong>Languages:</strong> Spanish (native) · English (fluent)</p>
+</div>
+
+<h2>Teaching</h2>
+<p><strong>Teaching Assistant, MIT (2026):</strong> Optimization Methods (graduate); The Analytics Edge; Engineering Statistics and Data Science; Engineering Probability.</p>
+<p><strong>Teaching Assistant, Universidad de Chile (2020–2024), 9 courses:</strong> Optimization Models and Algorithms (graduate); Modeling and Optimization; Probability; Statistics; Decision Making Under Uncertainty; Applied Econometrics; Quantitative Marketing (graduate); Organizational Economics (graduate); Operations Management I. </p>
+
+<h2>Awards</h2>
+<ul>
+<li>Best Master Thesis Award, FCFM, Universidad de Chile (2023); thesis distinction, School of Graduate Studies (awarded 2024).</li>
+<li>ANID National Master’s Scholarship (Beca Magíster Nacional), Chile (2022); academic excellence scholarship, Master in Operations Management (2022).</li>
+<li>Outstanding Student, FCFM and Department of Industrial Engineering, Universidad de Chile; top 10% by GPA (2019–2022).</li>
+</ul>
+
+<h2>Presentations</h2>
+<p>“On the outlier detection for standardized tests,” with C. Thraves and M. Varas. XIV Chilean Conference on Operations Research (OPTIMA), Talca, Chile, 2022. Talk.</p>
+<p>“Column generation-based decomposition for large-scale feature selection problems,” with F. Ordonez. Summer School in Computational Intelligence (EVIC), Universidad de Chile, 2023. Poster.</p>
+
+<h2>Side Projects</h2>
+<p><strong>Research OS</strong> (2026): personal Python project exploring LLM-assisted research workflows and experiment automation. <a href="https://github.com/nicacevedo/research-os">GitHub</a>.</p>
+
+</body></html>

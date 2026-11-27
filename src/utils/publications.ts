@@ -92,10 +92,12 @@ function buildLinks(fields: Record<string, unknown>): PublicationLink[] {
   const poster = get('poster');
   const website = get('website');
   const arxiv = get('arxiv');
+  const scholar = get('scholar');
 
   if (pdf) links.push({ label: 'PDF', href: pdf, kind: 'pdf' });
   if (doi) links.push({ label: 'DOI', href: `https://doi.org/${doi}`, kind: 'doi' });
   if (arxiv) links.push({ label: 'arXiv', href: `https://arxiv.org/abs/${arxiv}`, kind: 'page' });
+  if (scholar) links.push({ label: 'Google Scholar', href: scholar, kind: 'page' });
   if (url) links.push({ label: 'Repository record', href: url, kind: 'page' });
   if (code) links.push({ label: 'Code', href: code, kind: 'code' });
   if (data) links.push({ label: 'Data', href: data, kind: 'data' });

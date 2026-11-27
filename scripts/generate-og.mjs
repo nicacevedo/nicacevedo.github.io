@@ -189,14 +189,14 @@ const CARDS = [
     eyebrow: CONTEXT,
     title: profile.name,
     subtitle: METHODS,
-    footer: 'nicacevedo.github.io',
+    footer: 'nicacevedo.com',
   },
   {
     slug: 'home',
     eyebrow: CONTEXT,
     title: profile.name,
     subtitle: METHODS,
-    footer: 'nicacevedo.github.io',
+    footer: 'nicacevedo.com',
   },
   {
     slug: 'research',

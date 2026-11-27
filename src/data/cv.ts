@@ -16,6 +16,34 @@ export interface CvEntry {
 }
 
 export const cv = {
+  skills: [
+    {
+      category: 'Optimization',
+      items:
+        'Mathematical modeling, convex and conic optimization (SOCP), linear and mixed-integer programming (LP/MILP), robust optimization, numerical optimization, numerical linear algebra, column generation, combinatorial optimization, first-order methods, dynamic programming',
+    },
+    {
+      category: 'Machine learning and statistics',
+      items:
+        'Probability and statistics, statistical learning, gradient boosting, custom loss functions, neural networks, time-series forecasting, anomaly detection, temporal cross-validation, bootstrap methods',
+    },
+    {
+      category: 'Programming',
+      items: 'Python, Julia, R, SQL',
+    },
+    {
+      category: 'Libraries and solvers',
+      items: 'PyTorch, LightGBM, XGBoost, scikit-learn, Optuna, NumPy, pandas, SciPy, Gurobi, CVXPY',
+    },
+    {
+      category: 'Scientific computing',
+      items: 'GPU computing (CUDA.jl), Git, Linux, Slurm',
+    },
+    {
+      category: 'Languages',
+      items: 'Spanish (native), English (fluent)',
+    },
+  ] as const,
   education: [
     {
       period: 'Sept. 2024 — present',
@@ -31,15 +59,22 @@ export const cv = {
       place: 'Santiago, Chile',
       notes: [
         'Thesis: Column generation-based decomposition for large-scale feature selection problems.',
-        'Graduated with highest honors (second-highest GPA).',
+        'Graduated with highest honors (second-highest GPA in cohort).',
       ],
+    },
+    {
+      period: '2022 — 2023',
+      role: 'Professional title of Ingeniero Civil Industrial (Industrial Engineering)',
+      org: 'Universidad de Chile',
+      place: 'Santiago, Chile',
+      notes: ['Graduated with highest honors (highest GPA in cohort).'],
     },
     {
       period: '2017 — 2021',
       role: 'Bachelor of Engineering Science in Industrial Engineering',
       org: 'Universidad de Chile',
       place: 'Santiago, Chile',
-      notes: ['Graduated with highest honors (highest GPA).'],
+      notes: ['Graduated with highest honors (highest GPA in cohort).'],
     },
   ] as const satisfies readonly CvEntry[],
 
@@ -50,8 +85,13 @@ export const cv = {
       org: 'Operations Research Center, MIT',
       place: 'Cambridge, MA',
       notes: [
-        'Advised by Saurabh Amin and Deepjyoti (Deep) Deka; earlier PhD research guidance from Haihao (Sean) Lu.',
-        'Fair and equitable predictive modeling for property assessment; public-data modeling of data-center infrastructure and resource systems; numerical reliability of first-order solvers on GPUs.',
+        'Advised by Saurabh Amin and Deepjyoti Deka; earlier PhD research guidance from Haihao Lu.',
+        'Fair machine learning (first-author preprint): two covariance-based LightGBM training objectives with custom gradients and Hessians, a direct squared-covariance penalty and an observation-additive surrogate.',
+        'Results: the cross-validated surrogate reduced the magnitude of price-related bias (PRB) by 49% on held-out sales and 39% on 2025 sales versus an unpenalized fit, with price-scale R² essentially unchanged and log-price RMSE up 3.1% and 1.7% respectively. Evaluated on 382,897 historical Cook County sales, a separate 26,641-sale 2025 test set and an eight-county benchmark, where both methods reduced regressivity in every county.',
+        "Research adoption: collaborated with the Cook County Assessor's Office, which merged the direct covariance penalty into its public residential valuation model as a selectable training objective (mse_cov; PR #475, July 2026).",
+        'Numerical optimization on GPUs: studied the convergence and numerical accuracy of large-scale first-order linear programming (LP) solvers on GPUs; implemented and tested iterative refinement and residual-based matrix scaling in a fork of cuPDLP.jl (Julia, CUDA.jl).',
+        'Data-center modeling: optimization and public-data models of data-center operations, including workload scheduling, electricity use and cooling-water use.',
+        'Tabular deep learning: fairness-aware PyTorch networks with projection layers and group-balanced batching, compared with gradient boosting under temporal cross-validation.',
       ],
     },
     {
@@ -60,8 +100,8 @@ export const cv = {
       org: 'FCFM, Universidad de Chile',
       place: 'Santiago, Chile',
       notes: [
-        'Advisor: Fernando Ordóñez. Co-advisor: Renaud Chicoisne.',
-        'Scalable decomposition for large-scale feature selection: unconstrained LASSO reformulated as a second-order cone program, with a column-wise decomposition driven by conic-dual subproblems.',
+        'Advisor: Fernando Ordonez. Co-advisor: Renaud Chicoisne.',
+        'Scalable decomposition for large-scale feature selection: unconstrained LASSO reformulated as a second-order cone program, with a column-wise decomposition driven by conic-dual subproblems. On large, strongly regularized instances with sparse solutions, it solved in seconds problems on which the original SOCP and coordinate-descent LASSO needed over 30 minutes, and it converged faster than coordinate descent and Frank–Wolfe on highly correlated features.',
       ],
     },
     {
@@ -81,7 +121,7 @@ export const cv = {
       place: 'Santiago, Chile',
       notes: [
         'Advisor: Charles Thraves.',
-        "Outlier-detection protocol for Chile's university selection exam, validated and presented to DEMRE, the agency responsible for administering it.",
+        "Interpretable, unsupervised anomaly score for Chile's university selection exam (robust Mahalanobis distances, Isolation Forest, PCA and clustering) on data from DEMRE, the agency that administers it; methodology presented to DEMRE.",
       ],
     },
   ] as const satisfies readonly CvEntry[],
@@ -93,17 +133,17 @@ export const cv = {
       org: 'Web Intelligence Centre (WIC) / ACHS',
       place: 'Santiago, Chile',
       notes: [
-        'Department-level patient-volume forecasting integrated into a second-stage scheduling optimization for Hospital del Trabajador.',
+        'Department-level patient-volume forecasting (Prophet, NeuralProphet; random-forest and XGBoost baselines) used in a scheduling optimization model for appointment capacity planning at Hospital del Trabajador.',
       ],
     },
     {
       period: 'June 2022 — Apr. 2023',
       role: 'Research engineer',
       org: 'Nezasa AG / TripYeah',
-      place: 'Zurich, Switzerland',
+      place: 'Zurich, Switzerland (remote from Chile)',
       notes: [
-        'Time-dependent travelling-salesman formulation and preliminary solver for ranking flight itineraries.',
-        'Probabilistic and learned edge-pruning models to reduce the size of the underlying graph.',
+        'Coordinated a small team developing a time-dependent traveling salesman problem (TSP) formulation and preliminary solver for ranking flight itineraries.',
+        'Machine-learning classifiers (Extra Trees, neural networks) that prune the search space to reduce flight-data queries, evaluated on the trade-off between query savings and itinerary optimality.',
       ],
     },
     {
@@ -116,6 +156,27 @@ export const cv = {
       ],
     },
   ] as const satisfies readonly CvEntry[],
+
+  graduateProjects: [
+    {
+      period: 'Spring 2026',
+      role: 'Robust model selection',
+      org: 'MIT 15.094 Robust Modeling, Optimization, and Computation',
+      notes: [
+        'Joint with D. K. Agarwal. Bootstrap box and ellipsoidal uncertainty sets and a mixed-integer selection model (Gurobi) raised out-of-sample satisfaction of group-error constraints from 80% to 96% (box set; 95% ellipsoidal) across 100 random splits of the Communities and Crime dataset, at about 6% higher mean test MSE.',
+      ],
+    },
+  ] as const satisfies readonly CvEntry[],
+
+  projects: [
+    {
+      period: '2026',
+      role: 'Research OS',
+      org: 'Personal project',
+      href: 'https://github.com/nicacevedo/research-os',
+      notes: ['Python project exploring LLM-assisted research workflows and experiment automation.'],
+    },
+  ] as const satisfies readonly (CvEntry & { readonly href?: string })[],
 
   awards: [
     { year: '2023', text: 'Best Master Thesis Award, FCFM, Universidad de Chile.' },
@@ -147,7 +208,7 @@ export const cv = {
   posters: [
     {
       year: '2023',
-      text: 'Acevedo Villena, N., Ordóñez, F. Column generation-based decomposition for large-scale feature selection problems. Escuela de Verano en Inteligencia Computacional (EVIC), FCFM, Santiago, Chile.',
+      text: 'Acevedo Villena, N., Ordonez, F. Column generation-based decomposition for large-scale feature selection problems. Escuela de Verano en Inteligencia Computacional (EVIC), FCFM, Santiago, Chile.',
       href: '/assets/pdf/PosterEVIC2023.pdf',
     },
   ] as const,

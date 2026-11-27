@@ -1,0 +1,61 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Nicolas Acevedo Villena — Résumé</title>
+<!--
+  One-page industry résumé (optimization / applied-scientist / research-intern roles).
+  Render: node scripts/render-cv.mjs scripts/resume.html <out.pdf>
+  Same claims as scripts/cv.html, cut to one page; not linked from the site.
+-->
+<style>
+@page{size:letter;margin:.42in .55in}
+body{color:#171717;font:10pt/1.27 Georgia,serif;margin:0}
+h1{font-size:20pt;text-align:center;margin:0 0 1pt}
+.tagline{text-align:center;font-size:10pt;margin:0 0 1pt}
+.contact{text-align:center;font-size:8.8pt;margin:0 0 4pt}
+a{color:#173e68;text-decoration:none}
+h2{font-size:10.8pt;border-bottom:.6pt solid #555;padding-bottom:1pt;margin:6pt 0 3pt}
+.entry{margin:0 0 3.5pt;break-inside:avoid}
+.line{display:flex;justify-content:space-between;gap:10pt}
+.date{white-space:nowrap}
+p{margin:1pt 0}
+ul{padding-left:13pt;margin:1pt 0 0}
+li{margin-bottom:1pt}
+code{font:8.4pt Menlo,Consolas,monospace}
+</style></head><body>
+
+<h1>Nicolas Acevedo Villena</h1>
+<p class="tagline">Operations Research · Optimization · Machine Learning · Applied Mathematics</p>
+<p class="contact">Cambridge, MA · <a href="mailto:nacevedo@mit.edu">nacevedo@mit.edu</a> · <a href="https://nacevedo.com/">nacevedo.com</a> · <a href="https://github.com/nicacevedo">github.com/nicacevedo</a> · <a href="https://www.linkedin.com/in/nacevedo-villena">linkedin.com/in/nacevedo-villena</a></p>
+
+<h2>Education</h2>
+<div class="entry"><div class="line"><span><strong>Massachusetts Institute of Technology</strong> — PhD, Operations Research</span><span class="date">2024–2029 (expected)</span></div></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — M.S. Operations Management; highest honors, Best Master Thesis Award</span><span class="date">2022–2023</span></div></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — Ingeniero Civil Industrial (prof. title); highest honors, highest GPA in cohort</span><span class="date">2022–2023</span></div></div>
+<div class="entry"><div class="line"><span><strong>Universidad de Chile</strong> — Bachelor of Engineering Science, Industrial Engineering; highest GPA in cohort</span><span class="date">2017–2021</span></div></div>
+
+<h2>Experience</h2>
+<div class="entry"><div class="line"><strong>Research Assistant · MIT Operations Research Center</strong><span class="date">Sept. 2024–present</span></div>
+<ul>
+<li>Developed two covariance-based <strong>LightGBM</strong> training objectives (custom gradients and Hessians) to reduce regressivity in property valuation. The cross-validated surrogate reduced the magnitude of price-related bias by <strong>49%</strong> on held-out sales and <strong>39%</strong> on 2025 sales, with price-scale R² essentially unchanged and log-price RMSE up 3.1% and 1.7%. Evaluated on ~383K Cook County sales with temporal validation; first-author <a href="https://arxiv.org/abs/2611.27009">preprint</a>; <a href="https://github.com/nicacevedo/soft-vertical-equity-constrained-mass-appraisal">GitHub</a>.</li>
+<li><strong>Research adoption:</strong> collaborated with the Cook County Assessor’s Office, which merged the direct covariance penalty into its public residential valuation model as a selectable objective (<code>mse_cov</code>; <a href="https://github.com/ccao-data/model-res-avm/pull/475">PR #475</a>).</li>
+<li>Studied the convergence and numerical accuracy of large-scale <strong>GPU</strong> first-order linear programming (LP) solvers; implemented and tested iterative refinement and residual-based matrix scaling in a fork of cuPDLP.jl (Julia, CUDA.jl).</li>
+<li>Developing optimization and public-data models of data-center operations, including workload scheduling, electricity use and cooling-water use.</li>
+</ul></div>
+<div class="entry"><div class="line"><span><strong>Researcher · Web Intelligence Centre / ACHS</strong> · Santiago</span><span class="date">Dec. 2023–Apr. 2024</span></div>
+<ul><li>Forecast hospital patient volume by department (Prophet, NeuralProphet; RF and XGBoost baselines) and used the forecasts in a scheduling optimization model for appointment capacity planning.</li></ul></div>
+<div class="entry"><div class="line"><span><strong>Research Engineer · Nezasa AG / TripYeah</strong> · Zurich (remote)</span><span class="date">June 2022–Apr. 2023</span></div>
+<ul><li>Coordinated a small team developing a time-dependent TSP formulation for ranking multi-leg flight itineraries; developed ML classifiers that prune its search space to reduce flight-data queries.</li></ul></div>
+<div class="entry"><div class="line"><span><strong>Research Assistant · Universidad de Chile and ISCI</strong> · Santiago</span><span class="date">Sept. 2020–July 2024</span></div>
+<ul><li>Thesis: LASSO as a second-order cone program, solved by column generation with conic-dual pricing; on large, strongly regularized instances, seconds versus over 30 minutes for the original SOCP and coordinate-descent LASSO; faster than Frank–Wolfe on highly correlated features.</li>
+<li>Built an interpretable anomaly score (robust Mahalanobis distance, Isolation Forest, PCA) for Chile’s national university-admission exam; presented to DEMRE, the agency that administers it.</li></ul></div>
+
+<h2>Selected Graduate Project (MIT)</h2>
+<div class="entry"><div class="line"><span><strong>Robust model selection</strong> — MIT 15.094 course project, joint with D. K. Agarwal</span><span class="date">Spring 2026</span></div>
+<ul><li>Bootstrap uncertainty sets and a mixed-integer selection model (Gurobi) raised out-of-sample constraint satisfaction from 80% to 96% (box set) across 100 random splits, at ~6% higher mean test MSE.</li></ul></div>
+
+<h2>Skills</h2>
+<p><strong>Optimization:</strong> mathematical modeling, convex/conic (SOCP), linear and mixed-integer programming (LP/MILP), robust, numerical and combinatorial optimization, numerical linear algebra, column generation, first-order methods, dynamic programming; Gurobi, CVXPY</p>
+<p><strong>ML and statistics:</strong> probability and statistics, gradient boosting, custom loss functions, neural networks, time-series forecasting, anomaly detection, bootstrap; PyTorch, LightGBM, XGBoost, scikit-learn, Optuna</p>
+<p><strong>Computing:</strong> Python, Julia, R, SQL; NumPy, pandas, SciPy; GPU computing (CUDA.jl), Git, Linux, Slurm</p>
+<p><strong>Languages:</strong> Spanish (native), English (fluent)</p>
+<p><strong>Teaching:</strong> TA for 13 courses at MIT and Universidad de Chile, including Optimization Methods and The Analytics Edge</p>
+
+</body></html>

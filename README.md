@@ -1,6 +1,6 @@
 # nicacevedo.github.io
 
-Source for [nicacevedo.github.io](https://nicacevedo.github.io) — the personal
+Source for [nicacevedo.com](https://nicacevedo.com) (repository `nicacevedo.github.io`) — the personal
 research website of Nicolás Acevedo Villena.
 
 Static [Astro](https://astro.build) site: TypeScript, custom CSS, hand-built
@@ -337,8 +337,12 @@ off the normal path so a briefly unreachable DOI resolver can never block a
 deploy. `.github/dependabot.yml` proposes npm and Actions updates monthly,
 grouped; nothing auto-merges.
 
-The site has no custom domain; adding one means putting a `CNAME` file in
-`public/` and updating `site` in `astro.config.mjs`.
+The site is served at the custom domain `nicacevedo.com`, configured in the
+repository's GitHub Pages settings (the Actions deploy needs no `CNAME` file).
+`nacevedo.com` and `www.` variants 301-redirect to it, and so does
+`nicacevedo.github.io`. `site` in `astro.config.mjs` and `profile.siteUrl` must
+name the custom domain, or canonical URLs, Open Graph tags and the sitemap point
+at a redirect.
 
 ### Repository metadata
 
@@ -349,13 +353,13 @@ should carry:
 - **Description:** Personal research website of Nicolás Acevedo Villena —
   optimization, fair and reliable prediction, infrastructure modeling, and
   scalable computation.
-- **Homepage:** `https://nicacevedo.github.io/`
+- **Homepage:** `https://nicacevedo.com/`
 - **Topics:** `astro`, `operations-research`, `optimization`, `research`,
   `academic-website`
 
 ```bash
 gh repo edit nicacevedo/nicacevedo.github.io \
-  --homepage "https://nicacevedo.github.io/" \
+  --homepage "https://nicacevedo.com/" \
   --description "Personal research website of Nicolás Acevedo Villena — optimization, fair and reliable prediction, infrastructure modeling, and scalable computation." \
   --add-topic astro \
   --add-topic operations-research \

@@ -17,3 +17,6 @@ playwright-report/
 .idea/
 .vscode/
 *.log
+
+# Private source material for the CV (statements, drafts, correspondence)
+meta-data/

@@ -9,9 +9,9 @@
  * Usage: node scripts/check-production.mjs [origin]
  */
 /** Where the pages are fetched from; a local `npm run serve` also works. */
-const ORIGIN = (process.argv[2] ?? 'https://nicacevedo.github.io').replace(/\/$/, '');
+const ORIGIN = (process.argv[2] ?? 'https://nicacevedo.com').replace(/\/$/, '');
 /** What the pages declare themselves to be, which never changes with the origin. */
-const SITE = 'https://nicacevedo.github.io';
+const SITE = 'https://nicacevedo.com';
 
 const NAV = ['Research', 'Publications', 'Teaching', 'CV'];
 const NAV_HREFS = ['/research/', '/publications/', '/teaching/', '/cv/'];

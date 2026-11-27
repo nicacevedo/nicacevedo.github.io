@@ -29,10 +29,10 @@ test.describe('every page', () => {
       expect(description?.length ?? 0).toBeGreaterThan(30);
 
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
-      expect(canonical).toBe(`https://nicacevedo.github.io${route.path}`);
+      expect(canonical).toBe(`https://nicacevedo.com${route.path}`);
 
       const ogImage = await page.locator('meta[property="og:image"]').getAttribute('content');
-      expect(ogImage).toMatch(/^https:\/\/nicacevedo\.github\.io\/generated\/og\/.+\.png$/);
+      expect(ogImage).toMatch(/^https:\/\/nicacevedo\.com\/generated\/og\/.+\.png$/);
 
       // Landmarks.
       await expect(page.locator('main#main')).toHaveCount(1);
