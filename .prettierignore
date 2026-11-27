@@ -5,3 +5,7 @@ package-lock.json
 public/generated
 test-results
 playwright-report
+
+# Hand-laid-out print sources for the CV/résumé PDFs; reformatting changes their rendering.
+scripts/cv.html
+scripts/resume.html

@@ -39,7 +39,9 @@ await page.evaluate(() => {
 });
 // A <meta name="footer" content="..."> in the source adds "<content> · page/total"
 // at the foot of every page (used by the two-page CV, not the one-page résumé).
-const footer = await page.evaluate(() => document.querySelector('meta[name="footer"]')?.content ?? '');
+const footer = await page.evaluate(
+  () => document.querySelector('meta[name="footer"]')?.content ?? '',
+);
 await page.pdf({
   path: out,
   format: 'Letter',

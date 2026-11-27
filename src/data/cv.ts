@@ -33,7 +33,8 @@ export const cv = {
     },
     {
       category: 'Libraries and solvers',
-      items: 'PyTorch, LightGBM, XGBoost, scikit-learn, Optuna, NumPy, pandas, SciPy, Gurobi, CVXPY',
+      items:
+        'PyTorch, LightGBM, XGBoost, scikit-learn, Optuna, NumPy, pandas, SciPy, Gurobi, CVXPY',
     },
     {
       category: 'Scientific computing',
@@ -174,7 +175,9 @@ export const cv = {
       role: 'Research OS',
       org: 'Personal project',
       href: 'https://github.com/nicacevedo/research-os',
-      notes: ['Python project exploring LLM-assisted research workflows and experiment automation.'],
+      notes: [
+        'Python project exploring LLM-assisted research workflows and experiment automation.',
+      ],
     },
   ] as const satisfies readonly (CvEntry & { readonly href?: string })[],
 

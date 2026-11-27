@@ -21,8 +21,7 @@ const SCANNED = new Set(['.ts', '.tsx', '.astro', '.md', '.bib', '.mjs', '.css']
 
 const ATTEMPTS = 3;
 const TIMEOUT_MS = 20_000;
-const AGENT =
-  'Mozilla/5.0 (compatible; nicacevedo.com link check; +https://nicacevedo.com/)';
+const AGENT = 'Mozilla/5.0 (compatible; nicacevedo.com link check; +https://nicacevedo.com/)';
 
 /**
  * Hosts that answer bots with a challenge or a hard block, so a status code
